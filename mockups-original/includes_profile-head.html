@@ -1,0 +1,73 @@
+<div class="bg-wrap overflow-hidden">
+  <img src="assets/img/profile-bg-test1.jpg" class="card-img-top" alt="">
+</div>
+<div class="card-body pb-0">
+  
+  <div class="d-flex form-row profile-info mb-3">
+    <img src="assets/img/profile-pic-test1.jpg" alt="" class="user-img user-xl"><!-- src="assets/img/users/user6.jpg" -->
+    <div class="d-flex media-body flex-column justify-content-sm-between">
+      <div class="d-flex justify-content-end">
+        <button role="button" class="btn btn-primary" id="liveToastBtn">Add to Friends</button>
+      </div>
+      <div class="row no-gutters mt-4 mt-sm-0 justify-content-between flex-row-reverse">
+        
+        <div class="dropdown">
+          <button class="btn btn-ghost px-2 dropdown-toggle no-caret" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Block User</a>
+            <a class="dropdown-item" href="#">Report User</a>
+          </div>
+        </div>
+
+        <span class="col row no-gutters">
+          <h2 class="mb-1 col-12 col-sm-auto">Patrick Ford</h2>
+          <div class="col-auto ml-sm-3 p-0">
+            <span class="badge badge-primary badge-pill">Representative</span>
+            <span class="badge badge-primary badge-pill">Influencer</span>
+          </div>
+        </span>
+                  
+      </div>
+    </div>
+  </div>
+  <ul class="nav nav-pills justify-content-between">
+    <li class="nav-item">
+      <a class="nav-link active" href="user-profile.html">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="user-profile-photos.html">Photos <span>234</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="user-profile-friends.html">Friends <span>328</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="user-profile-groups.html">Groups</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="user-profile-reviews.html">Reviews</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="user-profile-business.html">Businesses</a>
+    </li>
+  </ul>
+  
+</div>
+
+
+<!-- add to friends toast success -->
+<div class="position-fixed top-0 right-0 p-3" style="z-index: 2005; right: 0; top:60px; min-width: 300px;">
+  <div id="liveToast" class="toast hide bg-secondary text-white" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">
+    <div class="toast-header bg-secondary text-white">
+      <strong class="mr-auto">Way to connect</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      Added to friends!
+    </div>
+  </div>
+</div>
+<!-- END toast -->

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <!-- favicon -->
+  <link rel="apple-touch-icon" sizes="57x57" href="assets/img/favicon/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/img/favicon/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/img/favicon/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/img/favicon/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/img/favicon/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="assets/img/favicon/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="assets/img/favicon/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="assets/img/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="assets/img/favicon/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="assets/img/favicon/manifest.json">
+  <link rel="mask-icon" href="assets/img/favicon/safari-pinned-tab.svg" color="#f0ad4e">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="assets/img/favicon/mstile-144x144.png">
+  <meta name="theme-color" content="#f0ad4e">
+  <title>HeyPage</title>
+
+  <!-- Stylesheet -->
+  <!-- build:css -->
+  <link href="assets/css/starter.css" rel="stylesheet" />
+  <!-- endbuild -->
+</head>
+
+<body>
+
+  <!-- Include topnav - for DEV purposes-->
+  <div w3-include-html="includes_topnav.html"></div>
+
+  <main role="main" class="container-fluid mt-sm-5 pt-sm-4 ">
+    <div class="row justify-content-xl-between">
+
+      <!-- spacer -->
+      <div class="order-3 d-none d-md-block col sidenav-wrap"></div>
+      <!-- END spacer -->
+
+      <!-- Include Sidenav - for DEV purposes -->
+      <div w3-include-html="includes_sidenav.html" class="col-10 col-lg-3 pl-lg-0 sidenav-wrap" id="sideNav"></div>
+      <!-- END sidenav -->
+
+      <div class="col-12 col-lg-9 col-xl-7" id="mainWrap">
+
+        <!-- Start User profile tile -->
+        <div w3-include-html="includes_profile-head.html" class="card mb-3 shadow-sm user-profile"></div>
+        <!-- END user profile tile -->
+
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+
+            <div class="form-row mb-3">
+              <div class="col">
+
+                <ul class="nav nav-pills" id="myTab" role="tablist">
+                  <li class="nav-item mr-1" role="presentation">
+                    <a class="nav-link active" id="firends-tab" data-toggle="tab" href="#firends" role="tab"
+                      aria-controls="firends" aria-selected="true">Friends <span>234</span></a>
+                  </li>
+                  <li class="nav-item mr-1" role="presentation">
+                    <a class="nav-link" id="common-tab" data-toggle="tab" href="#common" role="tab"
+                      aria-controls="common" aria-selected="false">Shared Friends <span>4</span></a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-12 col-sm-4 mt-2 mt-sm-0">
+                <input type="text" placeholder="Search Friends" class="form-control" />
+              </div>
+            </div>
+
+
+            <div class="tab-content" id="myTabContent">
+              <!-- Friends Tab -->
+              <div class="tab-pane fade show active" id="firends" role="tabpanel" aria-labelledby="friends-tab">
+                <ul class="list-unstyled friends-list">
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user4.jpg" alt=""
+                        class="user-img"><span>Ken Dickson</span></a><a role="button" class="btn btn-outline-primary"
+                      style="width: 9.5rem;" id="liveToastBtn">Add to Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user5.jpg" alt=""
+                        class="user-img"><span>Patrick Robinson</span></a><a role="button"
+                      class="btn btn-outline-primary" style="width: 9.5rem;" id="liveToastBtn">Add to Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user6.jpg" alt=""
+                        class="user-img"><span>David Engelman</span></a><a role="button" class="btn btn-primary"
+                      style="width: 9.5rem;">Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user7.jpg" alt=""
+                        class="user-img"><span>Kristen Dickson</span></a><a role="button"
+                      class="btn btn-outline-primary" style="width: 9.5rem;" id="liveToastBtn">Add to Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user1.jpg" alt=""
+                        class="user-img"><span>Robert Ming</span></a><a role="button" class="btn btn-primary"
+                      style="width: 9.5rem;">Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user2.jpg" alt=""
+                        class="user-img"><span>Carlos Sanchez</span></a><a role="button" class="btn btn-outline-primary"
+                      style="width: 9.5rem;" id="liveToastBtn">Add to Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user3.jpg" alt=""
+                        class="user-img"><span>Daisy Mendoza</span></a><a role="button" class="btn btn-outline-primary"
+                      style="width: 9.5rem;" id="liveToastBtn">Add to Friends</a></li>
+
+                </ul>
+              </div>
+
+              <!-- Shared Friends tab -->
+              <div class="tab-pane fade" id="common" role="tabpanel" aria-labelledby="common-tab">
+                <ul class="list-unstyled friends-list">
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user6.jpg" alt=""
+                        class="user-img"><span>David Engelman</span><a role="button" class="btn btn-primary"
+                        style="width: 9.5rem;">Friends</a></li>
+                  <li class="mb-2 d-flex justify-content-between"><a href="user-profile.html"
+                      class="text-decoration-none user-link"><img src="assets/img/users/user1.jpg" alt=""
+                        class="user-img"><span>Robert Ming</span><a role="button" class="btn btn-primary"
+                        style="width: 9.5rem;">Friends</a></li>
+
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </main>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="assets/js/vendor/jquery.min.js"></script>
+  <script src="assets/js/vendor/popper.min.js"></script>
+  <script src="assets/js/vendor/bootstrap.min.js"></script>
+  <!-- build:js -->
+  <script src="assets/js/includeHTML.js"></script>
+  <script src="assets/js/Am2_SimpleSlider.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <!-- script src="assets/js/lightbox.js"></script -->
+  <!-- endbuild -->
+
+</body>
+
+</html>
