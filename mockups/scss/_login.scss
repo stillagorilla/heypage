@@ -1,0 +1,26 @@
+// Login Page
+
+.login-img {
+	background: url(../img/universe.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	background-blend-mode: overlay;
+	position: relative;
+	&:after {
+		background: rgba($secondary, 0.6);
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		content: "";
+	}
+	.border-bottom {
+		opacity: 0.3;
+	}
+
+	hr {
+		border-color: rgba($white, 0.3);
+	}
+}

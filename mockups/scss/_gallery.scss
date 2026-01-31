@@ -1,0 +1,112 @@
+// Gallery
+.square-img {
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative;
+  img {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: $border-radius;
+  }
+  .form-check-label {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 0px;
+    cursor: pointer;
+    &:after {
+      content: "";
+      height: 1.8rem;
+      width: 1.8rem;
+      background-color: rgba($white, 0.3);
+      border: 1px solid rgba($white, 0.7);
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      padding: $spacer-1;
+    }
+  }
+  input[type="checkbox"] {
+    position: absolute;
+    visibility: hidden;
+    &:checked + .form-check-label:after {
+      height: 1.8rem;
+      width: 1.8rem;
+      background-color: $third;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      content: "\f00c";
+      color: $white;
+      font-family: "Font Awesome 5 Pro";
+      text-align: center;
+      padding: $spacer-1;
+    }
+  }
+}
+
+.input-styled {
+  position: absolute;
+  visibility: hidden;
+  & + .form-check-label {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    bottom: 0px;
+    top: 0px;
+    border-radius: $border-radius;
+    &:hover {
+      background-color: rgba($secondary, 0.1);
+      cursor: pointer;
+    }
+  }
+  &:checked + .form-check-label {
+    background-color: rgba($secondary, 0.1);
+  }
+  &:checked + .form-check-label:after {
+    height: 1.8rem;
+    width: 1.8rem;
+    background-color: $third;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    content: "\f00c";
+    color: $white;
+    font-family: "Font Awesome 5 Pro";
+    text-align: center;
+    @extend .p-1;
+    border: 0 !important;
+  }
+}
+
+.contain-img img {
+    object-fit: contain;
+}
+.gallery-img-3, .gallery-img-2 {
+  display: grid;
+  column-gap: $spacer-1;
+  row-gap: $spacer-1;
+  grid-column: auto;
+  grid-template-columns: 2fr 1fr;
+  img {
+    height: 100%;
+  }
+}
+.gallery-img-3 {
+  img:first-of-type {
+    grid-row: span 2;
+  }
+}

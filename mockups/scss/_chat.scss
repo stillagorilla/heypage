@@ -1,0 +1,127 @@
+// chat styles
+#chat-sidebar {
+  .form-control {
+    background-color: rgba($secondary, 0.1);
+  }
+  li:hover {
+    background: rgba($secondary, 0.08);
+  }
+  li.active {
+    background: rgba($secondary, 0.2);
+  }
+  .chat-sidebar-list {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    width: 100%;
+  }
+}
+#chat-window {
+  height: calc(100vh - 84px);
+  max-height: calc(100vh - 84px);
+}
+
+.chat-inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.card-body {
+  overflow: auto;
+}
+.form-control {
+  background-color: rgba($secondary, 0.1);
+  border: 0;
+}
+.chat-date {
+  text-align: center;
+  color: $gray-500;
+  font-size: small;
+  padding: $spacer-1 0;
+}
+.chat-message {
+  display: flex;
+  margin: $spacer-2 0;
+  align-items: flex-end;
+  .chat-bubble {
+    padding: $spacer-3;
+    background: $white;
+    border-radius: $spacer-3;
+    border-bottom-left-radius: 0;
+  }
+  &.me {
+    justify-content: flex-end;
+    .chat-bubble {
+      color: $white;
+      background-color: $secondary;
+      border-radius: $spacer-3;
+      border-bottom-right-radius: 0;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .chat-bubble {
+    max-width: 80%;
+  }
+}
+@include media-breakpoint-down(md) {
+  #chat-sidebar {
+    visibility: hidden;
+    position: fixed;
+    z-index: 20;
+    background: white;
+    height: 100vh;
+    width: 90%;
+    left: -160px;
+    transition: all 0.3s ease-in;
+    border: none !important;
+    top: 55px;
+    height: calc(100vh - 55px);
+    z-index: 2020;
+    &.open {
+      display: flex !important;
+      left: 0;
+      visibility: visible;
+      transition: all 0.3s ease-in;
+    }
+  }
+  .shade {
+    position: relative;
+    &:after {
+      position: absolute;
+      inset: 0;
+      background: rgba($secondary, 0.4);
+      content: "";
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .chat-page {
+    .navbar form.main-wrap {
+      display: none;
+    }
+  }
+}
+@include media-breakpoint-down(xs) {
+  #chat-sidebar {
+    width: calc(100% + 16px);
+  }
+  #chat-window {
+    position: relative;
+    margin-top: -3.5rem;
+    z-index: 1020;
+    height: calc(100vh - 56px);
+    max-height: calc(100vh - 56px);
+  }
+  #chat-area .card-body {
+    background: $body-bg !important;
+  }
+}
+@media all and (min-width: 1300px) {
+  .chat-bubble {
+    max-width: 1000px !important;
+  }
+}
