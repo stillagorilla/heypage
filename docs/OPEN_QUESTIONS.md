@@ -404,3 +404,14 @@ Questions:
 5) Email branding assets:
    - Should the logo be an absolute URL hosted on the site, or CID-embedded in outbound emails?
 6) Should emails also have a plain-text alternative (recommended)?
+
+## Email notification line duplication (resolved)
+
+Source:
+- `emails/index.html`
+
+The email mock repeats "You have new friend requests." twice. This is a mock artifact.
+
+Decision:
+- Implement email notifications using a normalized list of notification lines (deduped) and/or grouped counts.
+- No duplicated notification lines should appear in real emails.
