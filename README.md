@@ -144,6 +144,14 @@ Implementation will reuse the post card partial and inject review-specific subco
 
 ---
 
+## Auth pages
+
+The mockups include:
+- a combined login and registration page with username-based registration and optional social login buttons
+- a reset password page that sends a reset link to an email address
+
+---
+
 ## Interaction demos
 
 The mockups include an interaction demo script at `mockups-original/assets/js/app.js`. It demonstrates intended UI behaviors for early implementation, including:
