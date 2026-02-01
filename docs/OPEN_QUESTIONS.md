@@ -432,3 +432,12 @@ Decision:
 - Implement email notifications using a normalized list of notification lines (deduped) and/or grouped counts.
 - No duplicated notification lines should appear in real emails.
 
+## Topnav: friend requests and notifications
+
+Source:
+- `includes_topnav.html`
+
+Questions:
+1) Friend requests in the dropdown: do accept/decline actions trigger a toast and remove the row immediately?
+2) What should the bell/notifications icon open in MVP (dropdown list vs dedicated notifications page)?
+3) Should friend request timestamps use relative time ("Just now") or absolute time formatting?
