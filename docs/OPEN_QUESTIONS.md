@@ -37,3 +37,25 @@ These are the questions we should answer early because they impact routing, data
 ## Mockup Consolidation
 16. Confirm naming standard: we will replace “tile/card/voting stuff” with a consistent component taxonomy (e.g., `components/post_card.html`, `components/moderation_panel.html`, etc.).
 17. Any mockup sections that are intentionally one-off (should NOT be componentized)?
+
+## Moderation mechanics (critical)
+
+- What is the exact voting model behind the "voting stuff" UI?
+- What are the objects being voted on (post deletion only, visibility suppression, labels, etc.)?
+- Does voting vary by region/locale and how is locale determined?
+
+## Rep/admin permissions
+
+- Confirm the exact behavior:
+  - admin users can directly delete posts
+  - post authors can edit posts
+  - others can propose deletion via kebab menu
+  - reps can expedite confirmations :contentReference[oaicite:7]{index=7}
+
+## URL namespace collisions
+
+If a username and a business name collide, which wins?
+Options:
+A) Global unique slug across all entity types (users, businesses, groups)
+B) Prefix namespaces (/u/<username>, /b/<slug>, /g/<slug>)
+C) Reserved keywords + conflict resolution rules
