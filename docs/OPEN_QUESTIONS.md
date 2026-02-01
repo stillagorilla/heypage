@@ -59,3 +59,19 @@ Options:
 A) Global unique slug across all entity types (users, businesses, groups)
 B) Prefix namespaces (/u/<username>, /b/<slug>, /g/<slug>)
 C) Reserved keywords + conflict resolution rules
+
+## Friend requests + friendship state (from top nav)
+Top nav includes a friend request dropdown with accept/decline actions. :contentReference[oaicite:14]{index=14}
+
+Open questions:
+- Is the relationship model mutual friends only, or also follower/following?
+- What are the states? (none, requested_by_me, requested_of_me, friends, blocked)
+- Do “Add to Friends” and “Accept” create the same model record with different state transitions?
+
+## Live search behavior
+Top nav includes a “filter-as-you-type” dropdown showing Users/Groups/Businesses and a “View All” button to `search.html`. :contentReference[oaicite:15]{index=15}
+
+Open questions:
+- Do we support debounced live search on every keypress or only after N characters?
+- What ranking rules for Users vs Groups vs Businesses?
+- Are there privacy constraints (e.g., private groups not shown)?
