@@ -97,6 +97,17 @@ Record decisions with date, decision, and rationale.
 ### Reviewed mockups
 - login/register page and reset password page reviewed and mapped to Django auth templates and custom user model requirements.
 
+### URL scheme locked (public entity URLs)
+
+Decision:
+- Users: `/<username>/`
+- Groups: `/g/<slug>/`
+- Businesses: `/b/<slug>/`
+
+Notes:
+- The root-level user route is a catch-all and must be registered last in Django URL patterns.
+- Maintain a reserved-words list so usernames cannot collide with system routes or entity prefixes.
+
 ## Repo Conventions
 - /docs = architecture + specs + ledgers
 - /mockups-original = untouched originals
@@ -109,6 +120,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
