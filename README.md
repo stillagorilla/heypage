@@ -93,6 +93,9 @@ Implementation will normalize these into a consistent Django partial taxonomy un
 ### Global search UX
 The top navigation includes a live search dropdown for Users / Groups / Businesses, plus a "View All" path to a hard search results page with the same entity categories.
 
+### JS
+assets/js/app.js is primarily interaction demo code; production behavior will be implemented in Django/HTMX/Channels as needed.
+
 ---
 
 ## How to contribute changes (quick reminders)
