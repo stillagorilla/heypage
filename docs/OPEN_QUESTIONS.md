@@ -702,3 +702,41 @@ Open questions:
 6) Lightbox / single-photo view:
    - Mock grids are clickable (`gallery-img`) but no explicit photo detail page is shown yet.
    - Do we need a photo detail page with comments/reactions (post-like), or just a lightbox viewer?
+
+## Moderation / voting open questions (from feed “voting stuff”)
+
+1) Propose Deletion reasons:
+   - Are reasons multi-select (checkbox) by design, or should it be single-select? Mock uses multiple checkboxes.
+   - Do we need a free-text clarification field in the modal (seen in some earlier pages; confirm where)?
+
+2) Voting window + tally rules:
+   - How long is the vote window by default (UI shows “8 hours remaining” in example)?
+   - How is quorum determined (e.g., 9 voters in “4/9”) and what counts as eligible voters?
+
+3) Representative bypass concept:
+   - Who qualifies as a “representative”?
+   - How many representative votes are required by default?
+   - Can representatives vote YES/NO, or are they only an expedited YES-to-delete path?
+   - Does representative voting apply only when community vote is near threshold, or always?
+   - How is “remaining representative votes” computed? (UI shows remaining markers + text.)
+
+4) Resolved states (not yet explicitly shown in the cited lines):
+   - What exact UI should appear when:
+     - deletion PASSES (content removed)
+     - deletion FAILS or EXPIRES (content kept)
+   - Should users see a “you voted” state and disable buttons?
+
+---
+
+## Composer / media open questions
+
+1) “Fit image instead of showing a cropped preview”:
+   - Is `fit_image` stored per attachment, per post, or as a user preference default?
+
+2) Visibility selector:
+   - Define audience semantics precisely for Everyone/Friends/Private:
+     - Private = only author?
+     - Friends = mutual friends only, or followers?
+
+3) Share behavior:
+   - What does the share icon do (share to feed, share externally, copy link)?
