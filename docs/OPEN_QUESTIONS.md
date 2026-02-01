@@ -241,3 +241,32 @@ Questions:
 4) Does "Move To Album" apply to user photos only, or also group photos?
 5) Are photo dates editable (as shown by the editable date field UI) and is that date "taken_at" or "posted_at"?
 6) Should album tiles link to a real URL slug (recommended) or ID-based URL?
+
+## Friendship rules (from My Friends page)
+
+Source: `my-friends.html`
+
+Questions:
+1) Is the relationship model strictly mutual friends, or do we also support follow/follower?
+2) What are the full friendship states shown in UI?
+   - pending outbound vs pending inbound vs accepted vs blocked
+3) How does Mute work?
+   - hides posts in feed only?
+   - hides notifications?
+4) Does blocking remove an existing friendship and prevent future requests?
+5) Are friend requests rate-limited or restricted (e.g., must share a group)?
+
+## Group type rules (from Create Group modal)
+
+Source: `my-groups.html`
+
+Group Type options:
+- Public
+- Semi-Public
+- Private
+
+Questions:
+1) Public: can anyone view content and join instantly? (UI hint suggests yes)
+2) Semi-Public: can anyone view, but join requires approval? Or view requires membership?
+3) Private: can only members view content, and joining requires invite/approval?
+4) Can Group Type be changed after creation? If so, what happens to existing members/content visibility?
