@@ -467,3 +467,25 @@ Questions:
 6) Upload widgets:
    - Mockups reuse `id="file"` in multiple upload forms. This will break when more than one uploader exists on the same page.
    - Decision: generate unique IDs per uploader or avoid label-for patterns that require global uniqueness.
+
+## Search UX details (live dropdown + hard results)
+
+Sources:
+- `includes_topnav.html`
+- `search.html`
+
+Questions / decisions:
+1) Live dropdown close behavior:
+   - Current demo hides on blur. Should clicking inside `.searchResults` keep it open until selection?
+
+2) When to query:
+   - Show dropdown on focus only (static sections) vs query after N characters (debounced)?
+
+3) "View All" behavior:
+   - Should it carry the current query string into the hard results page (recommended)?
+
+4) Access control:
+   - Should search hide private groups / blocked users / blocked businesses from results?
+
+5) Business “Add Business” CTA:
+   - Is this always shown when searching Businesses, or only when results are empty / below a threshold?
