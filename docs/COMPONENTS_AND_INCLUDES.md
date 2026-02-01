@@ -212,6 +212,17 @@ Context:
 - `viewer_membership_state` (none/requested/member/admin/etc.)
 - optional counters for tab badges
 
+## Post composer variants by context
+
+Group About tab uses a composer placeholder "Send a message to the group" and a visibility selector with "Everyone / Admins". :contentReference[oaicite:8]{index=8}
+
+Implementation:
+- reuse `partials/post/post_composer.html`
+- drive variations with context:
+  - `composer_prompt`
+  - `audience_options` (list)
+  - `default_audience`
+
 ## Implementation rule
 
 Every time we find a repeated block in mockups:
