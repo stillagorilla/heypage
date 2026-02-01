@@ -230,11 +230,12 @@ Every time we find a repeated block in mockups:
 2) Replace on templates via `{% include %}`
 3) Record the include in this doc (so future refactors don’t re-split components).
 
-## Reviews (treated as specialized Posts)
+## Business Reviews page (confirms review is post-like + moderation applies)
 
 Sources:
 - `mockups-original/my-reviews.html`
 - `mockups-original/user-profile-reviews.html`
+- `mockups-original/business-reviews.html`
 
 ### Conclusion: Reviews share the Post Card component
 
@@ -244,6 +245,37 @@ In mockups, a review is rendered using the same structure as a post card:
 - reactions + share buttons
 - comment composer ("Leave a comment")
 Therefore, implement reviews by reusing the post card template and injecting review-specific subcomponents.
+
+### Review composer (make-post variant)
+This is the standard post composer layout with review-specific controls:
+- star rating buttons (1..5)
+- textarea placeholder: "Leave a review!"
+- image + emoji buttons
+- Post submit button
+
+Recommendation:
+- Implement as a specialization of the post composer:
+  - `templates/partials/reviews/review_composer.html`
+  - reuse shared composer shell layout
+
+### Review card (post card with inserts)
+Review cards match the post card structure and include:
+- header with author + timestamp + star rating display
+- kebab menu: Edit / Delete / Propose Deletion
+- body text + optional media grid
+- reaction/share actions
+- comment composer
+
+Recommendation:
+- Reuse `templates/partials/post/post_card.html` and inject:
+  - `templates/partials/reviews/review_stars_inline.html` (header insert)
+  - optional media grid (already part of post card)
+- Reviews support comment composer and reactions/share in MVP.
+
+### Propose Deletion modal
+`#reportModal` is included on Business Reviews page.
+Recommendation:
+- Centralize as `templates/partials/moderation/propose_deletion_modal.html` and include once per page template (or globally in base, if safe).
 
 ### Review-specific inserts within a Post Card
 
