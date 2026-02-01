@@ -429,3 +429,86 @@ Django include:
 
 Rule:
 - modal HTML should not be duplicated across pages; include once per template (or in `base.html`) and trigger via `data-target`.
+
+## Photos and Albums (shared across user + group)
+
+Sources:
+- User (owner) photos: `my-photos.html`
+- User (public) photos: `user-profile-photos.html`
+- User album detail: `my-photos-album.html`
+- User edit photos: `edit-photos.html`
+- Group photos: `group-photos.html`
+- Group album detail: `group-photos-album.html`
+
+### Shared layout pattern
+Photos pages use:
+- entity header include (user/group)
+- a tabbed card with Photos and Albums tabs
+- grid of square thumbnails (`square-img` inside `.gallery-img`)
+- album tiles with cover image + title + item count
+
+### Reusable partials
+
+Photo thumbnail tile:
+- `templates/partials/media/photo_tile.html`
+- Inputs: `media_asset`, optional `selectable` (for edit mode)
+
+Photo grid:
+- `templates/partials/media/photo_grid.html`
+- Inputs: list of `media_assets`, grid sizing options
+
+Album tile:
+- `templates/partials/media/album_tile.html`
+- Inputs: `album` (title, cover, item_count), `href`
+
+Album grid:
+- `templates/partials/media/album_grid.html`
+
+Photos/Albums tabs card:
+- `templates/partials/media/photos_tabs_card.html`
+- Inputs:
+  - `active_tab` in {photos, albums}
+  - `photos_count`, `albums_count`
+  - `show_owner_actions` (bool)
+  - `photos` list
+  - `albums` list
+
+### Owner-only actions (user owner context)
+From `my-photos.html`:
+- Add Photos modal button
+- New Album modal button
+- Edit Photos link to `edit-photos.html`
+
+From `my-photos-album.html`:
+- Rename album modal (`#albumNameModal`)
+- Add To Album upload modal (`#uploadModal`)
+- Edit Photos link to `edit-photos.html`
+
+### Public/other-user photos (no owner actions)
+`user-profile-photos.html` shows photos + album tiles, but no add/edit actions.
+
+### Group photos
+`group-photos.html` and `group-photos-album.html` mirror the same tabs + grids.
+Album tiles link to `group-photos-album.html`.
+
+### Edit Photos (selection + move to album)
+`edit-photos.html` depicts:
+- selectable thumbnails (checkbox overlay)
+- per-photo date field that becomes editable on click (readonly -> editable input)
+- "Move To Album" modal (`#albumModal`) listing albums with checkbox selection
+- "Select All" action (currently a link)
+
+Recommended include:
+- `templates/partials/media/edit_photos_grid.html`
+- `templates/partials/modals/move_to_album_modal.html`
+
+### Upload/Add Photos modal (shared)
+Both user and group album detail pages use an `#uploadModal` "Add Photos" drag/drop upload UI.
+
+Normalize into a single partial:
+- `templates/partials/modals/upload_photos_modal.html`
+
+Permission gating:
+- only show upload/new/rename/move/edit actions when viewer has edit permission:
+  - user owner viewing own profile
+  - group members/admins as configured
