@@ -189,6 +189,19 @@ Sources:
 6) What does "Show more" reveal?
    - is it a single long description field, or separate sections (responsibilities, skills, etc.)?
 
+### Business edit modals: consolidate or keep separate?
+
+The mockups currently contain BOTH:
+1) `#editBusinessModal` titled "Edit Business" (name/logo/category)
+2) `#bioModal` titled "Edit Bio" but intended to be "Edit Business" (about/contact/address/etc.)
+
+Open questions:
+- Do we want **one** canonical Business edit modal (single "Edit Business" modal with tabs/sections), or keep **two** (identity vs details)?
+- If keeping two, what are canonical names/IDs?
+  - e.g., `editBusinessIdentityModal` (name/logo/category) + `editBusinessDetailsModal` (about/contact/locations)
+- Confirm button labeling: `#editBusinessModal` footer currently says "Create" (artifact; likely should be "Save").
+- Confirm wiring: Business "Other Social Profiles" pencil should target `#socialModal`, not `#bioModal`.
+
 ## Search behavior (from UI + demo JS)
 
 Hard results page:
@@ -591,3 +604,4 @@ Open questions:
    or should we standardize primary vs outline per feature?
 2) Should the modal for create/edit be included once per page at the bottom of `<main>`,
    even if the trigger appears in page_actions row?
+
