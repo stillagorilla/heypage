@@ -1297,3 +1297,84 @@ Implementation:
 ### DOM ID safety rules reinforced
 - Group header and business header both use `id="liveToastBtn"` on join buttons. This must become a class selector to avoid duplicate IDs when lists/cards repeat.
 - Owner user header photo modal uses `id="photoModal"` and file input `id="file"`. Modal and inputs must accept parameterized IDs when componentized.
+
+## Entity header slot contract (single source of truth)
+
+Goal:
+- `entity_header_base.html` is the shared skeleton for user/group/business headers.
+- Entity-specific wrappers build a `header_context` dict and pass it to the base.
+
+### Base template
+- `templates/partials/entity/entity_header_base.html`
+
+### Required context object
+Pass a single dict named `header` with the following keys:
+
+#### Identity + media
+- `header.entity_type` (str): "user" | "group" | "business"
+- `header.viewer_context` (str): "owner" | "public"
+- `header.title` (str): display name (user name, group name, business name)
+- `header.subtitle` (str|None): optional secondary line (e.g., business category, group category)
+- `header.cover_url` (str|None): cover image URL
+- `header.avatar_url` (str|None): avatar/logo URL (square/circle)
+
+#### Badges / metadata row
+- `header.badges` (list[dict]): optional labels and/or icons
+  - each badge: `{ "label": str, "icon_url": str|None }`
+  - examples:
+    - user: Representative, Influencer
+    - business: award icons list (year + icon), or just icons
+
+#### Primary actions cluster (right side)
+- `header.actions` (list[dict]): ordered list of buttons
+  - each action:
+    - `label` (str)
+    - `href` (str|None) — for link buttons
+    - `button_class` (str) — e.g., "btn btn-primary btn-sm"
+    - `icon_class` (str|None) — e.g., "fa fa-plus"
+    - `data_toggle` (str|None) — e.g., "modal"
+    - `data_target` (str|None) — e.g., "#inviteModal"
+    - `js_hook` (str|None) — e.g., "js-live-toast-btn"
+    - `disabled` (bool, default false)
+    - `visible` (bool, default true)
+
+Notes:
+- Avoid using hardcoded IDs for JS triggers (no repeated `#liveToastBtn`).
+- Use class hooks via `js_hook` + event delegation.
+
+#### Kebab menu (optional)
+- `header.kebab` (dict|None):
+  - `header.kebab.items` (list[dict]) where each item has:
+    - `label` (str)
+    - `href` (str|None)
+    - `data_toggle` (str|None)
+    - `data_target` (str|None)
+    - `icon_class` (str|None)
+    - `danger` (bool, default false)
+    - `visible` (bool, default true)
+
+#### Tabs row
+- `header.tabs` (list[dict]) required:
+  - each tab:
+    - `key` (str) — stable identifier: "about", "photos", "friends", "members", "jobs", "reviews", "groups", "businesses"
+    - `label` (str)
+    - `href` (str)
+    - `count` (int|None) — optional count/badge
+    - `active` (bool)
+
+### Modal + input ID requirements (critical)
+If a header variant includes modals (e.g., owner user photo modal):
+- the wrapper MUST pass:
+  - `modal_id` (unique)
+  - `file_input_id` (unique)
+  - `form_id` (unique)
+Do not hardcode `id="file"` or fixed modal IDs in reusable partials.
+
+### Suggested wrapper templates
+- `templates/partials/entity/user_header_owner.html`
+- `templates/partials/entity/user_header_public.html`
+- `templates/partials/entity/group_header_public.html`
+- `templates/partials/entity/business_header_public.html`
+
+Each wrapper constructs `header` and calls:
+- `{% include "partials/entity/entity_header_base.html" with header=header %}`
