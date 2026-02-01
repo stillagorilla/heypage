@@ -227,3 +227,7 @@ The hard results page is tabbed (Users / Groups / Business) and the Business tab
 
 - Side navigation provides primary logged-in routes (Feed, My Profile, Friends, Photos, Reviews, Groups, Businesses).
 - Notifications are accessed via the bell dropdown in the top navigation (no dedicated /notifications/ page).
+
+## Entity header reuse
+
+User/group/business pages share a common "entity header" pattern (cover, avatar, name/badges, actions, tabs). Owner vs public views are implemented as variants of the same base partial to minimize duplication and keep navigation consistent.
