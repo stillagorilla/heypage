@@ -901,3 +901,36 @@ UI:
 
 Notes:
 - Mock includes topnav for dev purposes. In production, consider whether reset pages should use a minimal auth layout rather than full site chrome.
+
+## Email templates (site-generated emails)
+
+Source:
+- `mockups-original/emails/index.html`
+
+### Email base template
+This file is a single email template that demonstrates:
+- branded header with centered logo
+- greeting line: "Hi {User},"
+- a stack of notification lines (unread messages, friend requests, comment added, deletion proposed, group approval needed, new business review)
+- optional CTA button block
+- legal footer with unsubscribe + notification settings links
+
+Django email templating approach:
+- Create a base HTML email:
+  - `templates/emails/base.html`
+- Create a content block template:
+  - `templates/emails/notification_digest.html` (or `notification_single.html`)
+
+Variables shown in the mock:
+- `{User}` placeholder for recipient name
+- CTA button has empty `href` and generic label "CTA button" (should be filled per email type)
+- footer includes unsubscribe + settings links (currently `href="#"`)
+
+Reusable partial concept (optional):
+- `templates/emails/partials/notification_line.html`
+- `templates/emails/partials/cta_button.html`
+- `templates/emails/partials/legal_footer.html`
+
+Implementation notes:
+- Email HTML uses table layout and inline-ish styling suitable for email clients; avoid relying on external CSS.
+- Replace `images/image-1.png` with an absolute URL or CID-embedded image (choose one strategy and standardize).
