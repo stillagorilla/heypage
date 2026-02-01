@@ -98,6 +98,20 @@ assets/js/app.js is primarily interaction demo code; production behavior will be
 
 ---
 
+## Interaction demos
+
+The mockups include an interaction demo script at `mockups-original/assets/js/app.js`. It demonstrates intended UI behaviors for early implementation, including:
+- topnav live search dropdown show/hide on focus/blur
+- side nav toggle
+- reaction/share popovers
+- reply toggles
+- vote panel expansion
+- toast confirmations for Join Group and Add to Friends
+
+This file is not production JavaScript. It is a reference for intended UX.
+
+---
+
 ## How to contribute changes (quick reminders)
 
 Edits made in github.dev only appear on GitHub after:
