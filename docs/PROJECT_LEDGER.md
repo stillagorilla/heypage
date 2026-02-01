@@ -64,7 +64,11 @@ Record decisions with date, decision, and rationale.
 - /heypage = Django project (eventual)
 - Prefer fewer dynamic templates; use context variables to express page-state differences.
 
+## Continuity rule
+After each milestone or design decision, update the appropriate file(s) in `/docs` so the repository remains the authoritative memory for the project.
+
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
