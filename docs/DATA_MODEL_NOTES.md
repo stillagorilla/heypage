@@ -631,3 +631,28 @@ Model implications:
 - Track read/unread:
   - `read_at` timestamp
 - Notification settings (already depicted in settings.html) determine which event types generate notifications/emails.
+
+## Entity header data requirements
+
+Sources:
+- `includes_my-profile-head.html`
+- `includes_profile-head.html`
+
+Entity header requires:
+- cover image (optional)
+- avatar image
+- display name
+- badges/roles (e.g., Representative, Influencer)
+- tab counts (photos count, friends count)
+- viewer-context actions:
+  - owner: can update avatar/cover (upload)
+  - public: relationship state and actions (add friend, pending, friends, blocked)
+
+Model implications:
+- User profile should store:
+  - `avatar` media
+  - `cover` media
+  - `badges` or role flags
+- Relationship logic must provide:
+  - current friendship state between viewer and profile user
+  - whether viewer is blocked or can request friendship
