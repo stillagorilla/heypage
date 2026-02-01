@@ -443,11 +443,93 @@ Mockups show:
 - reaction/share on reviews
 So reviews are moderation targets and support comments + reactions in MVP.
 
-## Search (topnav live search + hard results)
+## Search (global topnav live search + hard results page)
 
 Sources:
+- `mockups-original/includes_topnav.html`
 - Hard results page: `mockups-original/search.html`
 - Interaction demo JS: `mockups-original/assets/js/app.js`
+
+### URL patterns
+
+Hard search results page:
+- `/search/?q=<term>&tab=<users|groups|business>`
+  - Renders the tabbed results page: Users / Groups / Business (pill tabs).
+  - Business tab includes the "Can’t find the business you’re looking for?" Add Business CTA.
+
+Live search (topnav dropdown):
+- `/api/search/live/?q=<term>&limit=<n>`
+  - Returns grouped results for: users, groups, businesses.
+  - Intended to power the topnav dropdown results while typing.
+  - Include a "View All" action per group that links to `/search/?q=<term>&tab=<group>`.
+
+Implementation notes:
+- Live search should only execute when `len(q) >= 2` (or similar).
+- Add server-side throttling and caching (short TTL) to keep this cheap at scale.
+
+### Reusable result components
+
+We will normalize the three "result tile" types into shared partials:
+
+1) User result row (compact list item)
+- Visual pattern: avatar + name, compact list (matches the Users tab list pattern).
+Reusable include:
+- `templates/partials/search/user_result_row.html`
+
+Slots:
+- `user.avatar_url`
+- `user.display_name`
+- `user.url` (profile link)
+- Optional: right-side quick action (Add Friend / Friends), but default is link only.
+
+2) Group result row (row tile)
+- Visual pattern: square image + name + member count + category label.
+Reusable include:
+- `templates/partials/search/group_result_row.html`
+Also reusable as:
+- `templates/partials/groups/group_tile_row.html` (if identical, alias one to the other)
+
+Slots:
+- `group.image_url`
+- `group.name`
+- `group.member_count`
+- `group.category_label`
+- `group.url`
+
+3) Business result row (row tile)
+- Visual pattern: square image + name + category (optional subcategory).
+Reusable include:
+- `templates/partials/search/business_result_row.html`
+Preferred reuse:
+- `templates/partials/business/business_tile_row.html` (same visual pattern across business lists and search)
+
+Slots:
+- `business.image_url`
+- `business.name`
+- `business.category_label` (and optional `subcategory_label`)
+- `business.url` (business page or closed business page)
+
+### Business "Add Business" CTA block (search only)
+
+In the Business results tab, render a dedicated CTA panel below results:
+Reusable include:
+- `templates/partials/search/add_business_cta.html`
+
+Behavior:
+- Only render when the active tab is Business (or when business results are empty).
+- Link to Create Business (owner action).
+
+### Tab behavior contract (hard search)
+
+The hard search page is a single URL that renders all three datasets and uses tabs to show one.
+We will support:
+- `tab=users` (default)
+- `tab=groups`
+- `tab=business`
+
+The server should:
+- Always return counts per bucket for analytics and future UI (optional).
+- Enforce privacy rules before returning any entity in any bucket.
 
 ### Search box (topnav) live results dropdown
 Component:
