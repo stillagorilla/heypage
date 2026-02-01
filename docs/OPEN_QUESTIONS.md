@@ -370,6 +370,26 @@ Remaining questions:
 3) Can business owners/admins delete reviews directly, or only via moderation proposal?
 4) Are reviews visible in main feed, or only on Business Reviews tab and User Reviews tab?
 
+## Reviews: first-review highlight + awards rules
+
+Decisions:
+- "First Review" badge and highlight styling apply to the first-ever review for a business.
+- Review Summary Card awards represent one winning business per (city, category/subcategory) for the previous year.
+- Award display accumulates for the business across years/categories, even if awards are not contiguous.
+
+Open questions:
+1) Awards lifecycle:
+   - Who/what assigns awards? (admin tool, automated by review aggregates, or both)
+2) City normalization:
+   - Do we model city as free text, a normalized City table, or derived from BusinessLocation?
+3) Category normalization:
+   - Should award category/subcategory use the same taxonomy as Business.category fields?
+4) Review edits and "first review":
+   - If the first-ever review is deleted (soft-delete), does the badge transfer to the next earliest visible review,
+     or remain attached to the original (but hidden)?
+5) Multi-location businesses:
+   - Which city is used for awards if a business has multiple locations?
+
 ## Chat scope (MVP)
 
 Source: `chat.html`
@@ -648,3 +668,4 @@ Open questions:
 5) Propose Deletion modal reuse:
    - Should we standardize one propose-deletion modal component across ALL content types (posts, comments, jobs, photos, reviews)?
    - If so, finalize the canonical reason taxonomy and whether reasons are multi-select (checkboxes) vs single select.
+
