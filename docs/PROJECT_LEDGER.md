@@ -60,6 +60,13 @@ Record decisions with date, decision, and rationale.
 - Businesses owner page uses standard owner-context page_actions row above tabs with "Create Business" action.
 - Business create flow requires repeatable locations ("Add another location") and an image upload at creation time.
 
+### Decisions confirmed from feed.html (moderation)
+
+- **Proposer auto-vote:** when a user proposes deletion, the system immediately records a YES vote for the proposer, so the panel renders the “Voted.” state for them right away.
+- **Results visible before voting:** the “Agree?” (not yet voted) state still displays vote results (progress + representative bypass UI). Do not gate totals behind voting.
+- **Resolved removal is a tombstone:** when deletion passes, the post-like card is suppressed (not hard-deleted) and renders as a minimal placeholder: “Content removed by vote.”
+- **Resolved tombstone behavior:** tombstone variant should not render reactions/comments/vote controls (unless an admin/audit view is added later).
+
 ## Milestones
 ### M0 — Mockup ingestion complete
 - [ ] All HTML mockups committed under /mockups-original (or similar)
@@ -102,6 +109,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
