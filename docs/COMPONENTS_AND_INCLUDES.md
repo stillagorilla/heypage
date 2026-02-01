@@ -230,10 +230,46 @@ Every time we find a repeated block in mockups:
 2) Replace on templates via `{% include %}`
 3) Record the include in this doc (so future refactors don’t re-split components).
 
-## Reviews (Business + User profile)
+## Reviews (treated as specialized Posts)
 
-Goal: determine whether the Business Reviews composer and review cards are close enough to Posts to share components.
-Recommendation: share a small "base shell", then keep post vs review as thin specializations.
+Sources:
+- `mockups-original/my-reviews.html`
+- `mockups-original/user-profile-reviews.html`
+
+### Conclusion: Reviews share the Post Card component
+
+In mockups, a review is rendered using the same structure as a post card:
+- author header + timestamp
+- kebab menu with Edit / Delete / Propose Deletion
+- reactions + share buttons
+- comment composer ("Leave a comment")
+Therefore, implement reviews by reusing the post card template and injecting review-specific subcomponents.
+
+### Review-specific inserts within a Post Card
+
+1) Star rating display (header)
+Include:
+- `templates/partials/reviews/review_stars_inline.html`
+Context:
+- `rating` (1..5)
+
+2) Business preview block (body, before review text)
+Include:
+- `templates/partials/reviews/business_preview_block.html`
+Context:
+- `business` (name, category, address, cover/thumbnail)
+- optional `preview_images` (0..3)
+
+### Suggested template approach
+
+Option A (preferred):
+- `templates/partials/post/post_card.html` supports an optional `content_type`
+- if `content_type == "review"`, render:
+  - `review_stars_inline.html` in header
+  - `business_preview_block.html` before body text
+
+Option B:
+- `templates/partials/reviews/review_card.html` extends a shared base card and reuses post footer/comment section.
 
 ### Composer base + specializations
 
@@ -280,14 +316,12 @@ Business reviews page includes a rating summary + distribution visualization.
 Include:
 - `templates/partials/reviews/review_summary_card.html`
 
-### Moderation reuse on reviews (pending decision)
-
-If reviews can be proposed for deletion (recommended for consistency), reuse:
-- `templates/partials/moderation/deletion_vote_panel.html`
-
-Decision needed:
-- Are reviews moderation targets with the same "Propose Deletion" → Yes/No → stats/bypass panel flow?
-(See OPEN_QUESTIONS.md.)
+### Moderation and comments on reviews
+Mockups show:
+- "Propose Deletion" on reviews
+- comment composer on reviews
+- reaction/share on reviews
+So reviews are moderation targets and support comments + reactions in MVP.
 
 ## Search (topnav live search + hard results)
 
