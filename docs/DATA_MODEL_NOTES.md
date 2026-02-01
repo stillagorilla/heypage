@@ -291,6 +291,24 @@ Implementation suggestion (initial pass):
   - facebook_url, instagram_url, linkedin_url, twitter_url, tiktok_url, youtube_url, website_url (etc.)
 - Keep `BusinessLocation` as a related model if supporting multiple locations (mockups show "More locations").
 
+## Business: edit actions map to different edit scopes
+
+Two distinct edit scopes exist on Business pages:
+1) Identity edit (admin-level, header kebab "Edit"):
+- name
+- logo/image
+- category
+
+2) Details/profile edit (About card pencil):
+- about/description
+- website
+- phone
+- locations (and "More locations" behavior)
+- address fields
+
+Implementation note:
+- Even if both modals display the same title text ("Edit Business"), the backend forms and permissions differ and must be modeled separately.
+
 ## Business Team and Jobs (tab content types)
 
 Sources:
@@ -1093,6 +1111,7 @@ This keeps 1 unified pipeline for comments/reactions/moderation.
 - FK to `ContentItem`
 - FK to `parent_comment` (nullable; enables replies)
 - `author`, `body_text`, timestamps
+
 
 
 
