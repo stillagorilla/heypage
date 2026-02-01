@@ -2200,3 +2200,33 @@ Reusable includes:
 Implementation:
 - Filter lists using BusinessMembership role:
   - "My Businesses" includes businesses where role in {owner, admin}.
+
+## Create Business (create-business.html) → component + field mapping
+
+Source: `create-business.html`
+
+### Page template target
+- `templates/business/business_create.html`
+
+### Fields depicted (create-time)
+- Business Name (text input)
+- Location (repeatable set):
+  - Address
+  - ZIP
+  - Country select (Select2)
+  - "Add another location" button adds another location block
+- Website (text input)
+- Category (Select2; optgroups)
+- Image upload (drag/drop uploader)
+- Submit button: "Create"
+
+### Reusable partials
+- `templates/partials/forms/location_block.html` (repeatable)
+- `templates/partials/forms/image_uploader.html` (drag/drop uploader)
+
+### DOM ID safety (critical)
+The create page uses upload input `id="file"`. This MUST be parameterized in the reusable uploader partial
+(e.g., `file_input_id`) to avoid collisions when multiple uploaders exist on a page.
+
+### Include replacement
+`create-business.html` uses DEV-only `w3-include-html` for topnav/sidenav injection. Replace with Django includes.
