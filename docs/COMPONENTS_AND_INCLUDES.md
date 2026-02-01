@@ -332,6 +332,16 @@ Sources:
 - Hard search results (`search.html`)
 - Group Members (`group-members.html`)
 
+### Important implementation rule: do not reuse DOM IDs for multiple buttons
+
+Some mockups and demo JS use the same ID (example: `#liveToastBtn`) for multiple actions (Join Group, Add to Friends).
+In production templates, IDs must be unique per page.
+
+Rule:
+- Replace repeated ID selectors with class selectors (e.g., `.js-show-toast`).
+- Use `data-*` attributes to pass toast message/type (e.g., `data-toast-title`, `data-toast-body`).
+- Attach event listeners using event delegation on a stable container (e.g., `document.body`).
+
 ### Modal taxonomy (normalize naming and reuse)
 
 Recommended Django partials:
@@ -373,3 +383,49 @@ Other interaction demos worth implementing in MVP:
 - Emoji popover on `.addEmoji`.
 - Reply toggle "Show replies" on `.toggleReply`.
 - Voting panel: clicking Yes/No changes label and reveals vote results.
+
+## Group Photos and Albums (shared with user/group/business contexts)
+
+Sources:
+- `mockups-original/group-photos.html`
+- `mockups-original/group-photos-album.html`
+
+### Photo grid (square thumbnails)
+Django include:
+- `templates/partials/media/photo_grid.html`
+
+Used for:
+- group photos tab
+- (future) user photos tab
+- (future) business photos/media areas
+
+Notes:
+- grid uses "square" image tiles (`square-img` pattern)
+
+### Album tile grid
+Django include:
+- `templates/partials/media/album_tile.html`
+- `templates/partials/media/album_grid.html`
+
+Depicts:
+- album cover image (square)
+- album title
+- item count
+
+### Album detail page
+Template:
+- `templates/groups/group_album_detail.html` (or a generic `album_detail.html`)
+
+Includes:
+- `photo_grid.html`
+- "Add To Album" action button (permission gated)
+
+### Upload photos modal (Add Photos)
+Observed:
+- `group-photos-album.html` includes `#uploadModal` with drag/drop file input UI.
+
+Django include:
+- `templates/partials/modals/upload_photos_modal.html`
+
+Rule:
+- modal HTML should not be duplicated across pages; include once per template (or in `base.html`) and trigger via `data-target`.
