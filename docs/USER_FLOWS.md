@@ -63,7 +63,7 @@
 
 ## Moderation flow: propose deletion → vote → results expansion
 
-Source behavior is depicted in feed/profile mockups. :contentReference[oaicite:14]{index=14} :contentReference[oaicite:15]{index=15}
+Source behavior is depicted in feed/profile mockups.
 
 ### A) Propose deletion
 1. Viewer opens post kebab menu.
@@ -84,3 +84,4 @@ Source behavior is depicted in feed/profile mockups. :contentReference[oaicite:1
 7. When voting window ends:
    - if threshold met (and/or bypass rule satisfied): content is removed/hidden
    - else: proposal fails and content remains
+
