@@ -1856,3 +1856,56 @@ Optional base-slot extension:
 - If we want the business website link to be standardized in the base header, add:
   - `header.meta_links = [ {"label": "aliquot.com", "href": business.website_url} ]`
 and render `meta_links` under subtitle in the base template.
+
+## Friends/Members list pattern reuse (User friends + Group members)
+
+Sources:
+- Owner Friends (my context): `my-friends.html`
+- Public Friends (user context): `user-profile-friends.html`
+- Group Members: `group-members.html`
+
+### Canonical list component
+These pages share a common list pattern:
+- `<ul class="friends-list">` rows with:
+  - left: user avatar + name link
+  - right: relationship/action button (Add to Friends / Friends) and sometimes a kebab.
+
+Create a single reusable include:
+- `templates/partials/lists/user_relation_list.html`
+
+And a single row include:
+- `templates/partials/lists/user_relation_row.html`
+
+Row inputs:
+- `person` (User)
+- `right_action` (button spec: label + state + js_hook)
+- `show_kebab` (bool)
+- `kebab_items` (list of actions)
+- `context` in {"friends_owner","friends_public","group_members_admin","group_members_public"}
+
+### Context differences (important)
+Owner Friends (`my-friends.html`) includes per-row kebab actions (Mute, Block User) in the Friends list.
+Public Friends (`user-profile-friends.html`) does not include per-row kebabs.
+
+Decision:
+- Group Members will follow the same pattern:
+  - Public/non-admin Members tab: no per-row kebabs
+  - Admin Members tab: per-row kebabs are allowed (mirror owner-context behavior)
+
+### Tab structure reuse: requests tab vs shared/common tab
+Owner Friends includes:
+- Tab 1: Friends
+- Tab 2: Friend Requests (with badge count) and accept/decline controls (check / X).
+
+Public Friends includes:
+- Tab 1: Friends
+- Tab 2: Shared Friends.
+
+Group Members currently shows:
+- Tab 1: Members
+- Tab 2: Members I know (mirrors "Shared Friends" concept).
+
+Decision:
+- Group administrator will see "Membership Requests" as the second tab under Members,
+  replacing "Members I know" in admin context (same UI and controls as Friend Requests).
+- Non-admin/public context keeps "Members I know" as the second tab (shared/common concept).
