@@ -2903,3 +2903,87 @@ Implementation notes:
 - Prefer a single reusable email base:
   - `templates/emails/base.html`
   - `templates/emails/partials/notification_line.html`
+
+## Settings & Privacy
+
+Page: `settings.html`
+
+Template target:
+- `templates/settings/settings.html`
+
+Summary:
+- Single page contains My Account, Privacy Settings, Notification Settings, Security Settings, plus Save/Cancel controls.
+
+### My Account (profile fields)
+Fields shown:
+- Username
+- Name
+- Email
+
+Notes:
+- Username is editable here (impacts public URL `/<username>/`).
+- Email is editable here.
+
+### Privacy Settings (user preferences)
+Select controls:
+- Who can see your posts?
+  - Everyone
+  - Friends of Friends
+  - Friends
+  - Private
+- Who can send you a friend request?
+  - Everyone
+  - Friends of Friends
+  - Friends
+  - Private
+- Who can post to your Timeline?
+  - Everyone
+  - Friends of Friends
+  - Friends
+  - Private
+- Who can see your friends?
+  - Everyone
+  - Friends of Friends
+  - Friends
+  - Private
+- Change who can see all existing post
+  - Don't change
+  - Everyone
+  - Friends of Friends
+  - Friends
+  - Private
+
+### Blocked contacts modal
+Control:
+- "Blocked contacts" button opens `#blockedModal` and shows a list of blocked users with "Unblock" buttons.
+
+Reusable component mapping:
+- The blocked list is the same list-row pattern as Friends/Members/Team:
+  - avatar + name link
+  - right-aligned action button ("Unblock")
+Recommended partial reuse:
+- `templates/partials/lists/user_relation_list.html`
+- `templates/partials/lists/user_relation_row.html`
+Context:
+- `context = "blocked_contacts"` (row action = unblock)
+
+Modal partial:
+- `templates/partials/modals/blocked_contacts_modal.html`
+
+### Notification Settings (toggle list)
+Checkbox toggles:
+- Notify me when my content is proposed for deletion
+- Notify me of new friend requests
+- Notify me when comments are added to my posts
+
+Recommended partial:
+- `templates/partials/settings/notification_toggle_row.html`
+
+### Security Settings
+Actions:
+- Reset Password button links to reset password flow (`reset-password.html` in mock)
+- Enable Multi-Factor Authentication button (Setup link placeholder in mock)
+
+Save/Cancel:
+- Cancel button present
+- Save submits the form
