@@ -934,3 +934,20 @@ Reusable partial concept (optional):
 Implementation notes:
 - Email HTML uses table layout and inline-ish styling suitable for email clients; avoid relying on external CSS.
 - Replace `images/image-1.png` with an absolute URL or CID-embedded image (choose one strategy and standardize).
+
+## Email assets (logo)
+
+Source:
+- `mockups-original/emails/index.html`
+
+The email template references a header logo at:
+- `images/image-1.png` (relative to the email HTML template location)
+
+Repo note:
+- There is a `mockups-original/emails/images/` directory that contains `image-1.png` (the HeyPage logo used in the email header).
+
+Implementation note (Django):
+- Email images cannot reliably use relative paths.
+- Choose one approach and standardize:
+  1) Absolute URL: host the logo at a public URL (recommended for simplicity), and render `src="{{ SITE_URL }}{{ STATIC_URL }}emails/image-1.png"` or a dedicated `EMAIL_LOGO_URL`.
+  2) CID embedded image: attach the logo and reference it as `src="cid:heypage_logo"` for best inbox compatibility.
