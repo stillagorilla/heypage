@@ -179,6 +179,39 @@ Implementation notes:
 Do NOT keep separate templates for my-profile vs user-profile headers.
 Use `is_owner` to toggle owner controls vs public controls.
 
+## Entity header component (business + group)
+
+### Business header (entity header variant)
+Source: `mockups-original/business-page.html` :contentReference[oaicite:6]{index=6}
+
+Contains:
+- cover image
+- business name + category
+- kebab menu actions (Report Profile, Leave Group, Post a Job, Edit)
+- external website link
+- tab pills: About / Team / Jobs / Reviews
+- action buttons: Invite / Join Company
+
+### Group header (entity header variant)
+Source: `mockups-original/group-page.html` :contentReference[oaicite:7]{index=7}
+
+Contains:
+- cover image
+- group name
+- kebab menu actions (Report Page, Leave Group)
+- tab pills: About / Photos / Members
+- action buttons: Invite / Join Group
+
+### Django include
+- `templates/partials/entity/entity_header.html`
+
+Context:
+- `entity_type` in {user, business, group}
+- `entity` object
+- `active_tab`
+- `viewer_membership_state` (none/requested/member/admin/etc.)
+- optional counters for tab badges
+
 ## Implementation rule
 
 Every time we find a repeated block in mockups:
