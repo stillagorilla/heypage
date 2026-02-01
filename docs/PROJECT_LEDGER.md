@@ -33,6 +33,13 @@ These appear across feed + profile contexts and will be implemented as Django in
   - `emails/index.html` (email template)
   - `coming-soon.html` (temporary production placeholder)
 
+## Ledger entry — Business pages (closed state, edit modal, create business)
+- Captured Business CLOSED banner state ("This business has closed.")
+- Confirmed Edit Business modal exists in business-page.html with logo upload and category selector.
+- Confirmed Create Business form supports multiple locations ("Add another location"), website, category, and upload.
+- Confirmed Reviews UX includes rating summary + review composer with star buttons + review cards.
+- Noted mock wiring inconsistency: "Other Social Profiles" edit button points to #bioModal on business-page, but #socialModal on my-profile.
+
 ## Working Assumptions (v0)
 - Backend: Django (with optional DRF for API), server-rendered templates first, progressive enhancement for interactivity.
 - Real-time later: WebSockets (Django Channels) for chat/notifications if/when required.
@@ -78,6 +85,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
