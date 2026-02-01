@@ -170,6 +170,52 @@ Moderation targeting:
   - target_type: "review"
   - target_id: Review.id
 
+## Business review aggregates + awards (driven by Review Summary Card)
+
+Source:
+- `business-reviews.html`
+
+### Review aggregates (stored or computed)
+The Business Reviews Summary UI requires:
+- `avg_rating` (float, supports half-star display)
+- `review_count` (int)
+- rating distribution:
+  - `count_5`, `count_4`, `count_3`, `count_2`, `count_1` (ints)
+- Derived:
+  - percentages for progress-bar widths (computed from counts + total)
+
+Implementation options:
+- Option A (MVP): compute on the fly via query aggregation (cache later)
+- Option B: store denormalized fields on Business and update on review create/update/delete
+
+### "First Review" designation
+Rule:
+- "First Review" badge + highlight styling applies to the first-ever review for that business.
+
+Model support:
+- Compute by ordering reviews by `created_at` asc and marking the earliest as first.
+- Optional: store `Business.first_review_id` for fast lookup once volume grows.
+
+### Awards shown in Review Summary Card
+Rule:
+- For each city, for each (category/subcategory), for the previous year,
+  one business is awarded (winner).
+- A business can accumulate multiple awards across years/categories; display is cumulative even if non-contiguous.
+
+Recommended model:
+- Award
+  - year (int)
+  - city (string or FK to City table if you later normalize)
+  - category (string or FK)
+  - subcategory (string or FK, nullable)
+  - title (string for display; e.g., "2021 Italian Restaurant Award")
+  - icon/image (optional)
+  - winning_business (FK to Business)
+  - created_at
+
+Uniqueness constraint (recommended):
+- unique (year, city, category, subcategory) → one winner per bucket
+
 ## Business (Entity)
 
 Core fields (inferred from mocks):
@@ -824,3 +870,4 @@ Recommended modeling:
 Cross-cutting systems:
 - Jobs support comments and reactions (same as posts).
 - Jobs support moderation proposals ("Propose Deletion") and vote flow, same as other content types.
+
