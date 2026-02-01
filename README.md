@@ -217,3 +217,8 @@ During the Django build, we will:
 - replace `includeHTML.js` and client-side includes with Django template includes.
 
 If you add or change mockup JS behavior, capture the decision in `docs/COMPONENTS_AND_INCLUDES.md` and any unresolved questions in `docs/OPEN_QUESTIONS.md`.
+
+## Search
+
+The top navigation includes a live search dropdown (Users / Groups / Businesses) with a "View All" button that routes to the hard search results page.
+The hard results page is tabbed (Users / Groups / Business) and the Business tab includes an "Add Business" CTA linking to the create business flow.
