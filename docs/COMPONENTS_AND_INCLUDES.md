@@ -404,15 +404,38 @@ Sources:
 - Hard search results (`search.html`)
 - Group Members (`group-members.html`)
 
-### Important implementation rule: do not reuse DOM IDs for multiple buttons
+### Implementation pitfall: duplicate modal IDs / element IDs (avoid future bug)
 
 Some mockups and demo JS use the same ID (example: `#liveToastBtn`) for multiple actions (Join Group, Add to Friends).
 In production templates, IDs must be unique per page.
 
+When we convert mockups into Django includes, it becomes easy to accidentally render the same modal (or form control)
+multiple times on one page, causing duplicate DOM IDs and broken/fragile JS behavior.
+
+Examples from mockups:
+- Feed post composer opens an image upload modal `#uploadImgModal`. (feed.html)
+- Photos pages use `#uploadModal` (Add Photos) and `#albumModal` (New Album). (my-photos.html)
+
 Rule:
-- Replace repeated ID selectors with class selectors (e.g., `.js-show-toast`).
-- Use `data-*` attributes to pass toast message/type (e.g., `data-toast-title`, `data-toast-body`).
-- Attach event listeners using event delegation on a stable container (e.g., `document.body`).
+- Every reusable include that defines a modal MUST accept a `modal_id` (and any related input IDs) as parameters,
+  and MUST NOT hardcode `id="..."` in a way that could collide if reused.
+- Prefer component-scoped IDs derived from the component name + object id, e.g.:
+  - `modal_id="uploadImgModal_post_{{ post.id }}"`
+  - `modal_id="reportModal_post_{{ post.id }}"`
+  - `modal_id="uploadModal_album_{{ album.id }}"`
+
+Suggested pattern:
+- `partials/modals/<modal_name>.html` should take:
+  - `modal_id`
+  - `form_id`
+  - `file_input_id` (if applicable)
+- `partials/post/post_card.html` should pass unique IDs per post for:
+  - propose deletion modal
+  - share modal (if modal-based)
+  - any per-post upload/attachment modal (if supported later)
+
+Also note: the comment thread has interaction affordances like "Show X replies" and "Show N more comments"
+that should be driven by consistent selectors/data-attributes, not brittle ID assumptions.
 
 ### Modal taxonomy (normalize naming and reuse)
 
