@@ -29,6 +29,15 @@ These are the questions we should answer early because they impact routing, data
    - temporary quarantine pending more votes
 12. Is there an appeal process? If yes, who hears it and what are the rules?
 
+Resolved from feed.html:
+- Proposer auto-vote: proposing deletion implies proposer votes YES immediately (panel renders “Voted.” state).
+- Vote results are visible even before the viewer votes (the “Agree?” state still shows progress + rep bypass UI).
+- Passed deletion renders a tombstone card: “Content removed by vote.” (suppressed content, not hard-deleted).
+
+Remaining:
+- Confirm whether the tombstone card is visible to everyone who can view the container, or only to users who would have been eligible to view the original content.
+- Confirm whether resolved proposals remain visible as an audit trail (vs panel disappears after pass/fail).
+
 ## Reviews vs Posts (resolved + remaining rules)
 
 Resolved from mockups:
@@ -740,3 +749,4 @@ Open questions:
 
 3) Share behavior:
    - What does the share icon do (share to feed, share externally, copy link)?
+
