@@ -3,7 +3,7 @@
 This document maps static mockups to the fewest Django templates needed, by consolidating “context depictions”
 (owner vs public) into single dynamic templates.
 
-The mockup set lives in `mockups-original/`. :contentReference[oaicite:2]{index=2}
+The mockup set lives in `mockups-original/`.
 
 ## Pages with NO context depictions (single canonical page)
 
@@ -70,11 +70,11 @@ System / index:
 
 The mockups implement the following as reusable includes, and these map directly to Django `{% include %}` partials:
 
-- `includes_topnav.html` → `partials/nav/top_nav.html` :contentReference[oaicite:10]{index=10}
-- `includes_sidenav.html` → `partials/nav/side_nav.html` :contentReference[oaicite:11]{index=11}
+- `includes_topnav.html` → `partials/nav/top_nav.html`
+- `includes_sidenav.html` → `partials/nav/side_nav.html`
 - Profile header:
   - `includes_profile-head.html` + `includes_my-profile-head.html`
-  → `partials/profile/profile_header.html` driven by `is_owner` :contentReference[oaicite:12]{index=12} :contentReference[oaicite:13]{index=13}
+  → `partials/profile/profile_header.html` driven by `is_owner`
 
 ## Canonical route patterns (high level)
 
@@ -107,8 +107,8 @@ Observation: business and group pages use the same structural layout as user pro
 - center feed-like column when About tab is active (including make-post + post cards)
 
 Confirmed in:
-- `business-page.html` (About tab active with sidebar cards + center posts) :contentReference[oaicite:4]{index=4}
-- `group-page.html` (About tab active with sidebar cards + make-post + posts) :contentReference[oaicite:5]{index=5}
+- `business-page.html` (About tab active with sidebar cards + center posts)
+- `group-page.html` (About tab active with sidebar cards + make-post + posts)
 
 ### Proposed Django template consolidation
 Create a generic “entity page shell” pattern:
