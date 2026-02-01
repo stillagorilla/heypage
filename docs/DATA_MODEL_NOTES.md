@@ -193,6 +193,19 @@ Related models:
 Moderation:
 - Business content supports "Propose Deletion" modal and voting/approval workflow (shared mechanism across entity types).
 
+### Business: editable profile fields + social profiles
+
+The Business profile supports:
+- **Business core identity fields**: name, logo/image, category (seen in `#editBusinessModal`).
+- **Business details fields**: about/description + contact + addresses/locations (shown in the modal currently labeled `#bioModal`, titled "Edit Bio" in mockups but intended as "Edit Business").
+
+Business also has **Other Social Profiles** links (same UX pattern as User). The Business page’s social pencil should open the shared Social Profiles modal (`#socialModal`) used on User profile.
+
+Implementation suggestion (initial pass):
+- Add social URL fields on `Business` (or a related `BusinessSocialProfile` table if we want arbitrary networks):
+  - facebook_url, instagram_url, linkedin_url, twitter_url, tiktok_url, youtube_url, website_url (etc.)
+- Keep `BusinessLocation` as a related model if supporting multiple locations (mockups show "More locations").
+
 ## Business Team and Jobs (tab content types)
 
 Sources:
@@ -748,3 +761,4 @@ Implementation implication:
 - When adding Create Business, mirror Create Group’s approach:
   - create the Business record
   - create a BusinessMembership for the creator with role=owner
+
