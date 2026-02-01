@@ -181,6 +181,104 @@ Implementation recommendation:
 - Phase 1: show/hide `.searchResults` on focus/blur (per interaction demo JS).
 - Phase 2: live query endpoint with debounced input; render results via HTMX into the dropdown.
 
+### URL patterns (Django) for Search
+
+Mock references:
+- Topnav live dropdown shows on focus of `#searchBox` and hides on blur.
+- Dropdown has sections Users / Groups / Businesses and a “View All” link to `search.html`.
+- Hard results page includes tabbed results and an “Add Business” CTA linking to `create-business.html`.
+
+Canonical routes (proposed):
+- Hard search results page:
+  - `GET /search/?q=<term>&type=<users|groups|businesses>`
+  - Default `type=users` if omitted.
+  - Tabs are driven by `type` (or `?type=`) to keep URLs shareable.
+- Live search (topnav dropdown):
+  - `GET /api/search/suggest/?q=<term>`
+  - Returns grouped results for: users, groups, businesses (limited counts).
+  - This endpoint powers the dropdown’s three sections.
+
+Notes:
+- Phase 1 can keep the mock show/hide behavior (focus shows dropdown; blur hides).
+- Phase 2 replaces the static dropdown content with server results (HTMX or fetch + JSON).
+
+---
+
+### Reusable “result tile” components (Search)
+
+The mockups use TWO visual result patterns:
+1) **Compact dropdown row** (topnav live results)
+2) **Hard-results rows** (search page tabs)
+
+#### A) Live dropdown result row (compact)
+Source markup (topnav dropdown):
+- Each result is an `<a class="d-flex user-link">` with:
+  - `<img class="user-img">`
+  - `<span class="user-link">Name</span>`
+
+Django partials:
+- `templates/partials/search/live_results_dropdown.html`
+- `templates/partials/search/live_result_row.html`
+
+`live_result_row.html` contract (single canonical row for all entity types):
+- Inputs:
+  - `href`
+  - `img_url`
+  - `primary_text`
+  - `entity_type` (users|groups|businesses) (optional, for data-attrs / testing)
+- Output:
+  - `<a class="d-flex search-result-row" ...>` containing `img` + `span`
+- IMPORTANT: Do NOT keep `user-link` naming long-term; normalize to:
+  - `.search-result-row` (row)
+  - `.search-result-avatar` (img)
+  - `.search-result-title` (text)
+
+#### B) Hard results “row card” (groups/businesses)
+Source markup (search.html):
+- Result is a full-width link wrapping:
+  - `.square-img` image container
+  - Title (`<h4>`)
+  - Meta (`<p class="text-muted">...`)
+
+Django partials:
+- `templates/partials/search/group_result_row.html`
+- `templates/partials/search/business_result_row.html`
+
+Both should share a base include:
+- `templates/partials/search/entity_result_row_card.html`
+
+`entity_result_row_card.html` contract:
+- Inputs:
+  - `href`
+  - `img_url`
+  - `title`
+  - `meta_line_1` (category, etc.)
+  - `meta_line_2` (member count, city, etc.) (optional)
+- Output:
+  - link wrapper + `.square-img` + title + meta lines
+
+#### C) Hard results “user row” (friends-list style)
+Search users tab uses a simpler avatar+name row (same pattern as friends list). (Keep as a dedicated partial.)
+- `templates/partials/search/user_result_row.html`
+
+---
+
+### Live search dropdown behavior notes (avoid brittle blur)
+Current demo behavior:
+- `#searchBox` focus ⇒ `.searchResults` fades in; blur ⇒ fades out.
+
+Production behavior (recommended):
+- Keep dropdown open when clicking inside results (don’t let input blur instantly hide it).
+- Options:
+  - Use `mousedown` handler on dropdown to prevent blur-close, OR
+  - Wrap input+dropdown in a focus-trap container and close only on outside click / Escape.
+- Add a short debounce (~150–250ms) for typing before fetching live results.
+
+(If we adopt HTMX)
+- `hx-get="/api/search/suggest/?q=..."` on input
+- `hx-trigger="keyup changed delay:250ms"`
+- Target: `.searchResults`
+
 ### Side navigation
 Source mockup: `mockups-original/includes_sidenav.html`
 
