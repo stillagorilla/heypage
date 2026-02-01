@@ -166,3 +166,17 @@ Questions:
 3) Ranking rules for each entity type (recent activity, mutual connections, popularity, etc.)?
 4) Should results hide entities the viewer cannot access (private groups, blocked users)?
 5) Should "View All" preserve the query term and open the hard results page pre-filtered?
+
+## Groups: membership and member list behavior
+
+Group Members page includes:
+- Member list + "Members I know" tab
+- Member search input "Search Members"
+- Add to Friends buttons within the group member list (toast feedback)
+
+Questions:
+1) What determines "Members I know"? (existing friends only, or friends-of-friends, or mutual groups?)
+2) Group membership states: none, requested, member, admin, owner?
+3) Can non-members view the Members tab, or is it restricted?
+4) Are member search results limited by viewer permissions?
+5) Are "Add to Friends" actions allowed directly from group member list for all members?
