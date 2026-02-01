@@ -1100,3 +1100,27 @@ Implementation:
   - per-notification link to target content
   - "Mark all as read" action (optional MVP)
 - This dropdown is powered by the Notification model and user notification settings.
+
+## Side navigation (includes_sidenav)
+
+Source:
+- `mockups-original/includes_sidenav.html`
+
+Sidenav links (logged-in):
+- News Feed -> `feed.html`
+- My Profile -> `my-profile.html`
+- Friends -> `my-friends.html`
+- Photos -> `my-photos.html`
+- Reviews -> `my-reviews.html`
+- Groups -> `my-groups.html`
+- Businesses -> `my-business.html`
+
+Footer:
+- Privacy Policy link (placeholder)
+- Terms & Conditions link (placeholder)
+- Copyright: "© 2021 Heypage, LLC"
+
+Implementation recommendation:
+- Convert to `templates/partials/sidenav.html`.
+- Active state should be computed server-side:
+  - pass `active_nav` or `request.path` into the template and highlight the current link.
