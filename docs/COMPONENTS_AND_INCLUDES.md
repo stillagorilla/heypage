@@ -115,8 +115,16 @@ Context:
 
 ## Global layout includes (confirmed from mockups)
 
-### Top navigation
-Source mockup: `mockups-original/includes_topnav.html`
+### Top navigation (includes_topnav)
+Source:
+- `mockups-original/includes_topnav.html`
+
+Topnav includes:
+- Mobile side-nav toggle: `#sideNavToggle`
+- Friend requests dropdown (badge + accept/decline buttons + "View All" -> my-friends.html)
+- Chat icon (badge) linking to chat.html
+- Notifications bell (placeholder)
+- Profile dropdown: View My Profile / Settings / Logout
 
 Django include:
 - `templates/partials/nav/top_nav.html`
@@ -132,6 +140,17 @@ Contains:
   - input `#searchBox`
   - dropdown categorized Users / Groups / Businesses
   - “View All” button → hard results page (`search.html`)
+
+### Global search (topnav live dropdown)
+Elements:
+- Search input: `#searchBox`
+- Dropdown container: `.searchResults` (initially `display:none`)
+- Sections: Users / Groups / Businesses
+- "View All" CTA linking to search.html
+
+Implementation recommendation:
+- Phase 1: show/hide `.searchResults` on focus/blur (per interaction demo JS).
+- Phase 2: live query endpoint with debounced input; render results via HTMX into the dropdown.
 
 ### Side navigation
 Source mockup: `mockups-original/includes_sidenav.html`
