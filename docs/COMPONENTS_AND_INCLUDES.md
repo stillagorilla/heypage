@@ -373,6 +373,40 @@ Business reviews page includes a rating summary + distribution visualization.
 Include:
 - `templates/partials/reviews/review_summary_card.html`
 
+### Reviews: additional canonical UI rules (Business Reviews)
+
+Source:
+- `business-reviews.html`
+
+#### First-ever review highlight
+The first-ever review for a business is specially highlighted:
+- Shows a "First Review" trophy badge
+- Uses a distinct post-card background color (highlight styling)
+Implementation:
+- Add an optional boolean on the review card context:
+  - `is_first_review_for_business`
+- `post_card` (review variant) should support a highlight modifier:
+  - adds badge + optional CSS class (e.g., `post--highlight`)
+
+#### Review Summary Card details (rating + awards)
+The Review Summary Card includes:
+- Average rating number
+- Star row that supports half-star display
+- Review count
+- Rating distribution rows (5→1) with counts + progress bars
+
+Awards block inside the summary card:
+- Renders 0..N awards as list items:
+  - icon/image thumbnail + title text
+- Awards are accumulated (business can show multiple awards across years/categories)
+
+Reusable partials (recommended):
+- `templates/partials/reviews/review_summary_card.html`
+- `templates/partials/reviews/rating_stars.html` (supports half-star)
+- `templates/partials/reviews/rating_distribution.html`
+- `templates/partials/awards/award_list.html`
+- `templates/partials/awards/award_list_item.html`
+
 ### Moderation and comments on reviews
 Mockups show:
 - "Propose Deletion" on reviews
