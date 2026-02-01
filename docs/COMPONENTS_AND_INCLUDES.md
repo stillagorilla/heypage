@@ -993,3 +993,53 @@ Implementation note (Django):
 - Choose one approach and standardize:
   1) Absolute URL: host the logo at a public URL (recommended for simplicity), and render `src="{{ SITE_URL }}{{ STATIC_URL }}emails/image-1.png"` or a dedicated `EMAIL_LOGO_URL`.
   2) CID embedded image: attach the logo and reference it as `src="cid:heypage_logo"` for best inbox compatibility.
+
+## Client-side UI behaviors present in mockups (from assets/js)
+
+The mockups include a JavaScript layer primarily intended to demonstrate UI interactions, not production-ready behavior. The Django build should treat these as reference behaviors and re-implement selectively with clean selectors, unique IDs, and server-backed endpoints.
+
+### Current behavior inventory (app.js reference)
+
+- Mobile side nav toggle:
+  - Click `#sideNavToggle` toggles `#sideNav.open`.
+- Navbar live search dropdown:
+  - Focus on `#searchBox` shows `.searchResults`.
+  - Blur hides `.searchResults`.
+  - In Django, implement live results via HTMX (or a small fetch endpoint) and keep "View All" pointing to the hard results page.
+- Toast demo trigger:
+  - Click `#liveToastBtn` shows `.toast`.
+  - IMPORTANT: multiple elements in mockups reuse `id="liveToastBtn"`. This must become a class selector for production (example: `.js-live-toast-btn`) and use event delegation.
+- Comment composer button reveal:
+  - In `.response-group`, clicking into `.form-control` reveals the `.p-2` block containing the Post button.
+  - Blur hides it again if the textarea is empty.
+- Reply threads:
+  - `.toggleReply` toggles a `.showReply` region and flips button text.
+  - `.addReply` injects a reply form under a comment (demo only).
+- Reactions and sharing:
+  - `.addReaction` and `.shareLink` create popovers (demo only).
+  - Production should use a real popover component, or a lightweight custom menu.
+- Moderation and voting UI:
+  - Voting buttons reveal `.voteResults` and disable voting after a vote.
+  - Star voting toggles `.selected`.
+- Chat sidebar:
+  - `#toggle-chat-sidebar` opens `#chat-sidebar` and shades `<main>`.
+  - `#chat-side-close` closes it.
+- Media:
+  - `.gallery-img` uses `Am2_SimpleSlider()` for a gallery popup.
+- Sticky sidebar:
+  - Scroll logic toggles `#sticky-side` classes `stickTop`/`stickBottom`.
+- Select2:
+  - `.select2` uses Select2 with bootstrap theme.
+
+### Implementation rules for the Django port
+
+1) Do not rely on duplicated IDs from mockups.
+   - Replace `#liveToastBtn` with a class such as `.js-live-toast-btn`.
+   - Replace repeated upload input IDs like `id="file"` with unique IDs, or refactor so the label is scoped and does not require global uniqueness.
+
+2) Replace `includeHTML.js` includes with Django template includes.
+   - Remove `includeHTML()` usage and keep includes purely server-side (`{% include %}`).
+
+3) JS structure
+   - Use event delegation from `document` for dynamic content (feed items, comments, modals).
+   - Keep behavior modules small and grouped by feature: search, feed, comments, moderation, media, nav.
