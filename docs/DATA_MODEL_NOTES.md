@@ -86,6 +86,29 @@ Review must render in two places:
 - User profile → Reviews tab
 - Business page → Reviews tab
 
+## Business (Entity)
+
+Core fields (inferred from mocks):
+- name
+- category (likely FK or controlled taxonomy)
+- website_url
+- logo_image
+- cover_image (or banner)
+- status: ACTIVE | CLOSED | ... (CLOSED triggers "This business has closed." banner)
+
+Related models:
+- BusinessLocation (1-to-many): address fields + optional label (Location A/B)
+- BusinessMembership / TeamMember:
+  - user
+  - role (member/admin/owner/etc)
+- BusinessReview:
+  - business, author(user), rating(1-5), body, media, created_at
+  - supports aggregation (avg rating, counts per star)
+- BusinessAward (optional): image + label text (appears in ratings summary)
+
+Moderation:
+- Business content supports "Propose Deletion" modal and voting/approval workflow (shared mechanism across entity types).
+
 ## User attributes / roles
 
 Users can have multiple attributes that control permissions and UI differences (e.g., owner vs public profile pages). :contentReference[oaicite:4]{index=4}
@@ -141,3 +164,4 @@ Computed fields used by UI:
 - yes_percent
 - time_remaining
 - rep_votes_remaining (rule-driven)
+
