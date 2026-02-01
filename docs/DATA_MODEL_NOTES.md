@@ -795,3 +795,32 @@ Owner context includes two lists:
 - "Businesses" tab: general directory list (not necessarily owned/managed)
 - "My Businesses" tab: businesses managed by the user
 Implementation should filter "My Businesses" using BusinessMembership roles {owner, admin}.
+
+## Business jobs: model + capabilities implied by business-jobs.html
+
+Source:
+- `business-jobs.html`
+
+A Business job is a post-like entity with:
+- Business FK (author)
+- created_at timestamp (displayed in UI)
+- title (h3)
+- location_text (e.g., "San Francisco")
+- description (short visible portion)
+- extended_description / responsibilities / competencies (hidden “Show more” section)
+- apply_url (external link)
+
+Recommended modeling:
+- BusinessJob
+  - business (FK)
+  - title
+  - location_text
+  - apply_url
+  - body (text)
+  - body_extended (text, optional) OR structured sections if desired
+  - created_at, updated_at
+  - status (active/closed/deleted)
+
+Cross-cutting systems:
+- Jobs support comments and reactions (same as posts).
+- Jobs support moderation proposals ("Propose Deletion") and vote flow, same as other content types.
