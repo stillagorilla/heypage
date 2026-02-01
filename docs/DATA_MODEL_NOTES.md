@@ -584,3 +584,20 @@ Implementation notes (data model):
   - either:
     A) a flag on ModerationVote indicating rep-vote, or
     B) a separate model if reps have special limits/capacity accounting
+
+## Notes driven by front-end interactions (mockups)
+
+These notes come from interaction patterns present in the mockups and their JS wiring. They help ensure the data model supports the intended UX.
+
+### Notifications and toasts
+- Many "success" actions in the UI are represented as toast confirmations (Add Friend, Join Group/Business, etc.).
+- Data model should support:
+  - A notification/event record for user-visible actions (friend requests, accepted friendships, invites, join requests, moderation votes).
+  - Optional "ephemeral" confirmations that do not create persistent notifications (pure UI confirmation).
+
+### Voting and moderation sequences
+- The UI implies a structured "proposal and vote" flow (propose deletion, yes/no votes, representative bypass).
+- Data model should include:
+  - A proposal entity that points to a target object (post/comment/review/photo).
+  - Vote records with voter, vote value, timestamps.
+  - Aggregate state and rules evaluation fields (status, quorum, thresholds, representative override).
