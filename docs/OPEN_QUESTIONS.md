@@ -104,3 +104,28 @@ Questions:
    - How are "rep votes remaining" allocated and replenished?
 6) What happens to content after passing? Hard delete vs soft delete vs hidden + audit trail?
 
+## Business: open questions
+
+1) Who can mark a business as CLOSED?
+   - owner/admin only, or community moderation?
+
+2) Is CLOSED reversible? (re-open flow)
+
+3) Business editing permissions:
+   - Is there a "claim business" flow?
+   - Can multiple admins edit? How are admins assigned?
+
+4) Categories:
+   - Do we need a fixed taxonomy table? Who can create categories?
+
+5) Locations:
+   - What minimum address structure do we need?
+   - Are multiple locations always allowed? Any max?
+
+6) Reviews:
+   - Can a user post multiple reviews per business, or one active review that can be edited?
+   - Can reviews be proposed for deletion via the same mechanism?
+
+7) “Other Social Profiles” modal:
+   - The business mock currently targets #bioModal but user-profile uses #socialModal. Confirm intended reuse and fields.
+
