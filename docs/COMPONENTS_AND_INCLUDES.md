@@ -449,6 +449,22 @@ Reusable subcomponents:
 - `templates/partials/search/business_result_row.html`
 - `templates/partials/search/add_business_cta.html`
 
+## Entity listing tiles (shared across pages)
+
+### Business tile
+Used in:
+- Search results (Businesses tab)
+- User profile → Businesses
+- My Businesses (both tabs)
+
+Partials:
+- `templates/partials/business/business_tile.html`
+- `templates/partials/business/business_tile_grid.html`
+
+Inputs:
+- name, image_url, category/subcategory label(s), href
+- optional status badge (e.g., "Closed")
+
 ## Modals and interaction demos (system-wide)
 
 Sources:
