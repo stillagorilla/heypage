@@ -28,6 +28,14 @@ This is the evolving feature inventory. It’s OK for this list to be broader th
 - Block/report user actions (kebab menu) :contentReference[oaicite:19]{index=19}
 - Change profile photo (owner) with upload modal :contentReference[oaicite:20]{index=20}
 
+## Posts, comments, and moderation UI (confirmed from mockups)
+- Post composer ("make post" card) with visibility selector and media/emoji affordances :contentReference[oaicite:16]{index=16}
+- Post card with kebab menu actions: Edit / Delete / Propose Deletion :contentReference[oaicite:17]{index=17}
+- Comment thread with nested replies + "Show X replies" + "Show N more comments" :contentReference[oaicite:18]{index=18}
+- Moderation mechanism:
+  - propose deletion expands voting panel
+  - yes/no vote expands to show stats + threshold + representative bypass requirement :contentReference[oaicite:19]{index=19}
+
 ## Key static pages (no context depictions)
 - Feed (logged-in home): `feed.html`
 - Search results: `search.html`
@@ -76,6 +84,7 @@ Notes:
 
 ## External Integrations (Future)
 - [ ] OAuth-based integrations to import/export content with other platforms (scoped later)
+
 
 
 
