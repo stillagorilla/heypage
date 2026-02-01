@@ -1594,3 +1594,265 @@ Business wrapper:
 - Business kebab menu label "Leave Group" should become "Leave Company" (preferred) or "Leave Business".
 - Any use of `id="liveToastBtn"` should be replaced with a class hook (e.g., `.js-live-toast-btn`) to avoid duplicate IDs.
 - Any upload input `id="file"` inside reusable modals must be parameterized.
+
+## Entity header wrapper pseudocode (constructing the `header` dict)
+
+Purpose:
+- Each wrapper builds a single `header` dict (slot contract) and includes the canonical base partial:
+  `{% include "partials/entity/entity_header.html" with header=header %}`
+
+Notes:
+- This is pseudocode intended to document exactly what each wrapper must construct.
+- Replace hardcoded strings/URLs with real model fields and Django `url`/`static` helpers.
+- Do not use duplicated IDs like `liveToastBtn`; use `js_hook` + `data-*` attributes.
+- Any modal triggers should reference unique `modal_id` values or page-level modal includes.
+
+---
+
+### `templates/partials/entity/user_header_public.html`
+
+Pseudocode:
+
+header = {
+  "entity_type": "user",
+  "viewer_context": "public",
+
+  # identity + media
+  "cover_url": user.cover_url,
+  "avatar_url": user.avatar_url,
+  "title": user.display_name,
+  "subtitle": None,
+
+  # badges (e.g., Representative, Influencer)
+  "badges": [
+    # Example:
+    # {"label": "Representative", "icon_url": None},
+    # {"label": "Influencer", "icon_url": None},
+  ],
+
+  # right-side actions cluster
+  "actions": [
+    # Friendship action button (state-driven)
+    # One of: "Add to Friends" / "Requested" / "Friends"
+    {
+      "label": friendship_button_label,            # e.g., "Add to Friends"
+      "href": None,                                # action is handled via JS/POST
+      "button_class": "btn btn-outline-primary btn-sm",
+      "icon_class": "fa fa-user-plus",
+      "data_toggle": None,
+      "data_target": None,
+      "js_hook": "js-friend-action",               # class hook, not an id
+      "disabled": friendship_button_disabled,      # e.g., true if requested
+      "visible": True,
+      # recommended data attrs for JS:
+      # data-user-id, data-action
+    },
+  ],
+
+  # kebab dropdown (public profile actions)
+  "kebab": {
+    "items": [
+      {"label": "Block User",  "href": block_user_url,  "data_toggle": None, "data_target": None, "icon_class": None, "danger": True,  "visible": True},
+      {"label": "Report User", "href": None,            "data_toggle": "modal", "data_target": "#reportUserModal", "icon_class": None, "danger": False, "visible": True},
+    ]
+  },
+
+  # tabs
+  "tabs": [
+    {"key": "about",      "label": "About",      "href": url("user_about", user.username),      "count": None,          "active": active_tab == "about"},
+    {"key": "photos",     "label": "Photos",     "href": url("user_photos", user.username),     "count": user.photo_count, "active": active_tab == "photos"},
+    {"key": "friends",    "label": "Friends",    "href": url("user_friends", user.username),    "count": user.friend_count, "active": active_tab == "friends"},
+    {"key": "groups",     "label": "Groups",     "href": url("user_groups", user.username),     "count": None,          "active": active_tab == "groups"},
+    {"key": "reviews",    "label": "Reviews",    "href": url("user_reviews", user.username),    "count": None,          "active": active_tab == "reviews"},
+    {"key": "businesses", "label": "Businesses", "href": url("user_businesses", user.username), "count": None,          "active": active_tab == "businesses"},
+  ],
+}
+
+---
+
+### `templates/partials/entity/user_header_owner.html`
+
+Pseudocode:
+
+header = {
+  "entity_type": "user",
+  "viewer_context": "owner",
+
+  "cover_url": request.user.cover_url,
+  "avatar_url": request.user.avatar_url,
+  "title": request.user.display_name,
+  "subtitle": None,
+
+  "badges": [
+    # e.g., {"label": "Influencer", "icon_url": None},
+  ],
+
+  "actions": [
+    {
+      "label": "Change Photo",
+      "href": None,
+      "button_class": "btn btn-primary btn-sm",
+      "icon_class": None,
+      "data_toggle": "modal",
+      "data_target": "#photoModal",      # in production: pass unique modal_id
+      "js_hook": None,
+      "disabled": False,
+      "visible": True,
+    },
+  ],
+
+  "kebab": None,  # owner header does not show kebab in mock
+
+  "tabs": [
+    {"key": "about",      "label": "About",      "href": url("my_profile"),      "count": None,                "active": active_tab == "about"},
+    {"key": "photos",     "label": "Photos",     "href": url("my_photos"),       "count": request.user.photo_count,  "active": active_tab == "photos"},
+    {"key": "friends",    "label": "Friends",    "href": url("my_friends"),      "count": request.user.friend_count, "active": active_tab == "friends"},
+    {"key": "groups",     "label": "Groups",     "href": url("my_groups"),       "count": None,                "active": active_tab == "groups"},
+    {"key": "reviews",    "label": "Reviews",    "href": url("my_reviews"),      "count": None,                "active": active_tab == "reviews"},
+    {"key": "businesses", "label": "Businesses", "href": url("my_businesses"),   "count": None,                "active": active_tab == "businesses"},
+  ],
+}
+
+Owner-only modal note:
+- The photo upload modal should be included once per page via a partial.
+- Parameterize `modal_id`, `form_id`, and `file_input_id` (avoid `id="file"` collisions).
+
+---
+
+### `templates/partials/entity/group_header_public.html`
+
+Pseudocode:
+
+header = {
+  "entity_type": "group",
+  "viewer_context": "public",
+
+  "cover_url": group.cover_url,
+  "avatar_url": group.avatar_url_or_none,  # mock does not show; keep optional
+  "title": group.name,
+  "subtitle": None,                        # optional: group.category_label
+
+  "badges": [],
+
+  "actions": [
+    # Invite (visibility depends on membership/admin policy)
+    {
+      "label": "Invite",
+      "href": None,
+      "button_class": "btn btn-outline-primary btn-sm",
+      "icon_class": "fa fa-user-plus",
+      "data_toggle": "modal",
+      "data_target": "#inviteModal",
+      "js_hook": None,
+      "disabled": False,
+      "visible": can_invite,               # bool
+    },
+
+    # Join/Leave group (state-driven)
+    {
+      "label": group_membership_label,     # "Join Group" / "Requested" / "Leave Group"
+      "href": None,
+      "button_class": group_membership_btn_class,  # primary vs outline
+      "icon_class": None,
+      "data_toggle": None,
+      "data_target": None,
+      "js_hook": "js-group-membership-action",
+      "disabled": group_membership_disabled,       # true if requested/pending
+      "visible": True,
+      # data attrs: data-group-id, data-action
+    },
+  ],
+
+  "kebab": {
+    "items": [
+      {"label": "Report Page", "href": None, "data_toggle": "modal", "data_target": "#reportGroupModal", "icon_class": None, "danger": False, "visible": True},
+      {"label": "Leave Group", "href": None, "data_toggle": None, "data_target": None, "icon_class": None, "danger": True,  "visible": is_member},
+    ]
+  },
+
+  "tabs": [
+    {"key": "about",   "label": "About",   "href": url("group_about", group.slug),   "count": None,              "active": active_tab == "about"},
+    {"key": "photos",  "label": "Photos",  "href": url("group_photos", group.slug),  "count": group.photo_count, "active": active_tab == "photos"},
+    {"key": "members", "label": "Members", "href": url("group_members", group.slug), "count": group.member_count,"active": active_tab == "members"},
+  ],
+}
+
+---
+
+### `templates/partials/entity/business_header_public.html`
+
+Pseudocode:
+
+header = {
+  "entity_type": "business",
+  "viewer_context": "public",
+
+  "cover_url": business.cover_url,
+  "avatar_url": business.logo_url_or_none,     # mock logo is commented; keep optional
+  "title": business.name,
+  "subtitle": business.category_label,         # e.g., "Civil Engineering"
+
+  # awards strip maps cleanly to badges with icon URLs
+  "badges": [
+    # Example:
+    # {"label": "Award 2020", "icon_url": static("img/award-2020.png")},
+    # {"label": "Award 2021", "icon_url": static("img/award-2021.png")},
+  ],
+
+  "actions": [
+    # Invite (visibility depends on membership/admin policy)
+    {
+      "label": "Invite",
+      "href": None,
+      "button_class": "btn btn-outline-primary btn-sm",
+      "icon_class": "fa fa-user-plus",
+      "data_toggle": "modal",
+      "data_target": "#inviteBusinessModal",
+      "js_hook": None,
+      "disabled": False,
+      "visible": can_invite_business,
+    },
+
+    # Join/Leave company (state-driven)
+    {
+      "label": business_membership_label,   # "Join Company" / "Requested" / "Leave Company"
+      "href": None,
+      "button_class": business_membership_btn_class,
+      "icon_class": None,
+      "data_toggle": None,
+      "data_target": None,
+      "js_hook": "js-business-membership-action",
+      "disabled": business_membership_disabled,
+      "visible": True,
+      # data attrs: data-business-id, data-action
+    },
+  ],
+
+  "kebab": {
+    "items": [
+      {"label": "Report Profile", "href": None, "data_toggle": "modal", "data_target": "#reportBusinessModal", "icon_class": None, "danger": False, "visible": True},
+
+      # Label normalization: mock says "Leave Group" (artifact). Use Leave Company.
+      {"label": "Leave Company", "href": None, "data_toggle": None, "data_target": None, "icon_class": None, "danger": True,  "visible": is_business_member},
+
+      # Admin/owner only actions:
+      {"label": "Post a Job", "href": url("business_job_create", business.slug), "data_toggle": None, "data_target": None, "icon_class": None, "danger": False, "visible": is_business_admin},
+      {"label": "Edit",       "href": None, "data_toggle": "modal", "data_target": "#editBusinessModal", "icon_class": None, "danger": False, "visible": is_business_admin},
+    ]
+  },
+
+  # business header also has a website link in the header meta row.
+  # Implement in base header as an optional "meta_links" slot if desired.
+  # Minimal approach: treat as a badge-like link or render under subtitle via wrapper.
+  "tabs": [
+    {"key": "about",   "label": "About",   "href": url("business_about", business.slug),   "count": None,               "active": active_tab == "about"},
+    {"key": "team",    "label": "Team",    "href": url("business_team", business.slug),    "count": None,               "active": active_tab == "team"},
+    {"key": "jobs",    "label": "Jobs",    "href": url("business_jobs", business.slug),    "count": business.job_count, "active": active_tab == "jobs"},
+    {"key": "reviews", "label": "Reviews", "href": url("business_reviews", business.slug), "count": None,               "active": active_tab == "reviews"},
+  ],
+}
+
+Optional base-slot extension:
+- If we want the business website link to be standardized in the base header, add:
+  - `header.meta_links = [ {"label": "aliquot.com", "href": business.website_url} ]`
+and render `meta_links` under subtitle in the base template.
