@@ -2156,3 +2156,47 @@ Recommended partial:
   - `modal_id`, `form_id`, `file_input_id`
 - Standardize primary modal button labels:
   - “Save” for edits, “Create” only for create flows
+
+## Businesses listing pages (My Businesses) reuse + owner page_actions pattern
+
+Sources:
+- Create Business page: `create-business.html`
+- Owner context Businesses tab: `my-business.html`
+
+### Owner-context page_actions row above tabs (Businesses)
+`my-business.html` follows the same owner pattern as `my-groups.html`:
+- A right-aligned owner action button exists ABOVE the tab panes and alongside the tab pills:
+  - "Create Business" links to `create-business.html`
+- Tab nav has two tabs:
+  - "Businesses" (active)
+  - "My Businesses"
+
+Normalization decision:
+- Treat this as the canonical owner-context pattern for entity listings:
+  - entity header (owner)
+  - card body:
+    - page_actions row (Create button on the right + tabs on the left)
+    - tab panes
+- Reuse the same `page_actions_tabs_row.html` include used for My Groups.
+
+### Business tile/list pattern (grid)
+Both tabs display a grid of business tiles:
+- square image thumbnail
+- business name
+- category hierarchy line using caret icon (e.g., "Tech > IT", "Civil Engineering > Architecture")
+- each tile links to `business-page.html` (or `business-page-closed.html` for closed businesses)
+
+Reusable includes:
+- `templates/partials/business/business_tile.html`
+  Inputs:
+  - `business` (name, image_url, category_label, subcategory_label optional, href)
+- `templates/partials/business/business_tile_grid.html`
+  Inputs:
+  - `businesses` list
+
+### Tab meaning (semantic)
+- Tab "Businesses": directory/search-like listing (general businesses user sees/joins)
+- Tab "My Businesses": businesses where the viewer is an owner/admin (managed businesses)
+Implementation:
+- Filter lists using BusinessMembership role:
+  - "My Businesses" includes businesses where role in {owner, admin}.
