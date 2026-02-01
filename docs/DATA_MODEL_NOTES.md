@@ -71,6 +71,19 @@ Pros: guarantees uniqueness across all entity types and makes routing predictabl
   - applied_at
   - action_taken (remove/hide/label/etc.)
 
+Additional confirmed behavior (feed.html):
+
+- Proposer auto-vote:
+  - When a ModerationProposal is created, also create an immediate ModerationVote for the proposer with vote=YES.
+  - This is required to render the proposer-facing state as “Deletion Proposed Voted.”.
+
+- Outcome rendering:
+  - A “passed” removal does not hard-delete the target record.
+  - The target becomes suppressed and renders as a tombstone card: “Content removed by vote.”
+  - Model support options:
+    - store suppression on the target (e.g., moderation_status="removed_by_vote"), OR
+    - store action_taken="remove_by_vote" in ModerationOutcome and derive suppression from latest outcome.
+
 Representative vote concept:
 - Needs explicit rules. If it persists, model as a special permission/capacity assigned per proposal or per user tier.
 
@@ -1008,3 +1021,4 @@ This keeps 1 unified pipeline for comments/reactions/moderation.
 - FK to `ContentItem`
 - FK to `parent_comment` (nullable; enables replies)
 - `author`, `body_text`, timestamps
+
