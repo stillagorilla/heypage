@@ -1378,3 +1378,78 @@ Do not hardcode `id="file"` or fixed modal IDs in reusable partials.
 
 Each wrapper constructs `header` and calls:
 - `{% include "partials/entity/entity_header_base.html" with header=header %}`
+
+## Entity header slot mapping: User (public vs owner)
+
+Sources:
+- Public user header include: `includes_profile-head.html`
+- Owner user header include: `includes_my-profile-head.html`
+
+This section maps the current mockup HTML fields into the `header` slot contract for `entity_header_base.html`.
+
+### Public user header → `header` mapping
+
+Identity + media:
+- `header.entity_type = "user"`
+- `header.viewer_context = "public"`
+- `header.cover_url` ← `img.card-img-top` inside `.bg-wrap` (profile-bg-test1.jpg)
+- `header.avatar_url` ← `.user-img.user-xl` (profile-pic-test1.jpg)
+- `header.title` ← `<h2>Patrick Ford</h2>`
+- `header.subtitle = None` (not shown)
+
+Badges:
+- `header.badges` ← badge pills ("Representative", "Influencer")
+
+Actions cluster:
+- Primary action button: "Add to Friends"
+  - IMPORTANT: mock uses `id="liveToastBtn"` which must become `js_hook="js-live-toast-btn"` in production.
+
+Kebab menu:
+- Items: Block User, Report User
+
+Tabs:
+- About → user-profile.html (active)
+- Photos (count=234) → user-profile-photos.html
+- Friends (count=328) → user-profile-friends.html
+- Groups → user-profile-groups.html
+- Reviews → user-profile-reviews.html
+- Businesses → user-profile-business.html
+
+Toast component:
+- Toast markup exists inline after the header in the include.
+Rule:
+- Centralize the toast HTML in a shared partial and trigger via class hooks + event delegation (no repeated IDs).
+
+### Owner user header → `header` mapping
+
+Identity + media:
+- `header.entity_type = "user"`
+- `header.viewer_context = "owner"`
+- `header.cover_url` ← profile-bg-test2.jpg
+- `header.avatar_url` ← profile-pic-test2.jpg
+- `header.title` ← `<h2>James Atkinson</h2>`
+- `header.subtitle = None`
+
+Badges:
+- `header.badges` ← badge pill ("Influencer")
+
+Actions cluster:
+- Owner action: "Change Photo" (opens `#photoModal`)
+- Avatar pen overlay action also opens `#photoModal`
+
+Tabs:
+- About → my-profile.html (active)
+- Photos (count=234) → my-photos.html
+- Friends (count=328) → my-friends.html
+- Groups → my-groups.html
+- Reviews → my-reviews.html
+- Businesses → my-business.html
+
+Owner photo modal:
+- Modal id: `#photoModal`
+- File input id: `id="file"` with `<label for="file">`
+
+Critical implementation rule:
+- When componentizing, `photoModal` and the file input must be parameterized:
+  - `modal_id`, `file_input_id`, `form_id`
+so we can safely reuse photo upload UI across multiple entity types without ID collisions.
