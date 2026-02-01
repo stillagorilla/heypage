@@ -43,6 +43,16 @@ Profile pages:
 - Groups list
 - Reviews list
 
+## Public URL scheme (locked)
+
+- User: `/<username>/`
+- Group: `/g/<slug>/`
+- Business: `/b/<slug>/`
+
+Implementation notes:
+- `/<username>/` is a catch-all route and must be registered last in Django URLs.
+- Maintain a reserved words list so usernames cannot collide with system routes.
+
 ## Feed + posts (confirmed from feed + profile mockups)
 
 Sources:
@@ -347,6 +357,33 @@ Contains:
 - kebab menu actions (Report Page, Leave Group)
 - tab pills: About / Photos / Members
 - action buttons: Invite / Join Group
+
+### Business edit entry points: two distinct "Edit Business" modals
+
+The Business page includes TWO different edit actions that are both titled "Edit Business" in the UI but serve different purposes.
+
+1) Header kebab menu: "Edit"
+- Purpose: identity/admin edit
+- Fields: Business Name, Logo/Image, Category
+- Modal and partial:
+  - Modal id: `#editBusinessIdentityModal`
+  - Partial: `templates/partials/modals/business_edit_identity_modal.html`
+
+2) About card pencil (next to About section)
+- Purpose: details/profile edit
+- Fields: About/Description, Website, Phone, Locations/Address fields
+- Modal and partial:
+  - Modal id: `#editBusinessDetailsModal`
+  - Partial: `templates/partials/modals/business_edit_details_modal.html`
+
+Rules:
+- Do not reuse the same modal id for both actions.
+- Keep permissions separate:
+  - identity edit typically owner/admin only
+  - details edit owner/admin only (unless later delegated)
+- The "Other Social Profiles" pencil remains separate and opens the shared Social Profiles modal:
+  - Modal id: `#socialModal`
+  - Partial: `templates/partials/modals/social_profiles_modal.html`
 
 ### Business header kebab menu labeling artifact
 
