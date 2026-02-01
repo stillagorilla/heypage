@@ -49,6 +49,7 @@ These appear across feed + profile contexts and will be implemented as Django in
 Record decisions with date, decision, and rationale.
 
 - [2026-01-31] Start-over confirmed; prior chats used only for requirements capture, not as authoritative implementation history.
+- Friends tab is accepted-only. Any "Add to Friends" rows shown inside Friends lists are treated as mock artifacts and will not be implemented.
 
 ## Milestones
 ### M0 — Mockup ingestion complete
@@ -85,6 +86,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
