@@ -762,3 +762,36 @@ Implementation implication:
   - create the Business record
   - create a BusinessMembership for the creator with role=owner
 
+## Business creation: required create-time fields (from create-business.html)
+
+Source: `create-business.html`
+
+Create-time fields required by UI:
+- Business.name
+- Business.website_url (optional)
+- Business.category (and optional subcategory)
+- Business.image/logo (upload)
+- Locations: repeatable set; minimum 1 location implied by form
+  - address (string)
+  - zip (string)
+  - country (select)
+
+Model implications:
+- BusinessLocation as related model (supports "Add another location"):
+  - business (FK)
+  - address
+  - zip
+  - country (and later: city/state if added)
+- On creation:
+  - create Business
+  - create BusinessLocation (1..N)
+  - create BusinessMembership for creator with role=owner
+
+## Business directory vs managed businesses (owner tab semantics)
+
+Source: `my-business.html`
+
+Owner context includes two lists:
+- "Businesses" tab: general directory list (not necessarily owned/managed)
+- "My Businesses" tab: businesses managed by the user
+Implementation should filter "My Businesses" using BusinessMembership roles {owner, admin}.
