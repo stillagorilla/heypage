@@ -86,6 +86,48 @@ Review must render in two places:
 - User profile → Reviews tab
 - Business page → Reviews tab
 
+### Review model details (recommended)
+
+Minimum fields:
+- Review
+  - id
+  - author (FK -> User)
+  - business (FK -> Business)
+  - rating (int 1..5) [recommend required, not optional]
+  - body (text)
+  - created_at
+  - updated_at
+
+Media:
+- ReviewMediaAsset
+  - review (FK -> Review)
+  - file
+  - metadata (width/height/type)
+  - created_at
+
+Aggregation (computed, not stored unless performance demands it):
+- average_rating
+- review_count
+- rating_counts (1..5)
+
+Optional denormalization for performance:
+- BusinessReviewAggregate (1:1 with Business)
+  - average_rating_cached
+  - review_count_cached
+  - star_1_count ... star_5_count
+  - updated_at
+
+Cross-posting rules:
+- Reviews appear in two places:
+  - Business → Reviews tab
+  - User profile → Reviews tab
+This suggests the canonical object is Review (not "BusinessReview" and "UserReview" separately).
+
+Moderation targeting:
+- If reviews are eligible for the deletion voting workflow, they should be valid ModerationProposal targets.
+  - target_type: "review"
+  - target_id: Review.id
+
 ## Business (Entity)
 
 Core fields (inferred from mocks):
@@ -111,7 +153,7 @@ Moderation:
 
 ## User attributes / roles
 
-Users can have multiple attributes that control permissions and UI differences (e.g., owner vs public profile pages). :contentReference[oaicite:4]{index=4}
+Users can have multiple attributes that control permissions and UI differences (e.g., owner vs public profile pages).
 
 Initial attributes:
 - user (default for registered users)
@@ -128,18 +170,18 @@ User profile: /<username>
 Business profile: /<business-slug> (spaces → hyphens; duplicates get numeric suffix)
 Group profile: /<group-slug> (spaces → hyphens; duplicates get numeric suffix)
 
-This implies we must decide how to avoid collisions between user/business/group slugs (see OPEN_QUESTIONS). :contentReference[oaicite:5]{index=5}
+This implies we must decide how to avoid collisions between user/business/group slugs (see OPEN_QUESTIONS).
 
 ## Reviews cross-posting
 
 Users can post business reviews that appear on:
 - the author’s user profile
-- the business profile’s “Reviews” section :contentReference[oaicite:6]{index=6}
+- the business profile’s “Reviews” section
 
 ## Moderation model: deletion proposals and votes (UI-driven notes)
 
 The moderation panel is stateful and expands through a sequence:
-- no proposal → proposal open + yes/no buttons → voted + stats + rep bypass requirement. :contentReference[oaicite:20]{index=20}
+- no proposal → proposal open + yes/no buttons → voted + stats + rep bypass requirement.
 
 Recommended entities:
 - ModerationProposal
@@ -164,4 +206,5 @@ Computed fields used by UI:
 - yes_percent
 - time_remaining
 - rep_votes_remaining (rule-driven)
+
 
