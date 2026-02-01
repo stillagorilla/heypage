@@ -43,6 +43,76 @@ Profile pages:
 - Groups list
 - Reviews list
 
+## Feed + posts (confirmed from feed + profile mockups)
+
+Sources:
+- feed: `mockups-original/feed.html` :contentReference[oaicite:11]{index=11}
+- owner profile: `mockups-original/my-profile.html` :contentReference[oaicite:12]{index=12}
+- public profile: `mockups-original/user-profile.html` :contentReference[oaicite:13]{index=13}
+
+### Post composer ("make post" card)
+Django include:
+- `templates/partials/post/post_composer.html`
+
+Contains:
+- textarea
+- attach image button (modal on feed)
+- emoji button
+- visibility selector (Everyone/Friends/Private)
+- Post submit button
+
+Context:
+- `placeholder_text` (varies by page/context)
+- `visibility_default`
+- `allow_media` (bool)
+
+### Post card
+Django include:
+- `templates/partials/post/post_card.html`
+
+Contains:
+- author avatar/name + timestamp
+- kebab menu: Edit / Delete / Propose Deletion
+- body text and/or media grid
+- reaction controls + counts
+- share button
+- comment thread (see below)
+- moderation panel (conditional)
+
+Context:
+- `post`
+- `viewer` / `request.user`
+- `can_edit`, `can_delete`
+- `show_moderation_panel` (bool)
+
+### Comment thread (variants)
+Django includes:
+- `templates/partials/post/comment_thread.html`
+- `templates/partials/post/comment.html` (recursive for replies)
+- `templates/partials/post/comment_form.html`
+
+Depicts:
+- nested replies + "Show X replies"
+- "Show N more comments" paging
+- comment-level reactions in some variations
+
+### Moderation: deletion voting panel ("voting stuff")
+Django include:
+- `templates/partials/moderation/deletion_vote_panel.html`
+
+State sequence:
+1) User selects "Propose Deletion" from kebab menu.
+2) Panel expands to show proposal details + Yes/No voting controls.
+3) After a vote, panel expands to show vote totals + threshold + representative bypass requirement.
+
+Context:
+- `proposal` (nullable)
+- `user_vote` (nullable)
+- `proposal_status` (open/closed/passed/failed)
+- `time_remaining`
+- `threshold_rule` (e.g., 2/3 supermajority)
+- `rep_votes_remaining` + rep-bypass UI state (if applicable)
+
 ## Global layout includes (confirmed from mockups)
 
 ### Top navigation
