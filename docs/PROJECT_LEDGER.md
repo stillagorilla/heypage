@@ -91,6 +91,16 @@ Record decisions with date, decision, and rationale.
   - comment notifications.
 - Security settings include Reset Password link and an MFA setup placeholder.
 
+### Messaging (chat) page scope confirmed
+
+- Chat is a DM-style interface with:
+  - conversation sidebar (search + unread badges)
+  - active conversation header (mute + block actions)
+  - message thread with date separators
+  - composer with image + emoji buttons and send action.
+- MVP can be implemented with standard HTTP + polling; WebSockets (Channels) can be a later upgrade.
+- Block action in chat should reuse global BlockedContact behavior for consistency across the platform.
+
 ## Milestones
 ### M0 — Mockup ingestion complete
 - [ ] All HTML mockups committed under /mockups-original (or similar)
@@ -152,6 +162,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
