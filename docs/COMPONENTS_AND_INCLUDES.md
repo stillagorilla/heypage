@@ -860,3 +860,44 @@ Sections:
 
 Blocked contacts modal:
 - `templates/partials/modals/blocked_contacts_modal.html`
+
+## Auth pages (Login, Register, Reset Password)
+
+Sources:
+- `mockups-original/login-register.html`
+- `mockups-original/reset-password.html`
+
+### Login and Register combined page
+Template:
+- `templates/auth/login_register.html`
+
+UI layout:
+- Two-column layout:
+  - Left: Register form with branding and optional mobile Login button anchor
+  - Right: Login form
+
+Register form elements:
+- Social sign-up buttons: Google, Facebook
+- Fields: Name, Username, Email, Password
+- Terms checkbox (Terms & Privacy link)
+- Submit: "Create an Account"
+
+Login form elements:
+- Fields: Email, Password
+- Link: "Forgot Password?" -> reset password page
+- Submit: "Login"
+- Social login buttons: Google, Facebook
+
+Implementation recommendation:
+- Use Django auth (custom User model recommended because Username is required).
+- Social buttons are placeholders in mockups. Wire later via django-allauth if desired.
+
+### Reset Password page
+Template:
+- `templates/auth/reset_password.html`
+
+UI:
+- Single form with Email field and "Send Reset Link" button
+
+Notes:
+- Mock includes topnav for dev purposes. In production, consider whether reset pages should use a minimal auth layout rather than full site chrome.
