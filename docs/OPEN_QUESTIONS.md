@@ -383,3 +383,24 @@ Questions:
 4) Password policy: minimum length, complexity rules?
 5) Reset password: do we use Django's built-in reset flow with emailed token links (recommended)?
 6) Social login: are Google/Facebook required for MVP or placeholders for later?
+
+## Email notifications (template-driven)
+
+Source:
+- `emails/index.html`
+
+Questions:
+1) Are emails sent per-event (transactional) or as a periodic digest?
+2) Which events are email-worthy in MVP?
+   - unread messages
+   - friend requests
+   - comment on post
+   - deletion proposed
+   - group approvals needed
+   - business new review
+3) CTA behavior: does each email type have a specific CTA destination (e.g., open chat, view requests, review post)?
+4) Unsubscribe scope:
+   - global unsubscribe from all non-critical emails, or per-category unsubscribe?
+5) Email branding assets:
+   - Should the logo be an absolute URL hosted on the site, or CID-embedded in outbound emails?
+6) Should emails also have a plain-text alternative (recommended)?
