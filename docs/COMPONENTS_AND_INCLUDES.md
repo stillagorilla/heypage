@@ -229,3 +229,62 @@ Every time we find a repeated block in mockups:
 1) Extract into `templates/partials/...`
 2) Replace on templates via `{% include %}`
 3) Record the include in this doc (so future refactors don’t re-split components).
+
+## Reviews (Business + User profile)
+
+Goal: determine whether the Business Reviews composer and review cards are close enough to Posts to share components.
+Recommendation: share a small "base shell", then keep post vs review as thin specializations.
+
+### Composer base + specializations
+
+Base include (shared chrome):
+- `templates/partials/composer/composer_base.html`
+
+Responsibilities:
+- avatar block
+- container layout + spacing
+- textarea slot
+- attachments slot
+- submit button slot
+
+Post composer (specialization):
+- `templates/partials/post/post_composer.html`
+- adds: visibility selector (Everyone/Friends/Private) and any post-only controls
+
+Review composer (specialization):
+- `templates/partials/reviews/review_composer.html`
+- adds: star rating widget (1–5) + any review-only labels (e.g., "Rate this business")
+
+### Content card base + specializations
+
+Base include (shared card structure):
+- `templates/partials/cards/content_card_base.html`
+
+Responsibilities:
+- header: author, timestamp
+- kebab slot (actions)
+- body slot (text/media)
+- optional footer slot
+
+Post card (specialization):
+- `templates/partials/post/post_card.html`
+- adds: reactions, comments, share, moderation panel region
+
+Review card (specialization):
+- `templates/partials/reviews/review_card.html`
+- adds: star rating display (and optionally business link if shown on user profile)
+
+### Reviews summary / distribution
+
+Business reviews page includes a rating summary + distribution visualization.
+Include:
+- `templates/partials/reviews/review_summary_card.html`
+
+### Moderation reuse on reviews (pending decision)
+
+If reviews can be proposed for deletion (recommended for consistency), reuse:
+- `templates/partials/moderation/deletion_vote_panel.html`
+
+Decision needed:
+- Are reviews moderation targets with the same "Propose Deletion" → Yes/No → stats/bypass panel flow?
+(See OPEN_QUESTIONS.md.)
