@@ -498,3 +498,22 @@ Blocked contacts:
   - user (FK -> User)
   - blocked_user (FK -> User)
   - created_at
+
+## User model requirements (from Login/Register)
+
+Source: `login-register.html`
+
+Registration requires:
+- name (display name)
+- username
+- email
+- password
+
+Recommendation:
+- Implement a custom Django user model from the start:
+  - unique email
+  - unique username
+  - display_name (or first_name/last_name, depending on preference)
+
+Optional future:
+- Social auth identities (Google/Facebook) if social login is implemented later.
