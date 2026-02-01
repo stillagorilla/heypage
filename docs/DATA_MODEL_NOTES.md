@@ -225,3 +225,23 @@ Implementation approach:
 Required API contracts:
 - Live results endpoint returns top N of each entity type for the dropdown.
 - Hard results endpoint returns paginated lists per tab.
+
+## Media: Photos and Albums (groups)
+
+Suggested entities:
+- MediaAsset
+  - uploaded_by (User)
+  - file
+  - created_at
+  - metadata (width/height/type)
+- Album
+  - owner_type (group/user/business)
+  - owner_id
+  - title
+  - created_by (User)
+  - created_at
+- AlbumItem
+  - album
+  - media_asset
+  - added_by (User)
+  - added_at
