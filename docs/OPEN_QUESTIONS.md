@@ -500,3 +500,19 @@ Open questions:
 2) Do we include a "View older" link that opens a modal, or is the dropdown limited only?
 3) Do notifications auto-mark as read when clicked, or only when explicitly marked?
 4) Do we group duplicates (e.g., "3 new friend requests") or show individual lines?
+
+## Entity header standardization (user/group/business)
+
+Sources:
+- Owner user header include
+- Public user header include
+
+Questions:
+1) Should avatar edit be available only to owner, or also admins/representatives for certain entity types (business/group)?
+2) Should cover photo be editable too (not shown as an edit control in the header yet)?
+3) Relationship button states for public user header:
+   - Add Friend / Requested / Friends / Blocked (confirm full state list)
+4) Kebab actions for public user header:
+   - Block User, Report User (confirm whether "Mute" belongs here too)
+5) Toast behavior:
+   - Replace `id="liveToastBtn"` with `.js-live-toast-btn` + data attributes everywhere.
