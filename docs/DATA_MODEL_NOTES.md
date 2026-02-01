@@ -174,6 +174,47 @@ Related models:
 Moderation:
 - Business content supports "Propose Deletion" modal and voting/approval workflow (shared mechanism across entity types).
 
+## Business Team and Jobs (tab content types)
+
+Sources:
+- `business-team.html`
+- `business-jobs.html`
+
+### Team
+Business Team tab displays users who are associated with the business.
+
+Recommended modeling:
+- BusinessMembership (or BusinessTeamMember)
+  - business (FK -> Business)
+  - user (FK -> User)
+  - role in {owner, admin, member}
+  - status in {active, pending} (optional)
+  - created_at
+
+### Jobs
+Business Jobs tab displays job postings as post-like cards with comments, reactions, and moderation actions.
+
+Recommended modeling:
+- JobPosting
+  - business (FK -> Business)
+  - title (string)
+  - location_label (string)
+  - description (text)
+  - responsibilities (text or structured list)
+  - qualifications (text or structured list)
+  - apply_url (url)
+  - created_at
+  - updated_at
+  - status in {active, closed, deleted}
+
+Cross-cutting behaviors (post-like):
+- If jobs allow reactions/comments, model them via the same polymorphic targets used for posts/reviews:
+  - Reaction(target_type="job_posting", target_id=JobPosting.id)
+  - Comment(target_type="job_posting", target_id=JobPosting.id)
+- Jobs also expose "Propose Deletion" from kebab menu, so they should be valid ModerationProposal targets:
+  - target_type="job_posting"
+  - target_id=JobPosting.id
+
 ## User attributes / roles
 
 Users can have multiple attributes that control permissions and UI differences (e.g., owner vs public profile pages).
@@ -391,3 +432,4 @@ Directory queries:
 
 Business closed state:
 - Business.status includes CLOSED (used to show "This business has closed" banner and potentially alter behavior).
+
