@@ -23,6 +23,15 @@ This is the evolving feature inventory. It’s OK for this list to be broader th
 - [ ] Comments + replies
 - [ ] Reactions (like + counts)
 
+## Key static pages (no context depictions)
+- Feed (logged-in home): `feed.html`
+- Search results: `search.html`
+- Authentication: `login-register.html`, `reset-password.html`
+- Settings: `settings.html`
+- Chat: `chat.html`
+- System email template: `emails/index.html`
+- Temporary “prod placeholder”: `coming-soon.html`
+
 ## Differentiator: democratic content moderation
 Heypage is Facebook-like, but is primarily distinguished by user-driven content moderation mechanics that decentralize moderation decisions. This feature is a primary purpose of the site. :contentReference[oaicite:3]{index=3}
 
@@ -62,4 +71,5 @@ Notes:
 
 ## External Integrations (Future)
 - [ ] OAuth-based integrations to import/export content with other platforms (scoped later)
+
 
