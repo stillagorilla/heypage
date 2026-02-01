@@ -202,6 +202,12 @@ Contains:
 - tab pills: About / Photos / Members
 - action buttons: Invite / Join Group
 
+### Business header kebab menu labeling artifact
+
+In `business-reviews.html`, the business entity header dropdown contains "Leave Group". This is a mock labeling artifact.
+Implementation:
+- Replace with "Leave Business" (or "Leave Company" for consistency with "Join Company"), or remove entirely if leaving is not supported.
+
 ### Django include
 - `templates/partials/entity/entity_header.html`
 
