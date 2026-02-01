@@ -320,3 +320,17 @@ Questions:
 4) Should CLOSED businesses appear in the directory by default?
 5) If a business is CLOSED, can it still be reviewed and can new posts be made on its page?
 
+## Reviews: moderation and interaction scope (confirmed + remaining details)
+
+Source:
+- `business-reviews.html`
+
+Confirmed:
+- Reviews support Propose Deletion (modal entry point exists).
+- Reviews have reaction/share actions and a comment composer.
+
+Remaining questions:
+1) Do comments on reviews support the same nested reply UI as post comments?
+2) Are review reactions the same reaction set as posts?
+3) Can business owners/admins delete reviews directly, or only via moderation proposal?
+4) Are reviews visible in main feed, or only on Business Reviews tab and User Reviews tab?
