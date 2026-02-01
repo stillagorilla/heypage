@@ -53,6 +53,8 @@ Record decisions with date, decision, and rationale.
 - Decision: Reviews reuse post card pattern with review-specific inserts (stars + business preview).
 - Email mock duplicate line ("You have new friend requests.") is a mock artifact. Implement deduped/grouped notification lines in production emails.
 - Email logo asset `mockups-original/emails/images/image-1.png` should be served via absolute URL or embedded via CID for email client compatibility.
+- Group membership requests/approvals will mirror Friend Requests UX and backend flow.
+- Group Members page will follow the same context rules as Friends pages: admin context may include per-row kebabs; public/non-admin does not.
 
 ## Milestones
 ### M0 — Mockup ingestion complete
@@ -96,6 +98,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
