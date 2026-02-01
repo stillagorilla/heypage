@@ -685,3 +685,27 @@ Header-driven fields:
 - counts displayed in header tabs:
   - Group: photo_count, member_count
   - Business: job_count badge (and optional counts later)
+
+## Group membership requests modeled like friend requests
+
+Sources:
+- Friend Requests UI exists in `my-friends.html` with accept/decline controls.
+- Group Members UI mirrors friends-list layout in `group-members.html`.
+
+Decision:
+- Group membership approvals / pending requests behave the same way as friend requests,
+  but scoped to a Group and visible only to group admins.
+
+Recommended model alignment:
+- FriendRequest:
+  - from_user, to_user
+  - status in {pending, accepted, declined, canceled}
+  - created_at, responded_at
+- GroupMembershipRequest (or GroupMembership with pending status):
+  - user, group
+  - status in {pending, active, declined, canceled}
+  - requested_at, responded_at
+  - reviewed_by (admin user, nullable)
+
+Admin-only visibility:
+- Membership Requests tab is only rendered if viewer has group admin privileges.
