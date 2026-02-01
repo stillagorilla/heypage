@@ -107,6 +107,17 @@ assets/js/app.js is primarily interaction demo code; production behavior will be
 
 ---
 
+## Reviews implementation note
+
+Reviews are implemented as a specialized post-like content type.
+In the mockups, review cards include the same structure and interactions as post cards (reactions, share, comments, and moderation actions), plus:
+- a star rating display
+- an embedded business preview block
+
+Implementation will reuse the post card partial and inject review-specific subcomponents.
+
+---
+
 ## Interaction demos
 
 The mockups include an interaction demo script at `mockups-original/assets/js/app.js`. It demonstrates intended UI behaviors for early implementation, including:
