@@ -70,6 +70,28 @@ Notes:
   - [ ] Team
   - [ ] Closed business state
 
+### Business status: CLOSED (permanently closed)
+- Business pages support a "permanently closed" state that displays a prominent banner: "This business has closed."
+- Source mock: business-page-closed.html.
+
+### Create business
+- Create Business form includes:
+  - Business name
+  - One-or-more locations (Address + ZIP + Country/Region select), with "Add another location"
+  - Website
+  - Category (select2 with optgroups)
+  - Image/logo upload (drag/drop UI)
+
+### Edit business (modal)
+- Business pages include an "Edit Business" modal (triggered from entity header / kebab area).
+- Includes logo upload + category selection, and should be permission-gated (owner/admin).
+
+### Reviews
+- Businesses have a Reviews tab with:
+  - Ratings summary card (avg rating, star visualization, review count, rating distribution progress bars, awards list)
+  - Review composer with star rating buttons (5..1) + textarea + attachments UI
+  - Review cards that display star ratings per review
+
 ## Differentiator: Democratic Moderation MVP
 - [ ] Propose deletion (select reason + optional clarification)
 - [ ] Voting UI:
@@ -89,3 +111,4 @@ Notes:
 
 ## External Integrations (Future)
 - [ ] OAuth-based integrations to import/export content with other platforms (scoped later)
+
