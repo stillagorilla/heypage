@@ -57,15 +57,17 @@ Rule of thumb:
 
 ## Naming cleanup for reusable blocks
 
-Mockups may refer to reusable blocks inconsistently (e.g., “tile”, “card”, or unnamed blocks like “voting stuff”).
-Implementation will normalize these into a consistent component taxonomy such as:
+Mockups may refer to reusable blocks inconsistently (e.g., "tile", "card", or unnamed blocks like "voting stuff").
+Implementation will normalize these into a consistent Django partial taxonomy under `templates/partials/`, for example:
 
-- `components/post_card.html`
-- `components/comment_thread.html`
-- `components/moderation_panel.html`
-- `components/entity_header.html` (user/group/business)
-- `components/media_grid.html`
-- `components/modals/*.html`
+- `templates/partials/post/post_card.html`
+- `templates/partials/post/post_composer.html`
+- `templates/partials/post/comment_thread.html`
+- `templates/partials/moderation/deletion_vote_panel.html`
+- `templates/partials/entity/entity_header.html` (user/group/business)
+- `templates/partials/reviews/review_card.html`
+- `templates/partials/reviews/review_composer.html`
+- `templates/partials/modals/*.html`
 
 ---
 
