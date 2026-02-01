@@ -279,3 +279,58 @@ Owner actions implied by UI:
 - rename album (Rename Album modal)
 - upload/add photos (Add Photos / Add To Album modal)
 - move photos to album (Move to Album modal from Edit Photos)
+
+## Friendship model (from My Friends UI)
+
+Source: `my-friends.html`
+
+Observed features:
+- Friends list with a relationship button that varies by state ("Friends" vs "Add to Friends")
+- Friend requests tab with accept/decline for inbound requests
+
+Recommended entities:
+- Friendship
+  - requester (FK -> User)
+  - addressee (FK -> User)
+  - status in {pending, accepted, declined, blocked}
+  - created_at
+  - responded_at
+
+Optional:
+- FriendshipMute
+  - user (FK -> User)
+  - muted_user (FK -> User)
+  - created_at
+
+Notes:
+- UI includes "Mute" and "Block User" actions per friend row.
+- Topnav also includes friend request accept/decline, so the same model must power both.
+
+## Group model (from My Groups + Create Group)
+
+Source: `my-groups.html`
+
+Observed features:
+- My Groups list and Group Administration list (same tile layout)
+- Create Group modal with Category and Group Type
+
+Recommended entities:
+- Group
+  - name
+  - slug
+  - category (FK or controlled list)
+  - visibility_type in {public, semi_public, private}
+  - created_by (FK -> User)
+  - created_at
+  - cover_media_asset (optional)
+  - avatar_media_asset (optional)
+
+- GroupMembership
+  - group (FK -> Group)
+  - user (FK -> User)
+  - role in {member, admin, owner}
+  - status in {active, pending} (if join requests exist)
+  - created_at
+
+Notes:
+- "Group Type" UI implies different rules for viewing content and joining the group.
