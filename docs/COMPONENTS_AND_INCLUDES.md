@@ -799,3 +799,64 @@ Reusable includes:
 
 Interaction demo alignment:
 - "Show more" uses the same class pattern (`.showHidden` toggles `.hidden-content`) used elsewhere in demo interactions.
+
+## Chat (messages + sidebar)
+
+Source:
+- `mockups-original/chat.html`
+
+### Chat layout components
+Chat page is a two-pane layout:
+- Left: chat sidebar list (search chats + list of conversations with unread badge counts)
+- Right: active conversation (header with user + kebab actions + message history + composer)
+
+Recommended partials:
+- `templates/partials/chat/chat_sidebar.html`
+- `templates/partials/chat/chat_thread_header.html`
+- `templates/partials/chat/chat_message_bubble.html`
+- `templates/partials/chat/chat_composer.html`
+
+### Chat message bubble variants
+- incoming message: shows sender avatar + bubble
+- outgoing message: `.me` bubble, no avatar
+
+### Chat thread header actions
+Dropdown includes:
+- Mute Conversation
+- Block
+
+### Chat composer
+Composer includes:
+- image button
+- emoji button
+- textarea
+- send button (paper plane icon)
+
+## Settings & Privacy (privacy + notifications + blocked contacts)
+
+Source:
+- `mockups-original/settings.html`
+
+Recommended template:
+- `templates/settings/settings_privacy.html`
+
+Sections:
+1) My Account: username, name, email
+2) Privacy Settings:
+   - who can see your posts?
+   - who can send you a friend request?
+   - who can post to your timeline?
+   - who can see your friends?
+   - change who can see all existing posts (bulk change)
+   - blocked contacts modal (count badge)
+3) Notification Settings:
+   - proposed deletion notifications
+   - new friend requests notifications
+   - comment notifications
+4) Security Settings:
+   - reset password link
+   - enable MFA (setup link)
+5) Cookie notice (sitewide alert)
+
+Blocked contacts modal:
+- `templates/partials/modals/blocked_contacts_modal.html`
