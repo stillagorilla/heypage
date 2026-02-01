@@ -622,3 +622,29 @@ Open questions:
 3) Image upload:
    - Is this the business logo, cover image, or both?
    - Do we need image cropping/resizing?
+
+## Business Team + Jobs: permissions and flows
+
+Sources:
+- `business-team.html`
+- `business-jobs.html`
+
+Open questions:
+1) Team listing semantics:
+   - Is Business Team "members of the business" (BusinessMembership), or simply a curated public list?
+   - If it is membership-backed, should non-members see the full team list?
+
+2) Friend actions in Team list:
+   - Team list contains "Add to Friends" actions. Should that always be present, or only for logged-in viewers?
+
+3) Job posting permissions:
+   - Who can create/edit/delete jobs? (owner/admin only seems intended)
+   - Is "Delete" immediate or does it always go through propose-deletion moderation?
+
+4) Apply button:
+   - Is apply_url always external?
+   - Do we track click-through analytics?
+
+5) Propose Deletion modal reuse:
+   - Should we standardize one propose-deletion modal component across ALL content types (posts, comments, jobs, photos, reviews)?
+   - If so, finalize the canonical reason taxonomy and whether reasons are multi-select (checkboxes) vs single select.
