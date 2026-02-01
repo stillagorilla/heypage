@@ -180,3 +180,21 @@ Questions:
 3) Can non-members view the Members tab, or is it restricted?
 4) Are member search results limited by viewer permissions?
 5) Are "Add to Friends" actions allowed directly from group member list for all members?
+
+## Modals and toast confirmations
+
+1) Invite flows:
+   - What does "Invite" do for groups and businesses?
+   - Invite by username, email, contacts, or share link?
+   - Are invites restricted to admins or any member?
+
+2) Join behavior:
+   - In mocks, "Join Group" is a toast confirmation trigger (`#liveToastBtn`), not a modal.
+   - Should joining ever require approval (pending state) or always immediate?
+
+3) Toast and DOM IDs:
+   - Multiple pages reuse the same `#liveToastBtn` id for different actions (Join Group, Add to Friends).
+   - Implementation should switch to class selectors so multiple buttons can coexist without invalid HTML.
+
+4) Propose Deletion modal:
+   - Confirm whether `#reportModal` is the single modal entry point for starting deletion proposals on any content type.
