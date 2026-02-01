@@ -36,6 +36,9 @@ Build a **fully functional** version of these mockups in **Django**, optimized f
 - Identify and maximize reusable content blocks (cards/tiles/panels/modals/etc.) as Django template includes.
 - Treat header/footer/nav and common layout structures the same way (includes + base templates).
 
+### Reusable search and member list components
+Search results and group member lists will be implemented as reusable partials so the same "result row" patterns can be used across search, invites, and member directories.
+
 ---
 
 ## Context depictions to consolidate
@@ -86,6 +89,9 @@ Implementation will normalize these into a consistent Django partial taxonomy un
    - feed + posts/comments/media
    - moderation/voting MVP
    - chat/notifications (as needed)
+
+### Global search UX
+The top navigation includes a live search dropdown for Users / Groups / Businesses, plus a "View All" path to a hard search results page with the same entity categories.
 
 ---
 
