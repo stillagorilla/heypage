@@ -98,3 +98,11 @@ Edits made in github.dev only appear on GitHub after:
 If you renamed a directory in github.dev but don’t see it on github.com:
 - verify you committed & pushed to `main`
 - verify you’re viewing the correct branch on github.com
+
+## Continuity rule
+
+This repo is designed to support long gaps in activity without losing context.
+
+When a decision is made or progress is completed:
+1) Update the relevant file(s) in `docs/` in the same commit, and
+2) Keep `docs/` consistent with the current repository state.
