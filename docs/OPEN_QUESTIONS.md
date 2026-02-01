@@ -605,3 +605,20 @@ Open questions:
 2) Should the modal for create/edit be included once per page at the bottom of `<main>`,
    even if the trigger appears in page_actions row?
 
+## Create Business: categories + locations details
+
+Source: `create-business.html`
+
+Open questions:
+1) Category model:
+   - Is Category a fixed taxonomy (seeded list) or user-editable?
+   - Do we need both category + subcategory fields (the UI shows optgroups + options)?
+
+2) Location fields:
+   - Mock shows Address + ZIP + Country only. Do we need City/State at MVP?
+   - Is ZIP required for non-US countries?
+   - Should "Add another location" be dynamic JS or server-side add-another pattern?
+
+3) Image upload:
+   - Is this the business logo, cover image, or both?
+   - Do we need image cropping/resizing?
