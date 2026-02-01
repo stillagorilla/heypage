@@ -1217,3 +1217,51 @@ MFA:
   - mfa_enabled (bool)
   - mfa_method (nullable)
   - mfa_enrolled_at (nullable)
+
+## Messaging: direct messages (chat)
+
+Source: `chat.html`
+
+### Core models (recommended)
+
+Conversation (DM):
+- id
+- created_at
+- updated_at (bump on new message)
+- last_message_at (optional; supports ordering)
+
+ConversationParticipant:
+- conversation_id
+- user_id
+- last_read_at (or last_read_message_id)
+- is_muted (bool) (supports "Mute Conversation")
+- muted_until (nullable) (optional)
+- is_blocked (bool) (if modeled per-conversation; otherwise use global BlockedContact)
+
+Message:
+- id
+- conversation_id
+- sender_user_id
+- body_text
+- created_at
+- edited_at (nullable)
+- is_deleted (soft delete) (nullable; future)
+
+MessageAttachment (optional in MVP):
+- message_id
+- file/image
+- created_at
+
+### Unread counts
+Sidebar badges imply unread tracking:
+- per participant: unread count derived from last_read_at vs message timestamps
+- surface as a badge next to participant name in the conversation list
+
+### Block behavior
+Chat header contains "Block".
+Recommendation:
+- Use the existing global `BlockedContact` model as the source of truth.
+- Blocking should prevent:
+  - sending messages
+  - receiving messages
+  - optionally hide profile (policy decision)
