@@ -245,3 +245,37 @@ Suggested entities:
   - media_asset
   - added_by (User)
   - added_at
+
+## Media model (Photos + Albums)
+
+UI shows the same photo/album patterns across user and group contexts.
+
+Recommended entities:
+
+- MediaAsset
+  - uploaded_by (FK -> User)
+  - file
+  - created_at
+  - taken_at (optional)
+  - metadata (width/height/mime)
+  - visibility (optional, if user media can be private)
+
+- Album
+  - owner_type in {"user", "group", "business"} (polymorphic)
+  - owner_id
+  - title
+  - created_by (FK -> User)
+  - created_at
+  - cover_media_asset (FK -> MediaAsset, optional)
+
+- AlbumItem
+  - album (FK -> Album)
+  - media_asset (FK -> MediaAsset)
+  - added_by (FK -> User)
+  - added_at
+
+Owner actions implied by UI:
+- create album (New Album modal)
+- rename album (Rename Album modal)
+- upload/add photos (Add Photos / Add To Album modal)
+- move photos to album (Move to Album modal from Edit Photos)
