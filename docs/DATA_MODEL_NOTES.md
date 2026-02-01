@@ -367,3 +367,27 @@ Decision:
 Implementation:
 - Friendship.status = accepted is the only status included in friends lists.
 
+## Business directory vs managed businesses (from My Business UI)
+
+Sources:
+- `my-business.html`
+- `user-profile-business.html`
+
+Observed behavior:
+- There is a global "Businesses" directory and a separate "My Businesses" list for businesses the user manages.
+- Owner context includes a Create Business action.
+
+Recommended modeling:
+- BusinessMembership (or BusinessTeamMember)
+  - business (FK -> Business)
+  - user (FK -> User)
+  - role in {owner, admin, member}
+  - status in {active, pending} (optional if invites/requests exist)
+  - created_at
+
+Directory queries:
+- "Businesses" tab: Business.objects.filter(status=ACTIVE or include CLOSED with banner)
+- "My Businesses" tab: businesses where request.user has membership role in {owner, admin}
+
+Business closed state:
+- Business.status includes CLOSED (used to show "This business has closed" banner and potentially alter behavior).
