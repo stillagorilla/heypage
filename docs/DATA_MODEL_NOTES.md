@@ -452,4 +452,49 @@ Directory queries:
 Business closed state:
 - Business.status includes CLOSED (used to show "This business has closed" banner and potentially alter behavior).
 
+## Chat model notes
 
+Source: `chat.html`
+
+Recommended entities:
+- Conversation
+  - id
+  - created_at
+- ConversationParticipant
+  - conversation (FK)
+  - user (FK)
+  - last_read_at (optional, for unread badge counts)
+  - muted (bool)
+  - created_at
+- Message
+  - conversation (FK)
+  - sender (FK -> User)
+  - body (text)
+  - media_asset (optional, for image attachment)
+  - created_at
+
+Notes:
+- UI shows unread badge counts on chat list items.
+- UI includes "Mute Conversation" action and "Block" action.
+
+## Settings and privacy model notes
+
+Source: `settings.html`
+
+Privacy fields implied (initial):
+- posts_visibility in {everyone, friends_of_friends, friends, private}
+- friend_request_visibility in {everyone, friends_of_friends, friends, private}
+- timeline_post_visibility in {everyone, friends_of_friends, friends, private}
+- friends_list_visibility in {everyone, friends_of_friends, friends, private}
+- bulk_change_existing_posts_visibility option (applies retroactively)
+
+Notifications:
+- notify_on_deletion_proposed (bool)
+- notify_on_friend_requests (bool)
+- notify_on_post_comments (bool)
+
+Blocked contacts:
+- BlockList
+  - user (FK -> User)
+  - blocked_user (FK -> User)
+  - created_at
