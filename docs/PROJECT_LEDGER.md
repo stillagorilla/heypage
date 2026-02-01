@@ -75,6 +75,22 @@ Record decisions with date, decision, and rationale.
 - Email template supports multi-item notification emails (digest-style) and includes unsubscribe + notification settings links.
 - Social auth buttons (Google/Facebook) are depicted; MVP can ship with buttons disabled/hidden until OAuth is implemented.
 
+### Settings page scope confirmed
+
+- Settings page includes editable account fields: username, name, email.
+- Privacy settings include audience controls for:
+  - who can see posts
+  - who can send friend requests
+  - who can post to timeline
+  - who can see friends
+  - bulk change for existing posts visibility (action).
+- Settings includes a Blocked Contacts modal with unblock actions.
+- Notification settings include toggles for:
+  - deletion proposal notifications
+  - friend request notifications
+  - comment notifications.
+- Security settings include Reset Password link and an MFA setup placeholder.
+
 ## Milestones
 ### M0 — Mockup ingestion complete
 - [ ] All HTML mockups committed under /mockups-original (or similar)
@@ -136,6 +152,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
