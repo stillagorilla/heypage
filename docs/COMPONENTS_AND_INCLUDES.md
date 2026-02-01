@@ -2827,3 +2827,79 @@ Django include:
 
 Confirmed control:
 - checkbox: “Fit image instead of showing a cropped preview” (store as an upload/display preference)
+
+## Auth: Login / Register page
+
+Page: `login-register.html`
+
+Template target:
+- `templates/auth/login_register.html`
+
+Summary:
+- Single page contains both Registration (left panel) and Login (right panel).
+- Registration form fields:
+  - Name
+  - Username
+  - Email
+  - Password
+  - Accept Terms & Privacy (checkbox)
+- Login form fields:
+  - Email
+  - Password
+  - "Forgot Password?" link → reset password page
+
+Social login buttons (UI present; MVP optional):
+- Register panel: Google, Facebook
+- Login panel: Google, Facebook
+
+Implementation notes:
+- Use Django auth views behind a single combined template:
+  - POST `/register/` for registration form submit
+  - POST `/login/` for login form submit
+- Keep the page as a public route and add reserved-words protection for `/login/` and `/register/`.
+
+## Auth: Reset Password (request reset link)
+
+Page: `reset-password.html`
+
+Template target:
+- `templates/auth/password_reset_request.html`
+
+Summary:
+- Form collects Email only.
+- Submit button: "Send Reset Link"
+
+Routing (recommended):
+- GET `/reset-password/` shows request form
+- POST `/reset-password/` sends reset email (if email exists; always return success UI to avoid account enumeration)
+- GET `/reset-password/<uidb64>/<token>/` sets new password (Django standard)
+- POST `/reset-password/<uidb64>/<token>/` confirms new password
+
+Implementation notes:
+- Page currently includes topnav via DEV include method; production should use normal Django includes or a minimal auth layout.
+
+## Emails: notification email template
+
+Page: `emails/index.html`
+
+Template target:
+- `templates/emails/notification_digest.html` (or `notification_single.html`)
+
+Summary:
+- Header area with logo image.
+- Greeting line: "Hi {User},"
+- Body lists notification lines (multiple items shown in mock).
+- CTA button placeholder.
+- Footer includes:
+  - unsubscribe link
+  - "adjust your notification settings here" link
+  - copyright
+
+Assets:
+- References `images/image-1.png` under emails images directory.
+
+Implementation notes:
+- This template reads like a digest (multiple notifications in one email).
+- Prefer a single reusable email base:
+  - `templates/emails/base.html`
+  - `templates/emails/partials/notification_line.html`
