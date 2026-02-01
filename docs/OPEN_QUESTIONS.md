@@ -152,4 +152,17 @@ Questions:
 7) “Other Social Profiles” modal:
    - The business mock currently targets #bioModal but user-profile uses #socialModal. Confirm intended reuse and fields.
 
+## Search behavior (from UI + demo JS)
 
+Hard results page:
+- Tabs for Users / Groups / Business
+
+Live search dropdown behavior (demo JS):
+- Dropdown shows on focus of search box and hides on blur
+
+Questions:
+1) Should live search update results on each keystroke (debounced), or remain a static dropdown until Phase 2?
+2) Minimum characters before querying (e.g., 2 or 3)?
+3) Ranking rules for each entity type (recent activity, mutual connections, popularity, etc.)?
+4) Should results hide entities the viewer cannot access (private groups, blocked users)?
+5) Should "View All" preserve the query term and open the hard results page pre-filtered?
