@@ -183,3 +183,7 @@ This repo is designed to support long gaps in activity without losing context.
 When a decision is made or progress is completed:
 1) Update the relevant file(s) in `docs/` in the same commit, and
 2) Keep `docs/` consistent with the current repository state.
+
+## Email templates
+
+The repo includes an HTML email template under `mockups-original/emails/index.html` that demonstrates the branded header, greeting, notification lines, CTA button, and legal footer (unsubscribe + notification settings links).
