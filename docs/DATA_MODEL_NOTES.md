@@ -362,6 +362,52 @@ Computed fields used by UI:
 - time_remaining
 - rep_votes_remaining (rule-driven)
 
+## Search indexing (Users / Groups / Businesses)
+
+UI sources:
+- Topnav live dropdown groups results into Users / Groups / Businesses.
+- Hard results page has tabs Users / Groups / Business + “Add Business” CTA.
+
+### Proposed approach: unified SearchDocument table (Postgres-backed)
+
+Create a lightweight “search index” model to normalize searching across entity types.
+
+Model: `SearchDocument`
+- `id` (PK)
+- `entity_type` (enum: user|group|business)
+- `object_id` (int/uuid; references entity primary key logically)
+- `slug` (for URL building; optional if entities already have it)
+- `title` (display name)
+- `subtitle` (optional: category, username, etc.)
+- `city` / `region` (optional; for business award/location relevance)
+- `is_active` (bool; e.g., business closed / group archived)
+- `visibility` (enum: public|members|friends|private)  (used for filtering)
+- Search fields:
+  - `tsv` (SearchVectorField) over `title`, `subtitle`, maybe `city`
+  - Optional trigram index on `title` for prefix-ish matching
+- Denormalized ranking helpers (optional, but useful):
+  - `popularity_score` (int) (followers/members/reviews count)
+  - `relationship_score` (int) (friend/member proximity; computed per user at query-time or approximated)
+
+Update strategy:
+- Keep in sync via signals on User/Group/Business save.
+- For heavier recalcs, use async job later (Celery/RQ) but not required for MVP.
+
+Query behavior:
+- Live suggest endpoint `/api/search/suggest/?q=...`:
+  - Return TOP N per type (example: 4 users, 3 groups, 3 businesses)
+  - Rank by text match + popularity boost (and relationship boost where available)
+- Hard results `/search/?q=...&type=...`:
+  - Filter `entity_type` by active tab
+  - Paginate results
+  - “Add Business” CTA shown in Business tab regardless of results.
+
+Permissions filtering:
+- Always filter documents by request user visibility:
+  - users: public profiles only (or obey privacy flags)
+  - groups: public groups + member-visible groups if user is a member
+  - businesses: public businesses; optionally hide “closed” from default unless explicitly requested
+
 ## Search model notes (v0)
 
 The UI supports:
@@ -1021,4 +1067,5 @@ This keeps 1 unified pipeline for comments/reactions/moderation.
 - FK to `ContentItem`
 - FK to `parent_comment` (nullable; enables replies)
 - `author`, `body_text`, timestamps
+
 
