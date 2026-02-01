@@ -222,3 +222,8 @@ If you add or change mockup JS behavior, capture the decision in `docs/COMPONENT
 
 The top navigation includes a live search dropdown (Users / Groups / Businesses) with a "View All" button that routes to the hard search results page.
 The hard results page is tabbed (Users / Groups / Business) and the Business tab includes an "Add Business" CTA linking to the create business flow.
+
+## Navigation
+
+- Side navigation provides primary logged-in routes (Feed, My Profile, Friends, Photos, Reviews, Groups, Businesses).
+- Notifications are accessed via the bell dropdown in the top navigation (no dedicated /notifications/ page).
