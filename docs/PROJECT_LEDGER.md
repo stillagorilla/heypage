@@ -79,6 +79,9 @@ Record decisions with date, decision, and rationale.
 - Business Jobs tab uses a post-like job card with kebab actions (Edit/Delete/Propose Deletion), expandable details ("Show more"), reactions/share, and comment composer.
 - Jobs should be modeled as a first-class content type and may share moderation/comments/reactions via polymorphic targets.
 
+### Reviewed mockups
+- login/register page and reset password page reviewed and mapped to Django auth templates and custom user model requirements.
+
 ## Repo Conventions
 - /docs = architecture + specs + ledgers
 - /mockups-original = untouched originals
@@ -91,6 +94,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
