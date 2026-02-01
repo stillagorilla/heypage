@@ -14,7 +14,7 @@ Phase 0 — Mockup Review + Architecture Blueprint
   - post card
   - comment thread (with variations)
   - deletion moderation voting panel (stateful)
-These appear across feed + profile contexts and will be implemented as Django includes. :contentReference[oaicite:22]{index=22} :contentReference[oaicite:23]{index=23} :contentReference[oaicite:24]{index=24}
+These appear across feed + profile contexts and will be implemented as Django includes.
 
 ### Immediate Objectives
 - Inventory all mockup pages and consolidate “context depictions” into the fewest dynamic templates.
@@ -22,7 +22,7 @@ These appear across feed + profile contexts and will be implemented as Django in
 - Produce an initial Django project scaffold aligned with performance, scalability, and maintainability.
 
 ## Mockups status (source of truth)
-- Mockups are complete and committed under `mockups-original/`. :contentReference[oaicite:1]{index=1}
+- Mockups are complete and committed under `mockups-original/`.
 - The following pages have **no context depictions** (single canonical mockup each):
   - `feed.html` (home for logged-in users)
   - `search.html` (hard results page after submit / “View All”)
@@ -85,6 +85,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
