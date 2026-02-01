@@ -669,3 +669,36 @@ Open questions:
    - Should we standardize one propose-deletion modal component across ALL content types (posts, comments, jobs, photos, reviews)?
    - If so, finalize the canonical reason taxonomy and whether reasons are multi-select (checkboxes) vs single select.
 
+## Photos + Albums: MVP scope questions
+
+Sources:
+- `my-photos.html`
+- `my-photos-album.html`
+- `group-photos.html`
+- `group-photos-album.html`
+- `edit-photos.html`
+
+Open questions:
+1) Group photo permissions:
+   - Who can add photos to a group album? (any member vs admins only)
+   - Is there a separate "Invite/Join" gating for visibility vs upload permissions?
+
+2) Album membership model:
+   - Can a photo belong to multiple albums? (Move-to-album modal uses checkboxes → implies multi-select)
+   - If multi-album is allowed, should "Move" actually behave as "Add to selected albums"?
+
+3) Album creation context:
+   - Are group albums creatable? (No "New Album" action is shown on group photos page)
+   - If yes, where is the UI entry point (admin-only action)?
+
+4) Bulk edit features:
+   - "Select All" currently a placeholder link. What is MVP behavior?
+   - Should bulk edit allow deleting photos or only moving + editing taken_on?
+
+5) Taken-on date:
+   - Is taken_on required? Default to upload date if unset?
+   - Is date editable per-photo elsewhere or only via bulk edit?
+
+6) Lightbox / single-photo view:
+   - Mock grids are clickable (`gallery-img`) but no explicit photo detail page is shown yet.
+   - Do we need a photo detail page with comments/reactions (post-like), or just a lightbox viewer?
