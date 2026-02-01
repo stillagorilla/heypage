@@ -146,6 +146,27 @@ Questions:
 7) “Other Social Profiles” modal:
    - The business mock currently targets #bioModal but user-profile uses #socialModal. Confirm intended reuse and fields.
 
+## Business Team and Jobs rules
+
+Sources:
+- `business-team.html`
+- `business-jobs.html`
+
+### Team
+1) What qualifies someone to appear on a business team?
+   - membership record, business admin assignment, or profile field?
+2) Who can see the team list? Everyone, members only, or hidden for some businesses?
+3) Does joining a company create a BusinessMembership record (role=member)?
+
+### Jobs
+1) Who can create/edit/delete job posts? owner/admin only?
+2) Is "Apply" always an external link (apply_url), or do we support internal applications later?
+3) Do job posts appear in the main feed, or only within the business Jobs tab?
+4) Are comments/reactions enabled for job posts in MVP?
+5) Can job posts be proposed for deletion using the same voting mechanism as posts/reviews?
+6) What does "Show more" reveal?
+   - is it a single long description field, or separate sections (responsibilities, skills, etc.)?
+
 ## Search behavior (from UI + demo JS)
 
 Hard results page:
@@ -298,3 +319,4 @@ Questions:
 3) Is there a "claim business" flow, or does Create Business always create a new managed business?
 4) Should CLOSED businesses appear in the directory by default?
 5) If a business is CLOSED, can it still be reviewed and can new posts be made on its page?
+
