@@ -1088,3 +1088,15 @@ Reusable partials:
 Rule:
 - Replace all `w3-include-html` usage with Django `{% include %}` / `{% extends %}` templates.
 - `includeHTML()` is not part of production.
+
+## Notifications (topnav bell dropdown)
+
+Decision:
+- The notifications bell in the top navigation uses a dropdown (not a dedicated /notifications/ page).
+
+Implementation:
+- Add a notifications dropdown menu similar to the Friend Requests dropdown:
+  - list of notifications (unread first)
+  - per-notification link to target content
+  - "Mark all as read" action (optional MVP)
+- This dropdown is powered by the Notification model and user notification settings.
