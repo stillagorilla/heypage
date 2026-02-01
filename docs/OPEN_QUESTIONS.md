@@ -580,3 +580,14 @@ Open questions:
 3) Create Group:
    - Is group cover image/avatar set at creation time or later via group settings/edit modal?
 4) Should public user-profile groups page show only groups the user is a member of, or also admin groups, or both?
+
+## Owner-context page_actions row: standardization scope
+
+Decision:
+- Use a consistent page_actions row above tabs for owner-context tabbed pages.
+
+Open questions:
+1) Should owner-context create actions always be outlined buttons (btn-outline-primary) like Create Group,
+   or should we standardize primary vs outline per feature?
+2) Should the modal for create/edit be included once per page at the bottom of `<main>`,
+   even if the trigger appears in page_actions row?
