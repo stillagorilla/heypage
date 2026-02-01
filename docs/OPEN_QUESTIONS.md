@@ -198,3 +198,24 @@ Questions:
 
 4) Propose Deletion modal:
    - Confirm whether `#reportModal` is the single modal entry point for starting deletion proposals on any content type.
+
+## Photos and Albums
+
+From group photo mockups:
+- Photos tab shows a grid of thumbnails.
+- Albums tab shows album tiles.
+- Album detail supports "Add To Album" and a file upload modal.
+
+Questions:
+1) Who can add photos to a group album? (admins only, any member, invited members?)
+2) Can non-members view group photos/albums, or is it restricted?
+3) Do we support album creation from the UI in MVP, or only adding to existing albums?
+4) Do photos belong to:
+   - the group (group-owned media), or
+   - the uploading user but associated with the group?
+5) Are we planning a lightbox / full-screen viewer in MVP (the mock has a commented lightbox script)?
+
+## HTML/JS constraints
+
+- Production templates must not reuse IDs across multiple buttons (example: `#liveToastBtn` appears as a repeated action trigger in mockups).
+- Use class selectors plus `data-*` attributes for action wiring and toast messages.
