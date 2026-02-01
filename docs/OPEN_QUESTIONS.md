@@ -441,3 +441,29 @@ Questions:
 1) Friend requests in the dropdown: do accept/decline actions trigger a toast and remove the row immediately?
 2) What should the bell/notifications icon open in MVP (dropdown list vs dedicated notifications page)?
 3) Should friend request timestamps use relative time ("Just now") or absolute time formatting?
+
+## UI behavior decisions (mockup JS review)
+
+1) Live search behavior:
+   - Should `.searchResults` show on focus only, or only after N characters typed?
+   - Should blur hide immediately, or should clicking inside the results keep it open?
+
+2) Toast behavior:
+   - Toasts are triggered in mockups by `#liveToastBtn`, but IDs are duplicated across repeated buttons.
+   - Decision: standardize on `.js-live-toast-btn` and use a single toast component, or per-page toasts.
+
+3) Popovers (reactions/share/add emoji):
+   - Mockups implement popovers by injecting raw HTML into the DOM.
+   - Decision: implement via Bootstrap popover, a small custom menu, or an HTMX modal/menu.
+
+4) Reply form behavior:
+   - Mockups inject reply forms into the DOM as a demo.
+   - Decision: do we render reply forms server-side (templates) and toggle visibility, or create them client-side?
+
+5) Sticky sidebar:
+   - Mockups include two approaches (custom scroll code and sticky-sidebar plugin).
+   - Decision: pick one. Prefer CSS `position: sticky` where possible for performance and simplicity.
+
+6) Upload widgets:
+   - Mockups reuse `id="file"` in multiple upload forms. This will break when more than one uploader exists on the same page.
+   - Decision: generate unique IDs per uploader or avoid label-for patterns that require global uniqueness.
