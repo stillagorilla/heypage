@@ -21,6 +21,32 @@ Pros: guarantees uniqueness across all entity types and makes routing predictabl
 - Business
 - Group
 
+## Public URL scheme (users/groups/businesses)
+
+Locked scheme:
+- User profile: `/<username>/`
+- Group: `/g/<slug>/`
+- Business: `/b/<slug>/`
+
+Uniqueness rules:
+- `User.username` unique (case-insensitive compare recommended).
+- `Group.slug` unique (case-insensitive compare recommended).
+- `Business.slug` unique (case-insensitive compare recommended).
+
+Reserved words (required because users are at root):
+- Usernames must not equal any reserved route segment.
+- Recommended minimum reserved list:
+  - `g`, `b`, `grp`, `biz`
+  - `search`, `login`, `logout`, `register`, `settings`, `reset-password`
+  - `chat`, `messages`, `notifications`
+  - `api`, `admin`, `static`, `media`
+  - `help`, `about`, `terms`, `privacy`
+
+Routing order requirement (Django):
+- Define `/g/<slug>/` and `/b/<slug>/` before the root `/<username>/` route.
+- Define fixed routes (`/search/`, `/settings/`, etc.) before `/<username>/` as well.
+- Place `/<username>/` last as the catch-all.
+
 ## Social Graph
 - Friendship (if mutual) OR Follow (if one-way) — decide which is canonical
 - GroupMembership
@@ -1067,5 +1093,6 @@ This keeps 1 unified pipeline for comments/reactions/moderation.
 - FK to `ContentItem`
 - FK to `parent_comment` (nullable; enables replies)
 - `author`, `body_text`, timestamps
+
 
 
