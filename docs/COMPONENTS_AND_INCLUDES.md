@@ -551,6 +551,17 @@ UI elements:
 Implementation note:
 - This tab likely represents inbound requests only. Outbound/pending requests are not depicted here.
 
+### Friends tab scope (implementation decision)
+
+Decision:
+- The Friends tab is "accepted-only" (mutual friends).
+- Any "Add to Friends" buttons shown within the Friends tab are treated as mock artifacts and will not appear in the implemented Friends list.
+
+Rationale:
+- Keeps relationship states cleanly separated:
+  - Friends tab: accepted friendships only
+  - Friend Requests tab: pending inbound requests with accept/decline
+
 ## Groups (My Groups + Group Administration + Create Group modal)
 
 Source:
@@ -592,3 +603,35 @@ Footer actions:
 
 Implementation note:
 - Group Type implies a permissions model (viewability + joinability) tied to group visibility.
+
+## Public profile: Friends and Groups tabs
+
+Sources:
+- `mockups-original/user-profile-friends.html`
+- `mockups-original/user-profile-groups.html`
+
+### User Profile Friends tab
+UI:
+- Tabs: Friends / Shared Friends
+- Search input: "Search Friends"
+- Friend row layout matches "friends-list" pattern
+
+Reusable includes:
+- `templates/partials/friends/friend_row.html`
+- `templates/partials/friends/shared_friend_row.html` (can reuse friend_row with a different dataset)
+
+Notes:
+- Mock includes some "Add to Friends" rows; per project decision, the implemented Friends tab will show accepted-only.
+
+### User Profile Groups list
+UI:
+- A simple list/grid of group tiles:
+  - square image
+  - group name
+  - member count
+  - category label
+  - links to group page
+
+Reusable includes:
+- `templates/partials/groups/group_tile_row.html`
+- `templates/partials/groups/group_grid.html` (wraps rows into responsive grid)
