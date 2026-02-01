@@ -869,3 +869,35 @@ Source: `settings.html`
   - profile visibility
   - ability to comment/react
 - Does blocking also remove an existing friendship?
+
+## Messaging: MVP scope decisions
+
+Source: `chat.html`
+
+1) DM only vs group chats
+- UI depicts 1:1 conversations only (DM). Confirm whether group chat is out of scope for MVP.
+
+2) Delivery method
+- MVP options:
+  - polling endpoint (simple)
+  - long-polling (better UX)
+  - WebSockets via Channels (most realtime)
+Confirm which we ship first (recommended: polling).
+
+3) Attachments + emoji
+- Composer shows image + emoji buttons.
+- Confirm MVP:
+  - text-only first, or
+  - include image attachments in v1.
+
+4) Mute semantics
+- "Mute Conversation" is present.
+- Confirm:
+  - mute affects in-app notifications only, or email too
+  - mute duration options (indefinite vs timed)
+
+5) Block semantics in chat
+- "Block" is present in chat header.
+- Confirm:
+  - does blocking also remove friendship?
+  - does it hide existing conversation history or just stop future messages?
