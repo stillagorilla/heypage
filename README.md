@@ -176,6 +176,20 @@ If you renamed a directory in github.dev but don’t see it on github.com:
 - verify you committed & pushed to `main`
 - verify you’re viewing the correct branch on github.com
 
+---
+
+## Important implementation gotcha (save future debugging time)
+
+When converting the mockups into Django template includes, avoid duplicate DOM IDs (especially modals).
+Multiple pages/components use Bootstrap modals (e.g., post composer image upload, photos upload, new album, propose deletion).
+If an include hardcodes `id="uploadModal"` (etc.) and gets rendered more than once, JS/modal behavior will break.
+
+Recommendation:
+- any include that defines a modal should accept a `modal_id` parameter (and related input IDs)
+- prefer event delegation + `data-*` attributes over ID-based JS hooks
+
+---
+
 ## Continuity rule
 
 This repo is designed to support long gaps in activity without losing context.
