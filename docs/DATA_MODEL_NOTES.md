@@ -86,6 +86,25 @@ Review must render in two places:
 - User profile → Reviews tab
 - Business page → Reviews tab
 
+## Reviews participate in moderation + comments (confirmed)
+
+Source:
+- `business-reviews.html`
+
+Confirmed behaviors:
+- Reviews expose "Propose Deletion" via kebab menu and include the Propose Deletion modal (`#reportModal`).
+- Reviews include reaction/share actions and a comment composer.
+
+Model implications:
+- Reviews must be valid targets for:
+  - ModerationProposal (target_type="review")
+  - Comment (target_type="review")
+  - Reaction (target_type="review")
+
+Optional:
+- Store review rating as integer 1..5.
+- Support review media attachments (images) as shown in review card media grid.
+
 ## Review is a first-class content type (post-like behavior)
 
 Sources:
@@ -432,4 +451,5 @@ Directory queries:
 
 Business closed state:
 - Business.status includes CLOSED (used to show "This business has closed" banner and potentially alter behavior).
+
 
