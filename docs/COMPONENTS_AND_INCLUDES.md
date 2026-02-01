@@ -1043,3 +1043,48 @@ The mockups include a JavaScript layer primarily intended to demonstrate UI inte
 3) JS structure
    - Use event delegation from `document` for dynamic content (feed items, comments, modals).
    - Keep behavior modules small and grouped by feature: search, feed, comments, moderation, media, nav.
+
+## Search UX contract (Topnav live search → Hard results page)
+
+Sources:
+- `mockups-original/includes_topnav.html`
+- `mockups-original/search.html`
+
+### Topnav live search dropdown (global)
+Location:
+- Implemented inside topnav include (`includes_topnav.html`).
+
+Elements:
+- Search input: `#searchBox`
+- Dropdown container: `.searchResults` (initially `display:none`)
+- Sections: Users / Groups / Businesses
+- "View All" button routes to `search.html`
+
+Behavior (per app.js reference):
+- Show dropdown on focus of `#searchBox`
+- Hide dropdown on blur
+(Implementation should be improved to avoid closing when clicking inside dropdown; see OPEN_QUESTIONS.md.)
+
+### Hard results page (Search results)
+Template target:
+- `templates/search/search_results.html`
+
+UI:
+- Tabbed results: Users / Groups / Business
+- Users tab uses a simple list row pattern (same “friends-list” style).
+- Groups tab uses a tile row: square image + name + member count + category.
+- Business tab uses a tile row: square image + name + category and includes an "Add Business" CTA linking to `create-business.html`.
+
+Reusable partials:
+- `templates/partials/search/live_results_dropdown.html`
+- `templates/partials/search/user_result_row.html`
+- `templates/partials/search/group_result_row.html`
+- `templates/partials/search/business_result_row.html`
+- `templates/partials/search/add_business_cta.html`
+
+### DEV-only include system (to replace)
+`search.html` currently uses `w3-include-html` and `includeHTML.js` to inject topnav/sidenav for development.
+
+Rule:
+- Replace all `w3-include-html` usage with Django `{% include %}` / `{% extends %}` templates.
+- `includeHTML()` is not part of production.
