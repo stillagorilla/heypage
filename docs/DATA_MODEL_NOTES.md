@@ -732,3 +732,19 @@ Admin listing:
 - Group Administration tab implies:
   - GroupMembership role must distinguish {owner, admin, member}
   - Query for "groups where user role in {owner, admin}"
+
+## Owner-context "Create" modals follow a common pattern (Groups / Businesses)
+
+Source example:
+- `my-groups.html` (Create Group modal in owner-context page actions row)
+
+Note:
+- "Create" flows for entity-like objects (e.g., Group, Business) should follow a consistent data pattern:
+  - a create form/modal collects core identity fields (name, category/type) and sets default visibility/membership rules
+  - ownership/admin membership is created automatically for the creator (role=owner)
+  - optional media (cover/avatar/logo) can be added later via an edit flow
+
+Implementation implication:
+- When adding Create Business, mirror Create Group’s approach:
+  - create the Business record
+  - create a BusinessMembership for the creator with role=owner
