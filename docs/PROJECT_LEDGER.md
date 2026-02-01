@@ -8,6 +8,14 @@ Build a Facebook-like social platform with a core differentiator: distributed, u
 ## Current Phase
 Phase 0 — Mockup Review + Architecture Blueprint
 
+### Component extraction progress
+- Confirmed core reusable components for most pages:
+  - post composer
+  - post card
+  - comment thread (with variations)
+  - deletion moderation voting panel (stateful)
+These appear across feed + profile contexts and will be implemented as Django includes. :contentReference[oaicite:22]{index=22} :contentReference[oaicite:23]{index=23} :contentReference[oaicite:24]{index=24}
+
 ### Immediate Objectives
 - Inventory all mockup pages and consolidate “context depictions” into the fewest dynamic templates.
 - Identify reusable UI blocks (header/footer/nav/sidebars/cards/tiles/modals/etc.) and convert them into Django template includes.
@@ -70,5 +78,6 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
