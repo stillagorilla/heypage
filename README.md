@@ -8,17 +8,18 @@ This repository is the source of truth for scope, page inventory, reusable UI bl
 
 ## What’s in this repo
 
-- `mockups-original/`  
-  The untouched static HTML mockups (source material).  
-  > If you currently see `mockups/` on GitHub, it should be renamed to `mockups-original/`.
+- `mockups-original/`
+  The static HTML mockups (source material).
 
-- `docs/`  
-  The “continuity replacement” documentation that prevents context loss over time:
+- `docs/`
+  The continuity documentation. This folder is the authoritative "memory" for the project and must be updated whenever decisions are made or progress is completed.
   - `PROJECT_LEDGER.md` — progress, decisions, milestone tracking
   - `FEATURES.md` — feature inventory (MVP → later phases)
   - `USER_FLOWS.md` — user journeys (register → post → comment → moderation → etc.)
+  - `PAGES_AND_CONTEXTS.md` — which mockups consolidate into which Django templates
+  - `COMPONENTS_AND_INCLUDES.md` — reusable UI components/includes taxonomy
   - `DATA_MODEL_NOTES.md` — working data model draft
-  - `OPEN_QUESTIONS.md` — items that must be decided early
+  - `OPEN_QUESTIONS.md` — decisions needed early
 
 ---
 
