@@ -58,6 +58,18 @@ Rule of thumb:
 
 ---
 
+## Business lists (owner vs public)
+
+- Owner context uses a tabbed Businesses page with:
+  - Businesses directory
+  - My Businesses (managed businesses)
+  - Create Business CTA
+- Public context shows a Businesses list only.
+
+Both reuse the same business tile/list row component.
+
+---
+
 ## Groups and friends
 
 - Friends are managed via a tabbed Friends page (Friends list + Friend Requests with accept/decline).
