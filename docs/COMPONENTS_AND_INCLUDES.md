@@ -842,6 +842,26 @@ Reusable includes:
 Interaction demo alignment:
 - "Show more" uses the same class pattern (`.showHidden` toggles `.hidden-content`) used elsewhere in demo interactions.
 
+### Business: About card edit buttons (business-page.html)
+
+**Intent:** In the Business About card, the first pencil is an *Edit Business* action (not "Edit Bio"), and the second pencil (Other Social Profiles) opens the shared Social Profiles modal (same component as User).
+
+#### Current mockup observations (business-page.html)
+- Business details modal exists as `#editBusinessModal` with title **"Edit Business"**.
+- Business details modal footer button label currently says **"Create"** (artifact; should be "Save").
+- Business "bioModal" currently titled **"Edit Bio"** but should be treated/renamed as **"Edit Business"** (per latest correction).
+- Business "Other Social Profiles" pencil currently targets `#bioModal` (artifact; should target `#socialModal`).
+- User profile "Other Social Profiles" pencil targets `#socialModal` and uses the modal title **"Edit Social Profiles"**.
+
+#### Canonical implementation decision (Django templates)
+- **Business About-card pencil** ⇒ opens business edit modal (title: "Edit Business").
+- **Business Other Social Profiles pencil** ⇒ opens the shared **Edit Social Profiles** modal (`socialModal`) used on the User profile.
+
+#### Recommended partials
+- `partials/business_about_card.html` (includes both pencils)
+- `partials/modals/business_edit_modal.html` (business-specific edit fields, title "Edit Business")
+- `partials/modals/social_profiles_modal.html` (shared; used by User + Business)
+
 ## Chat (messages + sidebar)
 
 Source:
