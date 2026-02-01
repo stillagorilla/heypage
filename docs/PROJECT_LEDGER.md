@@ -67,6 +67,14 @@ Record decisions with date, decision, and rationale.
 - **Resolved removal is a tombstone:** when deletion passes, the post-like card is suppressed (not hard-deleted) and renders as a minimal placeholder: “Content removed by vote.”
 - **Resolved tombstone behavior:** tombstone variant should not render reactions/comments/vote controls (unless an admin/audit view is added later).
 
+### Auth + email templates (mock-confirmed)
+
+- Login and registration share a single public page template with two forms (Register + Login).
+- Registration collects Name, Username, Email, Password, and requires Terms & Privacy acceptance.
+- Password reset request page collects Email and sends a reset link.
+- Email template supports multi-item notification emails (digest-style) and includes unsubscribe + notification settings links.
+- Social auth buttons (Google/Facebook) are depicted; MVP can ship with buttons disabled/hidden until OAuth is implemented.
+
 ## Milestones
 ### M0 — Mockup ingestion complete
 - [ ] All HTML mockups committed under /mockups-original (or similar)
@@ -128,6 +136,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
