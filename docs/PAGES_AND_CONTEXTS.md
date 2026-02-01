@@ -97,3 +97,29 @@ Owner/public differences are controlled by `is_owner` and permissions, NOT separ
 - `/<group-slug>/` → group profile
 
 > Important: slugs must be unique across user, business, and group namespaces OR we must reserve distinct prefixes (e.g., /u/, /b/, /g/). Decide in OPEN_QUESTIONS.md.
+
+## Entity pages share a common layout skeleton (user/business/group)
+
+Observation: business and group pages use the same structural layout as user profiles:
+- global header includes (topnav + sidenav)
+- an entity header card (business/group equivalent of profile header)
+- left sidebar cards
+- center feed-like column when About tab is active (including make-post + post cards)
+
+Confirmed in:
+- `business-page.html` (About tab active with sidebar cards + center posts) :contentReference[oaicite:4]{index=4}
+- `group-page.html` (About tab active with sidebar cards + make-post + posts) :contentReference[oaicite:5]{index=5}
+
+### Proposed Django template consolidation
+Create a generic “entity page shell” pattern:
+
+- `templates/entities/entity_detail.html`
+  - used for: User, Business, Group
+  - includes: top nav, side nav, entity header, left sidebar cards, center column feed
+
+Then provide entity-specific wrappers (optional) that set context:
+- `profiles/profile_detail.html` -> extends entity shell
+- `business/business_detail.html` -> extends entity shell
+- `groups/group_detail.html` -> extends entity shell
+
+Tabs are context-driven (active_tab), not separate templates.
