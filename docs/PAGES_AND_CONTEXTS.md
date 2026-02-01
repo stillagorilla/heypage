@@ -66,6 +66,16 @@ System / index:
   - Owner-only UI is controlled by `is_owner` (edit buttons, privacy controls, etc.)
   - Public UI hides owner-only controls and shows follow/friend actions as applicable
 
+## Confirmed include usage
+
+The mockups implement the following as reusable includes, and these map directly to Django `{% include %}` partials:
+
+- `includes_topnav.html` → `partials/nav/top_nav.html` :contentReference[oaicite:10]{index=10}
+- `includes_sidenav.html` → `partials/nav/side_nav.html` :contentReference[oaicite:11]{index=11}
+- Profile header:
+  - `includes_profile-head.html` + `includes_my-profile-head.html`
+  → `partials/profile/profile_header.html` driven by `is_owner` :contentReference[oaicite:12]{index=12} :contentReference[oaicite:13]{index=13}
+
 ## Canonical route patterns (high level)
 
 ### User profiles: one template, tab-driven
