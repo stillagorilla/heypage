@@ -510,6 +510,36 @@ Questions:
    - Mockups reuse `id="file"` in multiple upload forms. This will break when more than one uploader exists on the same page.
    - Decision: generate unique IDs per uploader or avoid label-for patterns that require global uniqueness.
 
+## Search: ranking, permissions, and UX details
+
+Sources:
+- Topnav dropdown sections + “View All”.
+- Demo JS currently only shows/hides dropdown on focus/blur.
+- Hard results includes Business “Add Business” CTA.
+
+1) Ranking rules:
+- For users: should friends / mutual friends boost rank?
+- For groups: boost groups the user belongs to? boost by member count?
+- For businesses: boost by review count? awards? proximity (city match)?
+
+2) Permissions/visibility:
+- If a group is private, do we:
+  - Hide it entirely from search for non-members, or
+  - Show a “Private Group” result with limited metadata?
+
+3) Live dropdown close behavior:
+- Current demo hides on input blur.
+- Production should not instantly close when clicking inside results.
+  - Preferred: close on outside click / Escape; keep open on internal click.
+
+4) Hard results tab URL strategy:
+- Confirm we want shareable URLs via query params:
+  - `/search/?q=...&type=users|groups|businesses`
+
+5) Business “Add Business” CTA:
+- Should it always show in Business tab, or only when results are empty?
+(Static mock shows it alongside results.)
+
 ## Search UX details (live dropdown + hard results)
 
 Sources:
@@ -749,4 +779,5 @@ Open questions:
 
 3) Share behavior:
    - What does the share icon do (share to feed, share externally, copy link)?
+
 
