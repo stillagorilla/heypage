@@ -489,3 +489,14 @@ Questions / decisions:
 
 5) Business “Add Business” CTA:
    - Is this always shown when searching Businesses, or only when results are empty / below a threshold?
+
+## Notifications dropdown behavior
+
+Decision:
+- Bell icon opens a dropdown (not a dedicated /notifications/ page).
+
+Open questions:
+1) Maximum number of notifications shown in dropdown (e.g., 8)?
+2) Do we include a "View older" link that opens a modal, or is the dropdown limited only?
+3) Do notifications auto-mark as read when clicked, or only when explicitly marked?
+4) Do we group duplicates (e.g., "3 new friend requests") or show individual lines?
