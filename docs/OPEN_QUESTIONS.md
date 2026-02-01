@@ -29,28 +29,22 @@ These are the questions we should answer early because they impact routing, data
    - temporary quarantine pending more votes
 12. Is there an appeal process? If yes, who hears it and what are the rules?
 
-## Reviews vs Posts (component sharing + feature scope)
+## Reviews vs Posts (resolved + remaining rules)
 
-1) Are Reviews first-class "content items" with the same capabilities as Posts?
-   - Comments allowed on reviews?
-   - Reactions allowed on reviews?
-   - Share allowed on reviews?
+Resolved from mockups:
+- Reviews use post-like cards including reactions, share, comment composer, and moderation actions.
+- Implement reviews by reusing the post card pattern with review-specific inserts (stars + business preview).
 
-2) Moderation scope:
-   - Can Reviews be proposed for deletion using the same mechanism as Posts?
-     (Propose Deletion → Yes/No vote → expanded stats + rep bypass UI)
-
-3) Authoring rules:
-   - Can a user create multiple reviews for the same business, or only one review that can be edited?
-   - If only one, does posting again overwrite (update) or create a new revision entry?
-
-4) Display rules:
-   - When a Review is shown on the user profile Reviews tab, does it always show the business name/link?
-   - Do we show the review rating distribution summary anywhere on the user profile, or only on the business page?
-
-5) Attachments:
-   - Are photos/videos allowed on reviews in MVP?
-   - Any limits per review?
+Remaining rule questions:
+1) Can a user create multiple reviews for the same business, or only one active review?
+2) Are reviews editable after posting? (UI shows Edit in kebab menu.)
+3) Do reviews appear in the main feed, or only on Business Reviews tab and User Reviews tab?
+4) If reviews support comments/reactions, are they visible to everyone who can view the review, or restricted (friends only)?
+5) Should the Business preview block in a review link to the business page (recommended)?
+6) When a Review is shown on the user profile Reviews tab, does it always show the business name/link?
+7) Do we show the review rating distribution summary anywhere on the user profile, or only on the business page?
+8) Are photos/videos allowed on reviews in MVP?
+9) Any limits per review?
 
 ## Tech / Deployment
 13. Database choice: MySQL (as preferred) vs Postgres (recommended for long-term search/analytics).
@@ -288,3 +282,4 @@ Questions:
 1) Should private groups appear on a user's public Groups tab?
 2) If a group is private, do we show it only to members, or not at all?
 3) Should the Groups list include role badges (admin/member) when viewing your own groups, but not when viewing others?
+
