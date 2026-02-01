@@ -709,3 +709,26 @@ Recommended model alignment:
 
 Admin-only visibility:
 - Membership Requests tab is only rendered if viewer has group admin privileges.
+
+## Group creation and administration (from my-groups)
+
+Source: `my-groups.html`
+
+The owner groups page includes:
+- Create Group modal with fields:
+  - name
+  - category
+  - group_type in {public, semi_public, private}
+  - helper text indicates group_type affects visibility and joining rules
+
+Model implications:
+- Group:
+  - name
+  - category (enum or FK to Category)
+  - group_type (enum: public/semi_public/private)
+  - cover/avatar image (optional)
+
+Admin listing:
+- Group Administration tab implies:
+  - GroupMembership role must distinguish {owner, admin, member}
+  - Query for "groups where user role in {owner, admin}"
