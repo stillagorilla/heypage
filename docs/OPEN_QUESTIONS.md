@@ -219,3 +219,25 @@ Questions:
 
 - Production templates must not reuse IDs across multiple buttons (example: `#liveToastBtn` appears as a repeated action trigger in mockups).
 - Use class selectors plus `data-*` attributes for action wiring and toast messages.
+
+## Photos and Albums (permissions + UX)
+
+User owner context shows:
+- Add Photos
+- New Album
+- Rename Album
+- Edit Photos (multi-select + Move To Album)
+
+Public user profile shows:
+- Photos and Albums tabs, but no add/edit actions.
+
+Group pages show the same tabs + grids and album detail pages support Add To Album upload.
+
+Questions:
+1) Group permissions: who can add photos to group albums?
+   - admins only, any member, or creator-only?
+2) Can non-members view group photos/albums?
+3) Do we allow removing photos from an album (not just adding/moving)?
+4) Does "Move To Album" apply to user photos only, or also group photos?
+5) Are photo dates editable (as shown by the editable date field UI) and is that date "taken_at" or "posted_at"?
+6) Should album tiles link to a real URL slug (recommended) or ID-based URL?
