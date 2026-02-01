@@ -669,3 +669,47 @@ UI:
 Reusable includes:
 - `templates/partials/groups/group_tile_row.html`
 - `templates/partials/groups/group_grid.html` (wraps rows into responsive grid)
+
+## Businesses list pages (owner vs public)
+
+Sources:
+- Owner context: `mockups-original/my-business.html`
+- Public context: `mockups-original/user-profile-business.html`
+
+### Business tile (list item)
+Reusable include:
+- `templates/partials/business/business_tile_row.html`
+
+Used in:
+- My Business (both tabs)
+- User Profile Businesses list
+- Search Business results (same visual pattern)
+
+UI elements:
+- square image thumbnail
+- business name
+- category and optional subcategory (shown as "Category > Subcategory" in some tiles)
+- link to business page (or closed state page)
+
+### Owner-context business list page
+Template:
+- `templates/business/business_directory.html` (or `templates/entities/entity_list_business.html`)
+
+Components:
+- tabbed card include: `templates/partials/business/business_tabs_card.html`
+  - Tab A: Businesses (directory)
+  - Tab B: My Businesses (businesses where viewer is owner/admin)
+- Create Business CTA button linking to create business
+
+Notes:
+- The "Businesses" tab contains a directory-like list.
+- The "My Businesses" tab contains businesses where the user has management permissions.
+- Some tiles link to `business-page-closed.html`, implying closed status affects routing/UI.
+
+### Public-context business list
+Template:
+- `templates/profiles/user_businesses.html` (or `templates/entities/entity_businesses_tab.html`)
+
+Components:
+- uses the same `business_tile_row.html` include
+- no tabs and no Create Business CTA
