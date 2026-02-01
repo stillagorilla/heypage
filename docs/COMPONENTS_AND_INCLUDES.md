@@ -2043,3 +2043,116 @@ Usage example (conceptual):
 Apply the same pattern to:
 - `my-business.html` (owner-context Businesses tab) with "Create Business"
 - any future owner tabbed pages with create/admin flows
+
+## Component mapping: Business About card (display + edit actions + modals)
+
+Source:
+- `business-page.html` (About tab → left/sidebar “About” card)
+
+This section maps the Business **About card** into reusable components + canonical modal wiring.
+
+---
+
+### Business About card → component mapping
+
+#### Component
+- `templates/partials/business/business_about_card.html`
+
+#### Card sections (display)
+1) **About (description)**
+   - Displays business “About” text (e.g., “We build everything.”).
+2) **Primary location + contact**
+   - Displays a primary location label (e.g., “Location A”)
+   - Displays address
+   - Displays phone number
+   - “More locations” link/button (implies multi-location support)
+3) **Other Social Profiles**
+   - Renders social icon links: Facebook / Instagram / LinkedIn / Twitter
+
+#### Card edit actions (two pencil icons)
+A) Pencil icon next to **About**
+- **Current mock wiring:** targets `#bioModal`
+- **Canonical wiring:** opens the **Edit Business (Details)** modal
+  - Modal title must be: **“Edit Business”** (NOT “Edit Bio”)
+  - This modal edits: about/description, website, phone, address fields, country, etc.
+  - Implementation note: this can be either:
+    1) a dedicated details modal (recommended ID: `#editBusinessDetailsModal`), OR
+    2) a unified “Edit Business” modal with sections/tabs (identity + details)
+
+B) Pencil icon next to **Other Social Profiles**
+- **Current mock wiring:** targets `#bioModal` (artifact)
+- **Canonical wiring:** opens the shared **Edit Social Profiles** modal (same component used on user profile)
+  - Modal ID: `#socialModal`
+  - Modal title: “Edit Social Profiles”
+  - This keeps social profile editing consistent across User + Business
+
+---
+
+### Modal mapping (Business)
+
+#### 1) Business identity modal (name/logo/category)
+- Existing modal in mock: `#editBusinessModal`
+- Fields:
+  - Business Name
+  - Logo upload
+  - Category select
+- Artifact:
+  - Footer primary button says “Create” → should be “Save”
+- Usage:
+  - Triggered from business header kebab “Edit”
+  - Optional: also used for About-card pencil if you decide to unify all edits into one modal
+
+Recommended partial:
+- `templates/partials/modals/business_edit_identity_modal.html`
+
+#### 2) Business details modal (about/contact/address/location)
+- Existing modal in mock: `#bioModal` (misnamed; title shows “Edit Bio”)
+- Canonical:
+  - Title must be “Edit Business”
+  - Consider renaming:
+    - `#editBusinessDetailsModal` (preferred) OR unify into `#editBusinessModal` with sections
+- Fields currently depicted:
+  - About (textarea)
+  - Website
+  - Phone
+  - Address line 1 / Address line 2
+  - City / ZIP
+  - Country (Select2)
+
+Recommended partial:
+- `templates/partials/modals/business_edit_details_modal.html`
+
+#### 3) Social profiles modal (shared User + Business)
+- Canonical modal:
+  - `#socialModal` titled “Edit Social Profiles”
+- Trigger:
+  - Business About card “Other Social Profiles” pencil
+  - User profile Bio card “Other Social Profiles” pencil (shared behavior)
+
+Recommended partial:
+- `templates/partials/modals/social_profiles_modal.html`
+
+---
+
+### Data/Context inputs needed by `business_about_card.html`
+
+- `business.about_text`
+- `business.primary_location` (label/name)
+- `business.primary_address` (formatted or components)
+- `business.primary_phone`
+- `business.website_url`
+- `business.social_links` (facebook/instagram/linkedin/twitter URLs)
+- `can_edit_business_details` (bool) → shows About pencil
+- `can_edit_business_social` (bool) → shows Social pencil
+- `has_multiple_locations` (bool) → shows “More locations”
+- `more_locations_url` (URL) OR modal trigger if locations managed via modal
+
+---
+
+### Normalization rules (so it stays maintainable)
+
+- The Business “Other Social Profiles” edit flow MUST reuse the same modal/partial as the User profile.
+- Avoid duplicated DOM IDs inside modals (file inputs frequently use `id="file"` in mockups). Parameterize:
+  - `modal_id`, `form_id`, `file_input_id`
+- Standardize primary modal button labels:
+  - “Save” for edits, “Create” only for create flows
