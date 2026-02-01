@@ -51,6 +51,22 @@ Remaining rule questions:
 14. Do we require real-time chat/notifications in MVP, or can they be “refresh/polling” first?
 15. Media storage: local disk vs S3-compatible (DreamObjects) from day one?
 
+## Frontend composition / DOM ID safety (prevent hard-to-debug bugs)
+
+When converting mockups into Django includes, we must prevent duplicate DOM IDs for modals and form elements.
+
+Questions / decisions:
+1) Should we adopt a project-wide convention that every include that defines a modal requires:
+   - `modal_id`, `form_id`, and any input IDs as parameters?
+2) Should we forbid component includes from defining modals inline, and instead centralize modals in one place
+   (e.g., page-level `{% block modals %}`) to guarantee uniqueness?
+3) JS interaction approach:
+   - Do we want progressive enhancement via `data-*` attributes + event delegation (recommended),
+     so we avoid brittle selectors tied to IDs?
+4) Comment thread behavior:
+   - Will "Show X replies" and "Show N more comments" be server-driven pagination, client expand/collapse,
+     or a hybrid?
+
 ## Mockup Consolidation
 16. Confirm naming standard: we will replace “tile/card/voting stuff” with a consistent component taxonomy (e.g., `components/post_card.html`, `components/moderation_panel.html`, etc.).
 17. Any mockup sections that are intentionally one-off (should NOT be componentized)?
@@ -415,3 +431,4 @@ The email mock repeats "You have new friend requests." twice. This is a mock art
 Decision:
 - Implement email notifications using a normalized list of notification lines (deduped) and/or grouped counts.
 - No duplicated notification lines should appear in real emails.
+
