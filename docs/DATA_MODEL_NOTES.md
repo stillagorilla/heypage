@@ -517,3 +517,34 @@ Recommendation:
 
 Optional future:
 - Social auth identities (Google/Facebook) if social login is implemented later.
+
+## Notifications and email delivery (from email template)
+
+Source:
+- `emails/index.html`
+
+Email notifications implied:
+- unread messages
+- new friend requests
+- comment added to your post
+- deletion proposed on your post
+- group membership approval needed for a managed group
+- business received a new review
+
+Recommended entities (minimal viable):
+- Notification
+  - recipient (FK -> User)
+  - notification_type (enum)
+  - actor_user (FK -> User, nullable)
+  - target_type (string, e.g., "post", "comment", "group", "business", "review", "message")
+  - target_id (int)
+  - created_at
+  - read_at (nullable)
+
+Email dispatch strategy:
+- Phase 1: send transactional emails per event type (or daily digest if preferred)
+- Phase 2: add digest scheduling + batching
+
+Unsubscribe and settings:
+- Footer shows unsubscribe + notification settings link.
+- Store per-user email notification preferences (already implied by Settings page).
