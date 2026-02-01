@@ -108,6 +108,14 @@ Notes:
 - The root-level user route is a catch-all and must be registered last in Django URL patterns.
 - Maintain a reserved-words list so usernames cannot collide with system routes or entity prefixes.
 
+### Business edit modals clarified (two different "Edit Business" actions)
+
+Decision:
+- Business page has two edit entry points that are both titled "Edit Business" but serve different purposes:
+  1) Header kebab "Edit" opens the identity modal (name/logo/category).
+  2) About card pencil opens the details modal (about/contact/locations).
+- These must be implemented as two distinct modals with distinct IDs and distinct partials to avoid wiring confusion.
+
 ## Repo Conventions
 - /docs = architecture + specs + ledgers
 - /mockups-original = untouched originals
@@ -120,6 +128,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
