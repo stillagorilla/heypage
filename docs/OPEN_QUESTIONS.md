@@ -29,6 +29,29 @@ These are the questions we should answer early because they impact routing, data
    - temporary quarantine pending more votes
 12. Is there an appeal process? If yes, who hears it and what are the rules?
 
+## Reviews vs Posts (component sharing + feature scope)
+
+1) Are Reviews first-class "content items" with the same capabilities as Posts?
+   - Comments allowed on reviews?
+   - Reactions allowed on reviews?
+   - Share allowed on reviews?
+
+2) Moderation scope:
+   - Can Reviews be proposed for deletion using the same mechanism as Posts?
+     (Propose Deletion → Yes/No vote → expanded stats + rep bypass UI)
+
+3) Authoring rules:
+   - Can a user create multiple reviews for the same business, or only one review that can be edited?
+   - If only one, does posting again overwrite (update) or create a new revision entry?
+
+4) Display rules:
+   - When a Review is shown on the user profile Reviews tab, does it always show the business name/link?
+   - Do we show the review rating distribution summary anywhere on the user profile, or only on the business page?
+
+5) Attachments:
+   - Are photos/videos allowed on reviews in MVP?
+   - Any limits per review?
+
 ## Tech / Deployment
 13. Database choice: MySQL (as preferred) vs Postgres (recommended for long-term search/analytics).
 14. Do we require real-time chat/notifications in MVP, or can they be “refresh/polling” first?
@@ -50,7 +73,7 @@ These are the questions we should answer early because they impact routing, data
   - admin users can directly delete posts
   - post authors can edit posts
   - others can propose deletion via kebab menu
-  - reps can expedite confirmations :contentReference[oaicite:7]{index=7}
+  - reps can expedite confirmations
 
 ## URL namespace collisions
 
@@ -61,7 +84,7 @@ B) Prefix namespaces (/u/<username>, /b/<slug>, /g/<slug>)
 C) Reserved keywords + conflict resolution rules
 
 ## Friend requests + friendship state (from top nav)
-Top nav includes a friend request dropdown with accept/decline actions. :contentReference[oaicite:14]{index=14}
+Top nav includes a friend request dropdown with accept/decline actions.
 
 Open questions:
 - Is the relationship model mutual friends only, or also follower/following?
@@ -69,7 +92,7 @@ Open questions:
 - Do “Add to Friends” and “Accept” create the same model record with different state transitions?
 
 ## Live search behavior
-Top nav includes a “filter-as-you-type” dropdown showing Users/Groups/Businesses and a “View All” button to `search.html`. :contentReference[oaicite:15]{index=15}
+Top nav includes a “filter-as-you-type” dropdown showing Users/Groups/Businesses and a “View All” button to `search.html`.
 
 Open questions:
 - Do we support debounced live search on every keypress or only after N characters?
@@ -77,8 +100,8 @@ Open questions:
 - Are there privacy constraints (e.g., private groups not shown)?
 
 ## Business & Group membership rules (implied by headers)
-- Business page supports Join Company + Invite + Team list + "Post a Job" action. :contentReference[oaicite:13]{index=13}
-- Group page supports Join Group + Invite + Admins list. :contentReference[oaicite:14]{index=14}
+- Business page supports Join Company + Invite + Team list + "Post a Job" action.
+- Group page supports Join Group + Invite + Admins list.
 
 Questions:
 1) What are the membership states for business and group? (none/requested/member/admin/owner)
@@ -91,7 +114,7 @@ Questions:
 Depicted moderation mechanics include:
 - a timed vote window
 - supermajority threshold
-- an expedited "representative bypass" requirement with remaining rep votes shown. :contentReference[oaicite:21]{index=21}
+- an expedited "representative bypass" requirement with remaining rep votes shown.
 
 Questions:
 1) Who can propose deletion? Any authenticated user, or only friends/group members/etc.?
@@ -128,4 +151,5 @@ Questions:
 
 7) “Other Social Profiles” modal:
    - The business mock currently targets #bioModal but user-profile uses #socialModal. Confirm intended reuse and fields.
+
 
