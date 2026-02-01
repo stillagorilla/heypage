@@ -13,6 +13,18 @@ Phase 0 — Mockup Review + Architecture Blueprint
 - Identify reusable UI blocks (header/footer/nav/sidebars/cards/tiles/modals/etc.) and convert them into Django template includes.
 - Produce an initial Django project scaffold aligned with performance, scalability, and maintainability.
 
+## Mockups status (source of truth)
+- Mockups are complete and committed under `mockups-original/`. :contentReference[oaicite:1]{index=1}
+- The following pages have **no context depictions** (single canonical mockup each):
+  - `feed.html` (home for logged-in users)
+  - `search.html` (hard results page after submit / “View All”)
+  - `login-register.html`
+  - `reset-password.html`
+  - `settings.html`
+  - `chat.html`
+  - `emails/index.html` (email template)
+  - `coming-soon.html` (temporary production placeholder)
+
 ## Working Assumptions (v0)
 - Backend: Django (with optional DRF for API), server-rendered templates first, progressive enhancement for interactivity.
 - Real-time later: WebSockets (Django Channels) for chat/notifications if/when required.
@@ -55,3 +67,4 @@ Record decisions with date, decision, and rationale.
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
