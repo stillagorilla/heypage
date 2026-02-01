@@ -137,6 +137,13 @@ Implementation will reuse the post card partial and inject review-specific subco
 
 ---
 
+## Privacy and chat
+
+- The Settings page defines privacy controls for posts, friend requests, timeline posting, and friend list visibility, plus notification toggles and blocked contacts management.
+- Chat is a two-pane conversation UI with mute and block actions and an input composer for messages (and potential image/emoji attachments).
+
+---
+
 ## Interaction demos
 
 The mockups include an interaction demo script at `mockups-original/assets/js/app.js`. It demonstrates intended UI behaviors for early implementation, including:
