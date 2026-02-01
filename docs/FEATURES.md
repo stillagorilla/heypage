@@ -22,6 +22,11 @@ This is the evolving feature inventory. It’s OK for this list to be broader th
   - [ ] Albums (as depicted)
 - [ ] Comments + replies
 - [ ] Reactions (like + counts)
+- Live search dropdown (Users/Groups/Businesses) + “View All” hard results page (`search.html`) :contentReference[oaicite:16]{index=16}
+- Friend requests dropdown with accept/decline :contentReference[oaicite:17]{index=17}
+- Add friend action + success toast :contentReference[oaicite:18]{index=18}
+- Block/report user actions (kebab menu) :contentReference[oaicite:19]{index=19}
+- Change profile photo (owner) with upload modal :contentReference[oaicite:20]{index=20}
 
 ## Key static pages (no context depictions)
 - Feed (logged-in home): `feed.html`
@@ -71,5 +76,6 @@ Notes:
 
 ## External Integrations (Future)
 - [ ] OAuth-based integrations to import/export content with other platforms (scoped later)
+
 
 
