@@ -1157,3 +1157,63 @@ Model implications (recommended):
   - per-notification-type toggles (later)
 - Unsubscribe token:
   - user_id + signed token in unsubscribe URL
+
+## Settings & Privacy: user preferences and security
+
+Source: `settings.html`
+
+### Account fields editable from Settings
+- username (public handle)
+- display_name (Name)
+- email
+
+Notes:
+- Username changes impact public URL `/<username>/` and must enforce:
+  - reserved words restriction
+  - uniqueness (case-insensitive recommended)
+  - optional redirect rules (if we support old username redirects)
+
+### Privacy preferences (per-user)
+Define a small preference model tied 1:1 to User:
+
+`UserPrivacySettings`
+- default_post_audience:
+  - everyone | friends_of_friends | friends | private
+- friend_request_audience:
+  - everyone | friends_of_friends | friends | private
+- timeline_post_audience:
+  - everyone | friends_of_friends | friends | private
+- friends_list_visibility:
+  - everyone | friends_of_friends | friends | private
+
+Bulk change control:
+- change_existing_posts_to (transient request input):
+  - dont_change | everyone | friends_of_friends | friends | private
+Implementation note:
+- This is an action, not a stored preference. It triggers an update on existing ContentItem records.
+
+### Block list
+Model:
+`BlockedContact`
+- blocker_user (FK User)
+- blocked_user (FK User)
+- created_at
+Uniqueness:
+- unique (blocker_user, blocked_user)
+
+### Notification preferences (per-user)
+Model:
+`UserNotificationSettings`
+- notify_content_proposed_for_deletion (bool)
+- notify_new_friend_requests (bool)
+- notify_comments_on_my_posts (bool)
+
+### Security settings
+Password reset:
+- handled by Django password reset flow (tokens), plus rate limiting.
+
+MFA:
+- MVP can store a placeholder flag until implemented:
+  - mfa_enabled (bool)
+  - mfa_method (nullable)
+  - mfa_enrolled_at (nullable)
