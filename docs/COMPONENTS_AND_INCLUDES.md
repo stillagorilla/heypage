@@ -288,3 +288,38 @@ If reviews can be proposed for deletion (recommended for consistency), reuse:
 Decision needed:
 - Are reviews moderation targets with the same "Propose Deletion" → Yes/No → stats/bypass panel flow?
 (See OPEN_QUESTIONS.md.)
+
+## Search (topnav live search + hard results)
+
+Sources:
+- Hard results page: `mockups-original/search.html`
+- Interaction demo JS: `mockups-original/assets/js/app.js`
+
+### Search box (topnav) live results dropdown
+Component:
+- `templates/partials/search/search_box.html` (embedded inside topnav partial)
+- `templates/partials/search/live_results_dropdown.html`
+
+Behavior (mock demo):
+- On focus of `#searchBox`: show `.searchResults` dropdown (fade in)
+- On blur of `#searchBox`: hide `.searchResults` dropdown (fade out)
+
+Implementation recommendation:
+- Phase 1: show/hide dropdown on focus/blur (matches mock)
+- Phase 2: HTMX endpoint for live results, debounced input, with "View All" linking to hard results page
+
+### Hard search results page
+Template:
+- `templates/search/search_results.html`
+
+UI:
+- Tabs: Users / Groups / Business
+- Users: list rows with avatar + name linking to profile
+- Groups/Business: result "row cards" with square image + name + metadata
+- Business tab includes an "Add Business" call-to-action linking to create business
+
+Reusable subcomponents:
+- `templates/partials/search/user_result_row.html`
+- `templates/partials/search/group_result_row.html`
+- `templates/partials/search/business_result_row.html`
+- `templates/partials/search/add_business_cta.html`
