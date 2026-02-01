@@ -1112,6 +1112,48 @@ This keeps 1 unified pipeline for comments/reactions/moderation.
 - FK to `parent_comment` (nullable; enables replies)
 - `author`, `body_text`, timestamps
 
+## Auth: user identity fields (implied by registration UI)
 
+Registration form implies:
+- display_name (label: "Name")
+- username (public handle; used in root URL scheme `/<username>/`)
+- email
+- password (hashed)
 
+Additional fields recommended:
+- terms_accepted_at (timestamp) (registration includes Accept Terms & Privacy checkbox)
+- email_verified_at (nullable; depends on whether email verification is required for MVP)
+- is_active / is_banned (standard)
 
+Uniqueness:
+- username unique (case-insensitive recommended)
+- email unique (case-insensitive recommended)
+
+## Auth: password reset
+
+Reset Password request page implies:
+- password reset request by email
+- email pipeline for sending reset link
+
+Use Django standard token mechanism, or store:
+- PasswordResetRequest
+  - user_id (nullable; avoid leaking existence)
+  - email (normalized)
+  - created_at
+  - used_at (nullable)
+  - request_ip (optional, abuse prevention)
+
+## Email notifications: digest capability + preferences
+
+Email template shows multiple notification lines in a single message and includes:
+- unsubscribe link
+- link to notification settings
+
+Model implications (recommended):
+- NotificationEvent (atomic events: new message, friend request, comment, deletion proposed, member approval needed, new business review)
+- NotificationPreference (per user):
+  - email_enabled (bool)
+  - digest_frequency (immediate | daily | weekly | off)
+  - per-notification-type toggles (later)
+- Unsubscribe token:
+  - user_id + signed token in unsubscribe URL
