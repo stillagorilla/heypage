@@ -369,3 +369,17 @@ Questions:
    - chat
    - group membership lists
    - business team lists
+
+## Auth flows and security scope
+
+Sources:
+- `login-register.html`
+- `reset-password.html`
+
+Questions:
+1) Username rules: allowed characters, minimum length, case sensitivity?
+2) Email verification: required before first login or not?
+3) Terms acceptance: do we store acceptance timestamp and version?
+4) Password policy: minimum length, complexity rules?
+5) Reset password: do we use Django's built-in reset flow with emailed token links (recommended)?
+6) Social login: are Google/Facebook required for MVP or placeholders for later?
