@@ -323,3 +323,53 @@ Reusable subcomponents:
 - `templates/partials/search/group_result_row.html`
 - `templates/partials/search/business_result_row.html`
 - `templates/partials/search/add_business_cta.html`
+
+## Modals and interaction demos (system-wide)
+
+Sources:
+- Group About page (`group-page.html`)
+- Interaction demo JS (`assets/js/app.js`)
+- Hard search results (`search.html`)
+- Group Members (`group-members.html`)
+
+### Modal taxonomy (normalize naming and reuse)
+
+Recommended Django partials:
+- `templates/partials/modals/invite_modal.html`
+- `templates/partials/modals/propose_deletion_modal.html`
+- `templates/partials/modals/upload_image_modal.html`
+- `templates/partials/modals/edit_business_modal.html`
+- `templates/partials/modals/edit_profile_photo_modal.html` (owner profile photo)
+
+Observed in mockups:
+- Invite modal:
+  - Triggered from Group About page via Invite button: `data-target="#inviteModal"`.
+- Propose Deletion modal:
+  - Triggered from post kebab menus using `data-target="#reportModal"` across feed/entity pages.
+- Upload image modal:
+  - Used by demo JS when generating edit-post composer (references `#uploadImgModal`).
+- Toast-based join/confirmations:
+  - Group About "Join Group" uses `#liveToastBtn` and triggers a toast, not a modal.
+  - Group Members "Add to Friends" uses the same `#liveToastBtn` pattern for success feedback.
+
+Implementation rule:
+- Prefer reusable modal partials with consistent IDs.
+- Do not duplicate modal HTML across pages. Include once in `base.html` (or per template) and trigger it via data attributes.
+- Replace demo-only IDs that are reused incorrectly (e.g., multiple `#liveToastBtn` instances) with class-based selectors.
+
+### Topnav search and related interactions (demo JS)
+
+Search dropdown:
+- Show live search dropdown on focus of `#searchBox`
+- Hide on blur of `#searchBox`
+
+Hard results page:
+- Tabbed results for Users / Groups / Business, plus an "Add Business" CTA.
+
+Other interaction demos worth implementing in MVP:
+- Side nav open/close via `#sideNavToggle`.
+- Reaction popover on `.addReaction` hover/click.
+- Share popover on `.shareLink` click.
+- Emoji popover on `.addEmoji`.
+- Reply toggle "Show replies" on `.toggleReply`.
+- Voting panel: clicking Yes/No changes label and reveals vote results.
