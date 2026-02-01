@@ -808,3 +808,32 @@ Locked:
 
 Remaining:
 - Confirm whether non-owners can ever edit details (admins only, owner only, or delegated roles).
+
+## Auth / Email: remaining decisions
+
+1) Social auth:
+- UI shows Google and Facebook buttons on both Register and Login.
+- Confirm MVP scope:
+  - phase 1: hide/disable buttons
+  - phase 2: add OAuth (django-allauth or custom)
+
+2) Email verification:
+- Is email verification required before the account is active?
+- If yes, add verification email template and token flow.
+
+3) Terms & Privacy:
+- What are the canonical URLs for Terms and Privacy pages?
+- Confirm whether acceptance is required at registration (UI includes checkbox).
+
+4) Password reset:
+- Confirm whether we use Django built-in password reset views + tokens (recommended) or a custom table.
+- Define rate limits for reset requests.
+
+5) Email notifications:
+- Template reads like a digest (multiple lines).
+- Confirm sending strategy:
+  - immediate transactional per event, OR
+  - digest batching (hourly/daily), OR
+  - hybrid (critical events immediate; others digested)
+- Confirm unsubscribe semantics:
+  - global email off, or categories/toggles?
