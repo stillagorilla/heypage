@@ -1124,3 +1124,70 @@ Implementation recommendation:
 - Convert to `templates/partials/sidenav.html`.
 - Active state should be computed server-side:
   - pass `active_nav` or `request.path` into the template and highlight the current link.
+
+## Entity header system (base partial + variants)
+
+Sources:
+- Owner user header: `includes_my-profile-head.html`
+- Public user header: `includes_profile-head.html`
+
+### Goal
+Unify all user/group/business page headers into a consistent, reusable template system:
+- shared layout (cover image, avatar, name, badges)
+- right-side action area (varies by viewer context and entity type)
+- tab navigation (varies by entity type and viewer context)
+
+### Recommended template structure
+
+Base shell (shared cover/avatar/name/badges + slots):
+- `templates/partials/entity/entity_header_base.html`
+
+Entity-specific wrappers:
+- `templates/partials/entity/user_header.html`
+- `templates/partials/entity/group_header.html`
+- `templates/partials/entity/business_header.html`
+
+Context variants (viewer):
+- `templates/partials/entity/user_header_owner.html` (my profile)
+- `templates/partials/entity/user_header_public.html` (viewing another user)
+
+### Slots/inputs to the base header
+- `entity_type` in {"user","group","business"}
+- `viewer_context` in {"owner","public"}
+- `cover_image_url`
+- `avatar_image_url`
+- `display_name`
+- `badges` (list of labels: e.g., Representative, Influencer)
+- `primary_action` (button or button group on the right)
+- `kebab_menu_items` (optional)
+- `tabs` (list of {label, href, count?} with active state)
+
+### User header: owner vs public behaviors
+
+Owner ("My profile") header:
+- Shows edit avatar controls:
+  - pen overlay button and "Change Photo" button open a photo upload modal `#photoModal`.
+- Includes `photoModal` markup (upload form). Must be componentized and avoid hardcoded input IDs (see below).
+
+Public user header:
+- Shows relationship action (e.g., "Add to Friends") plus kebab menu:
+  - Block User
+  - Report User
+- Includes toast success markup in mock; in Django this should be centralized and triggered via class selectors (no duplicate IDs).
+
+### Tabs
+Both headers include tabs:
+- About, Photos, Friends, Groups, Reviews, Businesses
+with owner linking to `my-*` routes and public linking to `user-profile-*` routes.
+
+Implementation:
+- In Django, tabs should be generated from a single tab config per entity type:
+  - `entity_tabs_user(owner/public)`
+  - `entity_tabs_group(owner/public)`
+  - `entity_tabs_business(owner/public)`
+
+### Modal ID + input ID safety (critical)
+Owner header includes an upload input with `id="file"` inside `#photoModal`.
+Rule:
+- Any modal partial must accept a `modal_id` and input IDs as parameters (e.g., `file_input_id`),
+  so multiple instances never collide when reused across entity pages.
