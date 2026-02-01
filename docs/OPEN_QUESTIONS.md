@@ -561,3 +561,22 @@ Open questions:
 2) Does "decline" block future requests from that user, or just reject the current request?
 3) Should group admins be able to remove members from the Members list (kebab action)?
 4) Should group admins be able to mute members (like owner friends list shows "Mute") or is that only for messaging contexts?
+
+## Groups: admin capabilities and group_type rules
+
+Sources:
+- `my-groups.html`
+- `user-profile-groups.html`
+
+Open questions:
+1) Group Administration tab scope:
+   - Should it list only groups the user administers, or also "managed groups" needing approvals?
+
+2) Group Type behavior (Public / Semi-Public / Private):
+   - Public: visible to anyone + joinable by anyone (as helper text suggests)
+   - Semi-Public: confirm exact rules (visible to anyone? join requires approval?)
+   - Private: confirm exact rules (discoverable in search? content visible only to members?)
+
+3) Create Group:
+   - Is group cover image/avatar set at creation time or later via group settings/edit modal?
+4) Should public user-profile groups page show only groups the user is a member of, or also admin groups, or both?
