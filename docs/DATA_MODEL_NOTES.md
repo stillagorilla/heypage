@@ -334,3 +334,12 @@ Recommended entities:
 
 Notes:
 - "Group Type" UI implies different rules for viewing content and joining the group.
+
+## Friendship state enforcement
+
+Decision:
+- "Friends" list pages/tabs represent accepted friendships only.
+- Pending requests are shown separately under Friend Requests (inbound) and, if needed later, under a Pending/Outgoing tab.
+
+Implementation:
+- Friendship.status = accepted is the only status included in friends lists.
