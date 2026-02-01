@@ -713,3 +713,51 @@ Template:
 Components:
 - uses the same `business_tile_row.html` include
 - no tabs and no Create Business CTA
+
+## Business: Team and Jobs tabs
+
+Sources:
+- `mockups-original/business-team.html`
+- `mockups-original/business-jobs.html`
+
+### Business Team tab
+
+UI:
+- Team page uses the same "friends-list" row pattern:
+  - avatar + name link to user profile
+  - right-side relationship button ("Add to Friends" or "Friends")
+  - toast success feedback for Add to Friends
+
+Reusable includes:
+- `templates/partials/friends/friend_row.html`
+  - configured for use inside business context (team list)
+- `templates/partials/toasts/toast_success.html` (shared toast component)
+
+Implementation rule:
+- Do not reuse DOM IDs like `#liveToastBtn` for multiple rows. Use a class selector (e.g., `.js-show-toast`) and data attributes for message content.
+
+### Business Jobs tab
+
+UI:
+- Jobs page is a feed of "job post" cards.
+- Each job post card includes:
+  - business header (logo + business link + timestamp)
+  - kebab menu: Edit / Delete / Propose Deletion
+  - job header insert: title + location + Apply button (external link icon)
+  - job body text
+  - expandable "Show more" section (hidden-content toggled by `.showHidden`)
+  - reactions and share icons
+  - comment composer ("Leave a comment") with image + emoji buttons and Post submit
+- Propose Deletion modal (`#reportModal`) is present on this page.
+
+Reusable includes:
+- `templates/partials/jobs/job_post_card.html`
+  - derived from `post_card.html` pattern with job-specific inserts
+- `templates/partials/jobs/job_header_insert.html`
+  - title, location, apply_url
+- `templates/partials/post/comment_form.html` (shared)
+- `templates/partials/moderation/propose_deletion_modal.html` (shared modal)
+- `templates/partials/moderation/deletion_vote_panel.html` (if jobs participate in the voting mechanism post-proposal)
+
+Interaction demo alignment:
+- "Show more" uses the same class pattern (`.showHidden` toggles `.hidden-content`) used elsewhere in demo interactions.
