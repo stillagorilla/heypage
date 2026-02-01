@@ -656,3 +656,32 @@ Model implications:
 - Relationship logic must provide:
   - current friendship state between viewer and profile user
   - whether viewer is blocked or can request friendship
+
+## Group and Business membership states (needed for header actions)
+
+Sources:
+- `group-page.html`
+- `business-page.html`
+
+Both Group and Business headers include a Join action and a Leave option in the kebab menu, implying a membership model.
+
+Recommended modeling:
+- GroupMembership
+  - group (FK)
+  - user (FK)
+  - role in {owner, admin, member}
+  - status in {active, pending, banned} (pending useful if join requests exist)
+  - created_at
+
+- BusinessMembership (or BusinessTeamMember)
+  - business (FK)
+  - user (FK)
+  - role in {owner, admin, member}
+  - status in {active, pending} (optional)
+  - created_at
+
+Header-driven fields:
+- membership state determines label and visibility for Join/Leave and Invite.
+- counts displayed in header tabs:
+  - Group: photo_count, member_count
+  - Business: job_count badge (and optional counts later)
