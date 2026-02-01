@@ -205,3 +205,15 @@ The repo includes an HTML email template under `mockups-original/emails/index.ht
 ## Email assets
 
 The email mock template references a header logo at `images/image-1.png`. In production, email images should use an absolute URL or be embedded as a CID attachment for reliable rendering across email clients.
+
+## Front-end JS in mockups (what it is and how we will use it)
+
+The mockups include JavaScript under `assets/js/` that primarily demonstrates UI interactions (dropdowns, replies, voting demos, toasts, etc.). It is not production-ready logic.
+
+During the Django build, we will:
+- treat mockup JS as a behavior reference only,
+- re-implement the chosen behaviors cleanly in Django templates + a small, modular JS layer,
+- avoid duplicated IDs found in mockups (example: multiple `id="liveToastBtn"` buttons on the same page),
+- replace `includeHTML.js` and client-side includes with Django template includes.
+
+If you add or change mockup JS behavior, capture the decision in `docs/COMPONENTS_AND_INCLUDES.md` and any unresolved questions in `docs/OPEN_QUESTIONS.md`.
