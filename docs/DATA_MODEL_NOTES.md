@@ -601,3 +601,20 @@ These notes come from interaction patterns present in the mockups and their JS w
   - A proposal entity that points to a target object (post/comment/review/photo).
   - Vote records with voter, vote value, timestamps.
   - Aggregate state and rules evaluation fields (status, quorum, thresholds, representative override).
+
+## Search model notes (confirmed by hard results page)
+
+Source: `search.html`
+
+Hard results support three entity types:
+- User
+- Group
+- Business
+
+MVP query approach:
+- Case-insensitive substring query (icontains) per entity type
+- Pagination for hard results per tab
+- Top-N limits for live dropdown sections (e.g., 4 users, 1 group, 1 business as shown)
+
+Add Business CTA:
+- Business search results page includes an explicit "Add Business" CTA linking to create-business.html, implying business directory may be incomplete and user-contributed.
