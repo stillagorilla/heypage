@@ -1453,3 +1453,96 @@ Critical implementation rule:
 - When componentizing, `photoModal` and the file input must be parameterized:
   - `modal_id`, `file_input_id`, `form_id`
 so we can safely reuse photo upload UI across multiple entity types without ID collisions.
+
+## Entity header slot mapping: Group (public)
+
+Source:
+- Group header (public): `group-page.html`
+
+This section maps the current group-page header into the `header` slot contract for `entity_header_base.html`.
+
+### Group header (public) → `header` mapping
+
+Identity + media:
+- `header.entity_type = "group"`
+- `header.viewer_context = "public"`
+- `header.cover_url` ← `.bg-wrap img.card-img-top` (`assets/img/food-bg.jpg`)
+- `header.avatar_url = None` (no group avatar/logo shown in the header)
+- `header.title` ← `<h2 class="mb-1">Healthy Foodies</h2>`
+- `header.subtitle = None` (not shown)
+
+Badges:
+- `header.badges = []` (no badges/awards shown in group header)
+
+Actions cluster:
+- Action 1: "Invite"
+  - modal trigger: `data-toggle="modal" data-target="#inviteModal"`
+- Action 2: "Join Group"
+  - IMPORTANT: mock uses `id="liveToastBtn"` (demo) which must become `js_hook="js-live-toast-btn"` in production to avoid duplicate IDs.
+
+Kebab menu:
+- Items:
+  - "Report Page"
+  - "Leave Group"
+
+Tabs:
+- About → `group-page.html` (active)
+- Photos (count=234) → `group-photos.html`
+- Members (count=328) → `group-members.html`
+
+Notes:
+- Group header currently has no subtitle/category; if groups later have categories (e.g., “Food”), map to `header.subtitle`.
+- If membership can be pending/approved, `Join Group` should be rendered from `viewer_membership_state` (join / requested / joined / blocked).
+
+## Entity header slot mapping: Business (public)
+
+Source:
+- Business header (public): `business-page.html`
+
+This section maps the current business-page header into the `header` slot contract for `entity_header_base.html`.
+
+### Business header (public) → `header` mapping
+
+Identity + media:
+- `header.entity_type = "business"`
+- `header.viewer_context = "public"`
+- `header.cover_url` ← `.bg-wrap img.card-img-top` (`assets/img/construction-bg.jpg`)
+- `header.avatar_url = None` (logo image is commented out in mock: `<!-- <img src="assets/img/aliquot.png" ...> -->`)
+- `header.title` ← `<h2 class="mb-1">Aliquot Inc</h2>`
+- `header.subtitle` ← `<p class="smaller text-muted mb-0">Civil Engineering</p>`
+
+Badges / awards:
+- `header.badges` ← awards strip rendered as icons:
+  - `assets/img/award-2020.png` (Award 2020)
+  - `assets/img/award-2021.png` (Award 2021)
+Recommendation:
+- represent these as badges with `{label: "Award 2020", icon_url: ...}` etc.
+
+Actions cluster:
+- Action 1: "Invite" (currently a link-style button; no destination set)
+- Action 2: "Join Company"
+  - IMPORTANT: mock uses `id="liveToastBtn"` (demo) which must become `js_hook="js-live-toast-btn"` in production.
+
+Kebab menu:
+- Items:
+  - "Report Profile"
+  - "Leave Group" (mock labeling artifact — should be “Leave Business” or “Leave Company”)
+  - "Post a Job"
+  - "Edit" (modal trigger: `data-toggle="modal" data-target="#editBusinessModal"`) 
+
+Additional header metadata:
+- Website link shown in header: `aliquot.com` (currently `href="#"`)
+Mapping:
+- Store as `business.website_url` and render as a normal anchor in the base header’s “meta row” slot.
+
+Tabs:
+- About → `business-page.html` (active)
+- Team → `business-team.html`
+- Jobs → `business-jobs.html` with badge count=2
+- Reviews → `business-reviews.html`
+
+Notes:
+- Kebab permissioning in Django should gate:
+  - Post a Job / Edit (admin/owner only)
+  - Leave Company (members only)
+- The “Join Company” label suggests we should standardize business membership terminology as “Company” in UI (Join/Leave Company).
