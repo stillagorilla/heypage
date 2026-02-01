@@ -2439,3 +2439,145 @@ Reusable partials (recommended):
 
 Implementation note:
 - checkbox IDs (`check1`, etc.) are mock-only; in Django, generate unique IDs per photo.
+
+## Canonical “post-like” architecture (Posts / Reviews / Jobs / Photos)
+
+Goal: normalize all feed-like content into a single composable component system.
+
+### component_post_like (base)
+Django include:
+- `templates/partials/content/post_like_card.html`
+
+This is the base card used for:
+- Posts (feed + user pages)
+- Reviews (business pages)
+- Jobs (business pages)
+- Photo posts (if/when photos appear in a feed format)
+
+Slots / subcomponents:
+1) `component_card_header_author` (author avatar/name + timestamp + kebab)
+2) `component_card_body` (text, optional)
+3) `component_media_block` (0..N attachments; grid variants)
+4) `component_reactions_bar` (reaction summary + add reaction + share)
+5) `component_moderation_panel` (conditional)
+6) `component_comments` (thread + composer)
+
+---
+
+### component_composer (post-like composer)
+Django include:
+- `templates/partials/content/composer.html`
+
+Confirmed affordances from feed “make post”:
+- textarea
+- media button opens `#uploadImgModal`
+- emoji button
+- visibility selector: Everyone / Friends / Private
+- submit button (“Post”)
+
+Context/props:
+- `placeholder_text` (varies by page/context)
+- `audience_default` (Everyone/Friends/Private)
+- `allow_media` (bool)
+- `allow_emoji` (bool)
+- `submit_label` (Post / Review / etc.)
+
+---
+
+### component_card_header_author + kebab menu
+Django include:
+- `templates/partials/content/card_header_author.html`
+
+Kebab menu actions (post-like):
+- Edit
+- Delete
+- Propose Deletion (opens `#reportModal`) (feed page contains the post card; kebab is present there)
+
+Implementation notes:
+- Permission-gated display of Edit/Delete
+- Propose Deletion displayed when viewer can propose moderation
+
+---
+
+### component_reactions_bar
+Django include:
+- `templates/partials/content/reactions_bar.html`
+
+Depicts:
+- multiple emoji “reaction pills” with counts
+- addReaction button (smile-plus)
+- shareLink button (share icon) (reaction UI is inside feed post cards)
+
+Props:
+- `reactions_summary`
+- `viewer_can_react` (bool)
+- `viewer_can_share` (bool)
+
+---
+
+### component_comments (thread + recursive comment + composer)
+Django includes:
+- `templates/partials/content/comment_thread.html`
+- `templates/partials/content/comment.html` (recursive)
+- `templates/partials/content/comment_form.html`
+
+Depicts:
+- nested replies
+- “Show X replies”
+- “Show N more comments”
+- comment-level reaction controls in some variants
+
+Props:
+- `comments` (tree)
+- `viewer` / `request.user`
+- paging/collapse state
+
+---
+
+## Moderation (democratic deletion voting)
+
+### component_propose_deletion_modal
+Django include:
+- `templates/partials/moderation/propose_deletion_modal.html`
+
+Modal: “Propose Deletion”
+- multi-checkbox reason list (Reason 1/2/3 placeholders in mockups)
+- (other optional fields may exist in other pages)
+
+Note: This same modal appears in other post-like contexts (e.g., business reviews).
+
+---
+
+### component_deletion_vote_panel (inline “voting stuff”)
+Django include:
+- `templates/partials/moderation/deletion_vote_panel.html`
+
+State: **PROPOSED (not yet voted)**
+- Banner: “Deletion Proposed”
+- Prompt: “Agree?”
+- Proposal text line (e.g., “Proposed for violation of terms”)
+- Time remaining (e.g., “8 hours remaining”)
+- Threshold requirement (e.g., “Supermajority needed (2/3) to pass”)
+- Yes/No buttons
+
+State: **VOTE IN PROGRESS (results visible)**
+- Progress bar with YES tally (e.g., “4/9 (45%)”)
+- Representative-votes UI:
+  - voted markers vs remaining markers
+  - “1 representative vote remaining for content deletion.”
+
+Future (not yet depicted in these lines; keep as TODO):
+- RESOLVED: passed → removed
+- RESOLVED: failed/expired → kept
+- Viewer already voted (disable buttons / show “Voted”)
+
+---
+
+## Media upload modal used by composer
+
+### component_upload_image_modal
+Django include:
+- `templates/partials/media/upload_image_modal.html`
+
+Confirmed control:
+- checkbox: “Fit image instead of showing a cropped preview” (store as an upload/display preference)
