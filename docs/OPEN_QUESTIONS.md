@@ -76,6 +76,16 @@ Open questions:
 - What ranking rules for Users vs Groups vs Businesses?
 - Are there privacy constraints (e.g., private groups not shown)?
 
+## Business & Group membership rules (implied by headers)
+- Business page supports Join Company + Invite + Team list + "Post a Job" action. :contentReference[oaicite:13]{index=13}
+- Group page supports Join Group + Invite + Admins list. :contentReference[oaicite:14]{index=14}
+
+Questions:
+1) What are the membership states for business and group? (none/requested/member/admin/owner)
+2) Who can invite? Members only, admins only, or any user?
+3) Who can post as the entity vs post to the entity? (e.g., “company announcement” vs “user post on company page”)
+4) For groups: what does "Admins" audience mean for posts? Visibility restriction or posting permission?
+
 ## Moderation: key rule questions (blocking)
 
 Depicted moderation mechanics include:
@@ -93,3 +103,4 @@ Questions:
    - What exactly does the bypass do (immediate removal? counts as multiple votes? ends the vote early?) 
    - How are "rep votes remaining" allocated and replenished?
 6) What happens to content after passing? Hard delete vs soft delete vs hidden + audit trail?
+
