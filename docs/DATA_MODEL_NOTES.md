@@ -933,3 +933,78 @@ Edit Photos UI implies:
 - ability to select multiple photos
 - set/edit a date per photo (taken_on)
 - move selected photos into one or more albums ("Move to Album")
+
+## Content architecture: “post-like” base model
+
+We should model Posts/Reviews/Jobs/Photos as a shared “content item” concept so we can reuse:
+- reactions
+- comments + replies
+- moderation proposals + votes
+- attachments/media
+
+Recommended approach (Django):
+- `ContentItem` (base table) with:
+  - `content_type` enum: POST | REVIEW | JOB | PHOTO
+  - `author` FK(User)
+  - `created_at`, `updated_at`
+  - `body_text` (nullable)
+  - `audience` enum: EVERYONE | FRIENDS | PRIVATE (from composer visibility selector)
+
+Then add type-specific tables (one-to-one with ContentItem) as needed:
+- `PostDetails` (optional)
+- `ReviewDetails` (rating, business FK, “first review” badge rules, etc.)
+- `JobDetails` (business FK, job fields)
+- `PhotoDetails` (album FK, etc.)
+
+This keeps 1 unified pipeline for comments/reactions/moderation.
+
+---
+
+## Attachments / media
+
+`MediaAttachment`
+- FK to `ContentItem`
+- file/image field + metadata
+- ordering
+- `fit_image` boolean (from upload modal: “Fit image instead of showing a cropped preview”)
+
+---
+
+## Democratic moderation: propose deletion + voting
+
+`DeletionProposal`
+- FK to `ContentItem`
+- `proposed_by` FK(User)
+- `created_at`
+- `expires_at` (drives “X hours remaining”)
+- `status` enum: ACTIVE | PASSED | FAILED | CANCELED
+- `threshold_type` (e.g., SUPERMAJORITY)
+- `threshold_value` (e.g., 2/3)
+- `reason_codes` (multi-select; mock uses multiple checkboxes)
+- optional `reason_detail_text` (if present elsewhere)
+
+`DeletionVote`
+- FK to `DeletionProposal`
+- `voter` FK(User)
+- `vote` enum: YES | NO
+- `created_at`
+
+`RepresentativeVote` (concept is real in UI; details TBD)
+- FK to `DeletionProposal`
+- `representative` FK(User)
+- `vote` enum YES | NO (or “support deletion” only, depending on rules)
+- derived UI: voted vs remaining markers + “N representative votes remaining…”
+
+---
+
+## Reactions + Comments (shared)
+`Reaction`
+- FK to `ContentItem` (and optionally also to `Comment` for comment-level reactions)
+- `emoji_code`
+- `user` FK(User)
+- `created_at`
+
+`Comment`
+- FK to `ContentItem`
+- FK to `parent_comment` (nullable; enables replies)
+- `author`, `body_text`, timestamps
