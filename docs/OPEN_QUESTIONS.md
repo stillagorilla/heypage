@@ -780,4 +780,31 @@ Open questions:
 3) Share behavior:
    - What does the share icon do (share to feed, share externally, copy link)?
 
+## URL scheme: remaining implementation details
 
+Locked:
+- Users: `/<username>/`
+- Groups: `/g/<slug>/`
+- Businesses: `/b/<slug>/`
+
+Remaining:
+1) Username rules:
+- Confirm allowed characters and length (recommend conservative slug rules).
+- Confirm case sensitivity policy (recommend case-insensitive uniqueness).
+
+2) Reserved words:
+- Confirm final reserved list and whether it also blocks group/business slugs (recommended to block for clarity).
+
+3) Renames:
+- Do we support username/slug renames?
+- If yes, do we keep redirects from old handles, or break old URLs?
+
+## Business edit modals: confirm field ownership
+
+Locked:
+- Header kebab "Edit" opens identity modal (name/logo/category).
+- About pencil opens details modal (about/contact/locations).
+- Both can be titled "Edit Business" but must be distinct forms and IDs.
+
+Remaining:
+- Confirm whether non-owners can ever edit details (admins only, owner only, or delegated roles).
