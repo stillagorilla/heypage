@@ -546,3 +546,18 @@ Questions:
 Decision:
 - Entity headers will be rendered via `entity_header_base.html` using a single `header` context dict (slot contract documented in COMPONENTS_AND_INCLUDES.md).
 - Wrappers construct the dict for user/group/business and owner/public variants.
+
+## Group Membership Requests tab (admin context)
+
+Sources:
+- Friend Requests tab exists in `my-friends.html`.
+- Group Members page is structurally similar to Friends lists.
+
+Decision:
+- Group membership approvals / pending requests will use the same UX as Friend Requests.
+
+Open questions:
+1) Who can approve membership requests (group owner only vs admins)?
+2) Does "decline" block future requests from that user, or just reject the current request?
+3) Should group admins be able to remove members from the Members list (kebab action)?
+4) Should group admins be able to mute members (like owner friends list shows "Mute") or is that only for messaging contexts?
