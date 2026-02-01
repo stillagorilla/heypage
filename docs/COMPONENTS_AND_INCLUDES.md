@@ -46,9 +46,9 @@ Profile pages:
 ## Feed + posts (confirmed from feed + profile mockups)
 
 Sources:
-- feed: `mockups-original/feed.html` :contentReference[oaicite:11]{index=11}
-- owner profile: `mockups-original/my-profile.html` :contentReference[oaicite:12]{index=12}
-- public profile: `mockups-original/user-profile.html` :contentReference[oaicite:13]{index=13}
+- feed: `mockups-original/feed.html`
+- owner profile: `mockups-original/my-profile.html`
+- public profile: `mockups-original/user-profile.html`
 
 ### Post composer ("make post" card)
 Django include:
@@ -116,7 +116,7 @@ Context:
 ## Global layout includes (confirmed from mockups)
 
 ### Top navigation
-Source mockup: `mockups-original/includes_topnav.html` :contentReference[oaicite:4]{index=4}
+Source mockup: `mockups-original/includes_topnav.html`
 
 Django include:
 - `templates/partials/nav/top_nav.html`
@@ -134,7 +134,7 @@ Contains:
   - “View All” button → hard results page (`search.html`)
 
 ### Side navigation
-Source mockup: `mockups-original/includes_sidenav.html` :contentReference[oaicite:5]{index=5}
+Source mockup: `mockups-original/includes_sidenav.html`
 
 Django include:
 - `templates/partials/nav/side_nav.html`
@@ -150,8 +150,8 @@ Implementation notes:
 ## Profile header component (owner/public consolidated)
 
 ### Source mockups
-- Public profile header: `mockups-original/includes_profile-head.html` :contentReference[oaicite:6]{index=6}
-- Owner profile header: `mockups-original/includes_my-profile-head.html` :contentReference[oaicite:7]{index=7}
+- Public profile header: `mockups-original/includes_profile-head.html`
+- Owner profile header: `mockups-original/includes_my-profile-head.html`
 
 ### Django include
 - `templates/partials/profile/profile_header.html`
@@ -165,13 +165,13 @@ Implementation notes:
 - `counts` (photos_count, friends_count, etc.) [optional]
 
 ### Owner-only UI
-(from `includes_my-profile-head.html`) :contentReference[oaicite:8]{index=8}
+(from `includes_my-profile-head.html`)
 - “Change Photo” button
 - pencil overlay on avatar
 - “Edit Photo” modal with file upload UI
 
 ### Public/other-user UI
-(from `includes_profile-head.html`) :contentReference[oaicite:9]{index=9}
+(from `includes_profile-head.html`)
 - “Add to Friends” button (with toast success UI)
 - kebab dropdown (Block User, Report User)
 
@@ -182,7 +182,7 @@ Use `is_owner` to toggle owner controls vs public controls.
 ## Entity header component (business + group)
 
 ### Business header (entity header variant)
-Source: `mockups-original/business-page.html` :contentReference[oaicite:6]{index=6}
+Source: `mockups-original/business-page.html`
 
 Contains:
 - cover image
@@ -193,7 +193,7 @@ Contains:
 - action buttons: Invite / Join Company
 
 ### Group header (entity header variant)
-Source: `mockups-original/group-page.html` :contentReference[oaicite:7]{index=7}
+Source: `mockups-original/group-page.html`
 
 Contains:
 - cover image
@@ -214,7 +214,7 @@ Context:
 
 ## Post composer variants by context
 
-Group About tab uses a composer placeholder "Send a message to the group" and a visibility selector with "Everyone / Admins". :contentReference[oaicite:8]{index=8}
+Group About tab uses a composer placeholder "Send a message to the group" and a visibility selector with "Everyone / Admins".
 
 Implementation:
 - reuse `partials/post/post_composer.html`
