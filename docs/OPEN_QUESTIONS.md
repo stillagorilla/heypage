@@ -146,6 +146,12 @@ Questions:
 7) “Other Social Profiles” modal:
    - The business mock currently targets #bioModal but user-profile uses #socialModal. Confirm intended reuse and fields.
 
+## Business header dropdown labeling artifact (resolved)
+
+On Business pages, "Leave Group" appears in the business entity header dropdown. This is a mock artifact.
+Decision:
+- Replace with "Leave Business" (or "Leave Company") or remove if not supported.
+
 ## Business Team and Jobs rules
 
 Sources:
@@ -334,3 +340,32 @@ Remaining questions:
 2) Are review reactions the same reaction set as posts?
 3) Can business owners/admins delete reviews directly, or only via moderation proposal?
 4) Are reviews visible in main feed, or only on Business Reviews tab and User Reviews tab?
+
+## Chat scope (MVP)
+
+Source: `chat.html`
+
+Questions:
+1) Is chat real-time (WebSockets) in MVP, or polling/refresh?
+2) Are conversations strictly 1:1, or do we support group chats later?
+3) Does "Block" in chat:
+   - block user globally (prevents friend requests/messages), or
+   - only mute/hide the conversation?
+4) Are image attachments supported in MVP, or is the image icon decorative for now?
+5) Unread counts: do we compute via last_read_at per participant?
+
+## Settings enforcement (privacy + bulk changes)
+
+Source: `settings.html`
+
+Questions:
+1) Does "Change who can see all existing post" retroactively update visibility on every prior post, or only future posts?
+2) How does friends list visibility affect:
+   - public profile Friends tab
+   - Shared Friends tab
+3) When user sets friend-request visibility to "Private", does that block all new requests or only from non-friends-of-friends?
+4) Are blocked contacts hidden from:
+   - search results
+   - chat
+   - group membership lists
+   - business team lists
