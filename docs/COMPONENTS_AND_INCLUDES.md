@@ -2987,3 +2987,66 @@ Actions:
 Save/Cancel:
 - Cancel button present
 - Save submits the form
+
+## Messaging: Chat (DM)
+
+Page: `chat.html`
+
+Template target:
+- `templates/chat/chat.html`
+
+Summary:
+- Single page includes:
+  - Chat sidebar (conversation list) with search field
+  - Chat area (active conversation) with header, message thread, and composer
+
+### Chat sidebar (conversation list)
+UI:
+- Search input: "Search Chats"
+- Close button (mobile only): `#chat-side-close`
+- List items:
+  - avatar + name
+  - optional unread count badge
+  - active conversation row has `active` class
+
+Recommended partials:
+- `templates/partials/chat/chat_sidebar.html`
+- `templates/partials/chat/conversation_list_item.html`
+
+### Chat header (active conversation)
+UI:
+- Back arrow to show sidebar (mobile): `#toggle-chat-sidebar`
+- Recipient identity row (avatar + name)
+- Kebab dropdown with actions:
+  - Mute Conversation
+  - Block
+
+Recommended partial:
+- `templates/partials/chat/chat_header.html`
+
+### Message thread
+UI:
+- Date separators (e.g., "Sep 17 2021, 18:23")
+- Message bubbles:
+  - incoming messages: `.chat-message` with avatar + bubble
+  - outgoing messages: `.chat-message me` with bubble only
+
+Recommended partials:
+- `templates/partials/chat/message_thread.html`
+- `templates/partials/chat/message_bubble.html`
+- `templates/partials/chat/date_separator.html`
+
+### Composer
+UI:
+- attachment button (image icon)
+- emoji button
+- textarea
+- send button (paper plane icon)
+
+Recommended partial:
+- `templates/partials/chat/chat_composer.html`
+
+Implementation notes:
+- This page can ship MVP as classic request/response with periodic polling (no WebSockets required).
+- Future upgrade path: Django Channels for realtime updates.
+- Fix mock typo: composer uses `<from>` tag; production should be `<form>`.
