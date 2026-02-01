@@ -112,3 +112,32 @@ This implies we must decide how to avoid collisions between user/business/group 
 Users can post business reviews that appear on:
 - the author’s user profile
 - the business profile’s “Reviews” section :contentReference[oaicite:6]{index=6}
+
+## Moderation model: deletion proposals and votes (UI-driven notes)
+
+The moderation panel is stateful and expands through a sequence:
+- no proposal → proposal open + yes/no buttons → voted + stats + rep bypass requirement. :contentReference[oaicite:20]{index=20}
+
+Recommended entities:
+- ModerationProposal
+  - target_type + target_id (post/comment/etc.)
+  - proposed_by
+  - reason_code / reason_text (if applicable)
+  - created_at, closes_at
+  - threshold_num, threshold_den (e.g., 2/3)
+  - status (open/closed/passed/failed)
+- ModerationVote
+  - proposal
+  - voter
+  - vote (yes/no)
+  - created_at
+- RepBypassVote (optional, if rep-bypass is real and distinct)
+  - proposal
+  - rep_user
+  - created_at
+
+Computed fields used by UI:
+- yes_count, no_count, total_count
+- yes_percent
+- time_remaining
+- rep_votes_remaining (rule-driven)
