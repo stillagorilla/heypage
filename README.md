@@ -119,6 +119,13 @@ assets/js/app.js is primarily interaction demo code; production behavior will be
 
 ---
 
+## Content types reuse
+
+Posts, reviews, and business job posts share a common post-card pattern (header, kebab actions, body/media, reactions/share, comment composer, moderation entrypoint).
+Reviews add a star rating control (composer) and star rating display (card).
+
+---
+
 ## Reviews implementation note
 
 Reviews are implemented as a specialized post-like content type.
