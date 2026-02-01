@@ -82,9 +82,10 @@ Notes:
   - [ ] Content kept after vote window ends
 - [ ] Representative vote concept (as depicted) — rules TBD
 
+## Entity pages share a common layout
+- User, Business, and Group pages share the same layout pattern: entity header + sidebar cards + center feed-like column (About tab). :contentReference[oaicite:9]{index=9} :contentReference[oaicite:10]{index=10}
+- Group About includes a "Send a message to the group" composer and an audience selector that supports "Everyone" and "Admins". :contentReference[oaicite:11]{index=11}
+- Business About includes locations, other social profiles, and team preview cards in the sidebar. :contentReference[oaicite:12]{index=12}
+
 ## External Integrations (Future)
 - [ ] OAuth-based integrations to import/export content with other platforms (scoped later)
-
-
-
-
