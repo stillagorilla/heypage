@@ -618,3 +618,16 @@ MVP query approach:
 
 Add Business CTA:
 - Business search results page includes an explicit "Add Business" CTA linking to create-business.html, implying business directory may be incomplete and user-contributed.
+
+## Notifications dropdown (MVP decision)
+
+Decision:
+- Notifications are accessed via a topnav dropdown, not a dedicated /notifications/ page.
+
+Model implications:
+- Notification must include a target link or enough info to construct a URL:
+  - target_type + target_id (polymorphic)
+  - optional verb/text fields for rendering
+- Track read/unread:
+  - `read_at` timestamp
+- Notification settings (already depicted in settings.html) determine which event types generate notifications/emails.
