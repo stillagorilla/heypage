@@ -540,3 +540,9 @@ Questions:
 
 5) Header awards:
    - Are awards purely decorative images, or derived from structured data (award name, year, icon)?
+
+## Entity header implementation contract (adopted)
+
+Decision:
+- Entity headers will be rendered via `entity_header_base.html` using a single `header` context dict (slot contract documented in COMPONENTS_AND_INCLUDES.md).
+- Wrappers construct the dict for user/group/business and owner/public variants.
