@@ -86,6 +86,29 @@ Review must render in two places:
 - User profile → Reviews tab
 - Business page → Reviews tab
 
+## Review is a first-class content type (post-like behavior)
+
+Sources:
+- `my-reviews.html`
+- `user-profile-reviews.html`
+
+Observed behaviors:
+- Reviews render like posts: reactions, share, and comment composer are present.
+- Reviews have kebab actions including "Propose Deletion".
+
+Recommended modeling:
+- Review is a first-class entity tied to a Business.
+- Reviews can be targeted by:
+  - Comment (same comment model as posts, via GenericForeignKey/polymorphic target)
+  - ModerationProposal (target_type="review")
+  - Reaction (same reaction model as posts, via polymorphic target)
+
+Additions to Review entity:
+- business (FK)
+- rating (1..5)
+- body (text)
+- created_at / updated_at
+
 ### Review model details (recommended)
 
 Minimum fields:
@@ -343,3 +366,4 @@ Decision:
 
 Implementation:
 - Friendship.status = accepted is the only status included in friends lists.
+
