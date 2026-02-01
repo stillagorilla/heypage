@@ -871,3 +871,65 @@ Cross-cutting systems:
 - Jobs support comments and reactions (same as posts).
 - Jobs support moderation proposals ("Propose Deletion") and vote flow, same as other content types.
 
+## Photos + Albums: entities and permissions
+
+Sources:
+- `my-photos.html`
+- `user-profile-photos.html`
+- `my-photos-album.html`
+- `group-photos.html`
+- `group-photos-album.html`
+- `edit-photos.html`
+
+### Core models
+Photo:
+- image file (original)
+- thumbnail (generated or derived)
+- created_at (upload time)
+- taken_on (optional date editable in bulk edit UI)
+- caption (not shown yet; optional future field)
+- visibility (later; MVP can inherit container visibility)
+
+Album:
+- owner (FK to User) OR container (Generic relation)
+- name
+- created_at
+- cover_photo (optional; first photo by default)
+- item_count (derived)
+
+AlbumPhoto (through model):
+- album (FK)
+- photo (FK)
+- added_at
+- ordering (optional)
+
+### Containers / ownership
+Photos appear under:
+- User profile (owner vs public context)
+- Group profile
+
+Recommendation:
+- Model photos with a generic "container" so the same Photo can belong to:
+  - a User as uploader/owner
+  - optionally one or more Albums
+  - optionally a Group album/container
+
+Two viable approaches:
+A) Explicit:
+- UserPhoto, GroupPhoto tables (more rigid)
+B) Generic (preferred for reuse):
+- Photo has `owner_user` + `container_type`/`container_id` (or a polymorphic association)
+
+### Upload flows
+Owner user can:
+- upload photos (Add Photos modal)
+- create albums (New Album modal)
+Album detail supports:
+- rename album (owner only)
+- add photos to album (upload modal)
+
+### Bulk edit implications
+Edit Photos UI implies:
+- ability to select multiple photos
+- set/edit a date per photo (taken_on)
+- move selected photos into one or more albums ("Move to Album")
