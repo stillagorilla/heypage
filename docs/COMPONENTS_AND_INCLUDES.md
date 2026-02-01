@@ -2337,3 +2337,105 @@ The Jobs tab renders one or more "Job Post" cards that are structurally similar 
 - Show kebab items based on permissions:
   - Edit/Delete: business admins/owners only
   - Propose Deletion: anyone who can see the job post (or at least members)
+
+## Photos (User + Group): shared tabs + gallery grid + album views + edit flow
+
+Sources:
+- Owner user photos: `my-photos.html`
+- Public user photos: `user-profile-photos.html`
+- Owner album view: `my-photos-album.html`
+- Group photos: `group-photos.html`
+- Group album view: `group-photos-album.html`
+- Edit photos bulk action page: `edit-photos.html`
+
+### Canonical structure: Photos/Albums tabs
+Photos pages share a two-tab layout in a card:
+- Tab 1: Photos (grid)
+- Tab 2: Albums (grid of album tiles)
+This pattern exists on:
+- User (owner) `my-photos.html`
+- User (public) `user-profile-photos.html`
+- Group `group-photos.html`
+
+Reusable include:
+- `templates/partials/photos/photos_albums_tabs.html`
+Inputs:
+- `photos_count`, `albums_count`
+- `photos` (list)
+- `albums` (list)
+- `context` in {"user_owner","user_public","group_public","group_admin"}
+
+### Gallery grid cells
+Photo grid uses repeated cells:
+- `.gallery-img` wrapper
+- `.square-img > img`
+Reusable include:
+- `templates/partials/photos/photo_grid.html`
+- `templates/partials/photos/photo_grid_item.html`
+Inputs:
+- `photo` (thumb_url, alt, href optional)
+
+Album grid uses repeated tiles:
+- album cover image + album name + item count
+Reusable include:
+- `templates/partials/photos/album_tile_grid.html`
+- `templates/partials/photos/album_tile.html`
+Inputs:
+- `album` (name, cover_thumb_url, item_count, href)
+
+### Owner-only page actions (Add Photos / New Album / Edit Photos)
+Owner user photos page has page actions above tabs:
+- "Add Photos" opens `#uploadModal`
+- "New Album" opens `#albumModal` (Create New Album)
+- "Edit Photos" is a link to `edit-photos.html`
+
+Public user photos page has no page actions/modals.
+
+Group photos page has no add/new actions shown (public context), and top area is group header + tabs.
+
+Reusable pattern:
+- For owner-context tabbed pages, keep owner actions in the `page_actions` row above tabs (same convention as Groups/Businesses).
+- `uploadModal` and `albumModal` included once per page, outside tab panes.
+
+### Modals: New Album + Add Photos (owner user context)
+`my-photos.html` includes:
+- `#albumModal` Create New Album (Album Name input + Create button)
+- `#uploadModal` Add Photos drag/drop uploader using file input `id="file"` (must be parameterized)
+
+Reusable partials:
+- `templates/partials/modals/album_create_modal.html`
+- `templates/partials/modals/photo_upload_modal.html`
+- `templates/partials/forms/image_uploader.html` (shared with other uploaders)
+
+Critical ID safety rule:
+- file input uses `id="file"` in multiple pages/modals → MUST be parameterized to avoid collisions.
+
+### Album view page (User + Group)
+Album view pages show:
+- Breadcrumb back to Albums tab (`...photos.html#albums`)
+- Album name + item count
+- Photo grid
+Owner user album view includes:
+- Rename Album modal trigger (pencil icon) + `#albumNameModal` Rename Album (Save)
+Both user and group album views include:
+- "Add To Album" button opens `#uploadModal` (Add Photos) :contentReference[oaicite:18]{index=18}
+
+Reusable template targets:
+- `templates/photos/album_detail.html` with context for:
+  - `is_owner` (show rename pencil + rename modal)
+  - `can_add_photos` (show Add Photos modal)
+
+### Bulk edit flow: Edit Photos page
+`edit-photos.html` is a bulk-selection page for the owner:
+- grid of images with checkboxes (`check1..check6`)
+- each tile has a read-only date input that becomes editable on click (`.editDate` click→editable)
+- "Move To Album" opens `#albumModal` which lists albums with checkboxes and a "New Album" button (currently link placeholder)
+- "Select All" is a link (placeholder)
+
+Reusable partials (recommended):
+- `templates/photos/photo_bulk_edit.html`
+- `templates/partials/photos/photo_select_tile.html` (image + checkbox + date input)
+- `templates/partials/modals/move_to_album_modal.html`
+
+Implementation note:
+- checkbox IDs (`check1`, etc.) are mock-only; in Django, generate unique IDs per photo.
