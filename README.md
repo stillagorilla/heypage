@@ -187,3 +187,7 @@ When a decision is made or progress is completed:
 ## Email templates
 
 The repo includes an HTML email template under `mockups-original/emails/index.html` that demonstrates the branded header, greeting, notification lines, CTA button, and legal footer (unsubscribe + notification settings links).
+
+## Email assets
+
+The email mock template references a header logo at `images/image-1.png`. In production, email images should use an absolute URL or be embedded as a CID attachment for reliable rendering across email clients.
