@@ -548,3 +548,39 @@ Email dispatch strategy:
 Unsubscribe and settings:
 - Footer shows unsubscribe + notification settings link.
 - Store per-user email notification preferences (already implied by Settings page).
+
+## Moderation eligibility + soft-delete behavior (confirmed requirements)
+
+Eligibility gating:
+- Users registered for < 1 month:
+  - do NOT see "Propose Deletion" under the post kebab
+  - do NOT see Yes/No vote buttons
+  - DO see that deletion has been proposed + voting status/progress UI
+- Users registered for >= 1 month:
+  - CAN propose deletion
+  - CAN vote Yes/No during the voting window
+- Users with the "representative" attribute:
+  - can expedite deletion confirmation (e.g., 3 rep Yes votes can finalize regardless of remaining time)
+
+Deletion is soft-delete:
+- a "deleted" post is NOT physically removed; it is marked deleted and hidden everywhere it would normally appear.
+
+Implementation notes (data model):
+- User:
+  - use `date_joined` to compute eligibility (or store a derived flag if needed for performance)
+  - role/attribute system should support `rep` and `admin` (and any future types)
+- Post:
+  - `status` (active / proposed_deletion / deleted)
+  - `deleted_at`, `deleted_reason` (optional), and `deleted_by_proposal_id` (nullable FK)
+- ModerationProposal / DeletionProposal:
+  - `target` (GenericForeignKey or explicit FK to Post to start)
+  - `proposed_by`, `created_at`, `closes_at`
+  - `status` (open/passed/failed/expired)
+  - thresholds (e.g., 2/3) + any quorum requirement (TBD)
+- ModerationVote:
+  - `proposal`, `voter`, `vote` (yes/no), `created_at`
+  - uniqueness constraint: one vote per user per proposal
+- RepresentativeVote (if distinct from ModerationVote):
+  - either:
+    A) a flag on ModerationVote indicating rep-vote, or
+    B) a separate model if reps have special limits/capacity accounting
