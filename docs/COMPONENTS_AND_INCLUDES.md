@@ -1909,3 +1909,64 @@ Decision:
 - Group administrator will see "Membership Requests" as the second tab under Members,
   replacing "Members I know" in admin context (same UI and controls as Friend Requests).
 - Non-admin/public context keeps "Members I know" as the second tab (shared/common concept).
+
+## Groups listing pages (My Groups vs User Groups) reuse + admin context
+
+Sources:
+- Owner context: `my-groups.html`
+- Public context: `user-profile-groups.html`
+
+### Shared "group tile" list pattern
+Both pages render groups as a grid of link tiles:
+- square image thumbnail
+- group name
+- member count line
+- category line
+- each tile links to `group-page.html`
+
+Create reusable includes:
+- `templates/partials/groups/group_tile.html`
+  Inputs:
+  - `group` (name, image_url, member_count, category_label, href)
+- `templates/partials/groups/group_tile_grid.html`
+  Inputs:
+  - `groups` list
+
+### Public context: user-profile groups page
+`user-profile-groups.html`:
+- Displays a simple header ("Groups") and then the group tile grid.
+- No group administration controls.
+
+Template target:
+- `templates/user/user_groups.html` (public profile groups tab)
+
+### Owner context: my groups page (adds admin + create group)
+`my-groups.html`:
+- Renders owner user header include (`includes_my-profile-head.html`) at the top.
+- Adds a "Create Group" button that opens `#groupModal` (Create New Group form).
+- Adds a two-tab layout:
+  - "My Groups"
+  - "Group Administration"
+
+Group Administration tab:
+- Displays a group tile grid (currently a subset in the mock).
+- Intended to list groups where the user is an admin/owner.
+
+Create Group modal (`#groupModal`):
+- Fields:
+  - Group Name (text)
+  - Category (select)
+  - Group Type (select: Public / Semi-Public / Private) + descriptive helper text
+
+Template targets:
+- `templates/user/my_groups.html` (owner groups tabbed page)
+- Modal partial: `templates/partials/groups/group_create_modal.html`
+
+### Normalization decisions (for maintainability)
+- Use the same `group_tile_grid.html` include for:
+  - public user groups page
+  - owner my groups page (My Groups tab)
+  - owner my groups page (Group Administration tab)
+- Only the owner page adds:
+  - Create Group modal and trigger
+  - Group Administration tab
