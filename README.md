@@ -58,6 +58,15 @@ Rule of thumb:
 
 ---
 
+## Groups and friends
+
+- Friends are managed via a tabbed Friends page (Friends list + Friend Requests with accept/decline).
+- Groups are managed via a tabbed My Groups page (My Groups + Group Administration) with a Create Group modal.
+
+These screens define relationship and membership rules that will be encoded in the Django data model and permission system.
+
+---
+
 ## Naming cleanup for reusable blocks
 
 Mockups may refer to reusable blocks inconsistently (e.g., "tile", "card", or unnamed blocks like "voting stuff").
