@@ -270,3 +270,21 @@ Questions:
 2) Semi-Public: can anyone view, but join requires approval? Or view requires membership?
 3) Private: can only members view content, and joining requires invite/approval?
 4) Can Group Type be changed after creation? If so, what happens to existing members/content visibility?
+
+## Public profile: friends visibility
+
+Source: `user-profile-friends.html`
+
+Questions:
+1) Can users hide their friends list (privacy setting)?
+2) If hidden, does "Shared Friends" still show as a count only, or as a list?
+3) Is "Shared Friends" computed as mutual accepted friendships only?
+
+## Public profile: groups visibility
+
+Source: `user-profile-groups.html`
+
+Questions:
+1) Should private groups appear on a user's public Groups tab?
+2) If a group is private, do we show it only to members, or not at all?
+3) Should the Groups list include role badges (admin/member) when viewing your own groups, but not when viewing others?
