@@ -75,3 +75,21 @@ Open questions:
 - Do we support debounced live search on every keypress or only after N characters?
 - What ranking rules for Users vs Groups vs Businesses?
 - Are there privacy constraints (e.g., private groups not shown)?
+
+## Moderation: key rule questions (blocking)
+
+Depicted moderation mechanics include:
+- a timed vote window
+- supermajority threshold
+- an expedited "representative bypass" requirement with remaining rep votes shown. :contentReference[oaicite:21]{index=21}
+
+Questions:
+1) Who can propose deletion? Any authenticated user, or only friends/group members/etc.?
+2) Who can vote? Any authenticated user who can view the content, or a narrower eligible set?
+3) What is the default voting window duration (hours remaining is shown)?
+4) Is there a quorum requirement (minimum total votes) in addition to 2/3 threshold?
+5) Representative bypass:
+   - What qualifies a user as a representative?
+   - What exactly does the bypass do (immediate removal? counts as multiple votes? ends the vote early?) 
+   - How are "rep votes remaining" allocated and replenished?
+6) What happens to content after passing? Hard delete vs soft delete vs hidden + audit trail?
