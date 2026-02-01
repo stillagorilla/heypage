@@ -1952,6 +1952,16 @@ Group Administration tab:
 - Displays a group tile grid (currently a subset in the mock).
 - Intended to list groups where the user is an admin/owner.
 
+Correction/clarification:
+- The "Create Group" button is rendered above the tab pills (My Groups / Group Administration).
+- Because it is outside the tab panes, it is effectively available while viewing BOTH:
+  - My Groups tab
+  - Group Administration tab
+
+Implementation:
+- Render the Create Group trigger once per page (not per tab content).
+- Include the Create Group modal once per page (`#groupModal`), not inside a tab pane.
+
 Create Group modal (`#groupModal`):
 - Fields:
   - Group Name (text)
@@ -1970,3 +1980,46 @@ Template targets:
 - Only the owner page adds:
   - Create Group modal and trigger
   - Group Administration tab
+
+## Owner-context tabbed pages: standard "page_actions row above tabs" pattern
+
+Source example:
+- `my-groups.html`
+
+### Pattern definition
+For owner-context pages that use tabs (e.g., My Groups with My Groups/Admin tabs),
+render a single `page_actions` row ABOVE the tab nav (and outside tab panes) to keep
+owner-only actions consistent and always available across tabs.
+
+This row typically contains:
+- Right-aligned owner actions (e.g., "Create Group", later "Create Business")
+- Left side: tab pills nav
+
+Rationale:
+- Avoid duplicating the action button per tab
+- Keep owner-only actions always accessible regardless of the active tab
+- Establish a reusable template pattern for similar owner pages (My Friends, My Photos, My Businesses, etc.)
+
+### Recommended template extraction
+Create a reusable include:
+- `templates/partials/layout/page_actions_tabs_row.html`
+
+Inputs:
+- `actions` (list of action button specs; same schema used by entity header actions)
+- `tabs` (list of {key,label,href|target,active} OR render slot for a nav-pills block)
+
+Usage example (conceptual):
+- Owner page template:
+  1) entity header (owner variant)
+  2) card body:
+     - include `page_actions_tabs_row.html` (Create button + tabs)
+     - tab content panes
+
+### Example: My Groups
+- The Create Group button is rendered once (outside panes), triggers `#groupModal`,
+  and therefore applies to both "My Groups" and "Group Administration" tabs.
+
+### Forward application
+Apply the same pattern to:
+- `my-business.html` (owner-context Businesses tab) with "Create Business"
+- any future owner tabbed pages with create/admin flows
