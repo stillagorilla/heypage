@@ -283,3 +283,18 @@ Questions:
 2) If a group is private, do we show it only to members, or not at all?
 3) Should the Groups list include role badges (admin/member) when viewing your own groups, but not when viewing others?
 
+## My Business page rules (directory vs managed)
+
+Sources:
+- `my-business.html`
+- `user-profile-business.html`
+
+Questions:
+1) Does the "Businesses" tab show all businesses on the platform or only those in a certain geographic area?
+2) What exactly qualifies a business to appear under "My Businesses"?
+   - created_by user
+   - claimed_by user
+   - membership role owner/admin
+3) Is there a "claim business" flow, or does Create Business always create a new managed business?
+4) Should CLOSED businesses appear in the directory by default?
+5) If a business is CLOSED, can it still be reviewed and can new posts be made on its page?
