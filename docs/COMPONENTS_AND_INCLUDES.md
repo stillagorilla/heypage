@@ -1546,3 +1546,51 @@ Notes:
   - Post a Job / Edit (admin/owner only)
   - Leave Company (members only)
 - The “Join Company” label suggests we should standardize business membership terminology as “Company” in UI (Join/Leave Company).
+
+## Entity header mini mapping: what goes in base vs wrappers (User/Group/Business)
+
+Purpose:
+- Keep `entity_header_base.html` minimal and stable.
+- Push entity-specific details into wrappers (user/group/business + owner/public).
+
+### Belongs in `entity_header_base.html` (shared across entity types)
+Always render:
+- Cover region: `header.cover_url` (optional)
+- Avatar/logo region: `header.avatar_url` (optional)
+- Title: `header.title`
+- Subtitle/meta line: `header.subtitle` (optional)
+- Badges strip: `header.badges` (optional)
+- Right-side actions cluster: loop over `header.actions` (0..N)
+- Kebab menu: render if `header.kebab.items` exists
+- Tabs row: loop over `header.tabs` and highlight `active`
+
+Shared safety rules:
+- No hardcoded modal IDs or form/input IDs inside the base; any modal triggers must use wrapper-provided `data_target` or `modal_id` values.
+- No JS bindings to hardcoded IDs (use wrapper-provided class hooks and event delegation).
+
+### Belongs in wrappers (entity-specific and/or viewer-context-specific)
+
+User wrappers:
+- Owner vs public action logic:
+  - Owner: "Change Photo" (modal), avatar edit controls
+  - Public: relationship button state + block/report kebab options
+- Optional toast trigger wiring for friend actions (via class hook, not ID)
+- User-specific tabs (About/Photos/Friends/Groups/Reviews/Businesses) and counts
+
+Group wrapper:
+- Group-specific tabs (About/Photos/Members) and counts
+- Membership state logic (Join/Leave/Requested) and Invite visibility
+- Kebab items (Report Page / Leave Group)
+
+Business wrapper:
+- Awards icons mapping into `header.badges`
+- Website link (meta row content)
+- Kebab items and permission gating:
+  - Edit (modal), Post a Job, Leave Company, Report Profile
+- Business tabs (About/Team/Jobs/Reviews) and job count badge
+- Membership state logic (Join/Leave Company) and Invite visibility
+
+### Known mock artifacts to normalize in wrappers
+- Business kebab menu label "Leave Group" should become "Leave Company" (preferred) or "Leave Business".
+- Any use of `id="liveToastBtn"` should be replaced with a class hook (e.g., `.js-live-toast-btn`) to avoid duplicate IDs.
+- Any upload input `id="file"` inside reusable modals must be parameterized.
