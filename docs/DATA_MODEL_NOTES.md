@@ -207,4 +207,21 @@ Computed fields used by UI:
 - time_remaining
 - rep_votes_remaining (rule-driven)
 
+## Search model notes (v0)
 
+The UI supports:
+- live search suggestions in top navigation (Users / Groups / Businesses)
+- a hard results page with the same entity categories and tabbing
+
+Initial search scope:
+- Users (name + username/handle)
+- Groups (name + category/tag)
+- Businesses (name + category)
+
+Implementation approach:
+- Phase 1: simple DB queries with `icontains` and per-entity limits for live dropdown
+- Phase 2: introduce PostgreSQL full-text (or a dedicated search service) when needed
+
+Required API contracts:
+- Live results endpoint returns top N of each entity type for the dropdown.
+- Hard results endpoint returns paginated lists per tab.
