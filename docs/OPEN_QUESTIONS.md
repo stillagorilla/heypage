@@ -837,3 +837,35 @@ Remaining:
   - hybrid (critical events immediate; others digested)
 - Confirm unsubscribe semantics:
   - global email off, or categories/toggles?
+
+## Settings & Privacy: remaining decisions
+
+Source: `settings.html`
+
+1) Username changes
+- Do we allow username changes in MVP?
+- If yes:
+  - Do we keep redirects from old usernames?
+  - Do we retain historical usernames to prevent takeover?
+  - What is the cooldown for changing usernames?
+
+2) "Change who can see all existing post"
+- Define behavior precisely:
+  - Does it update all prior posts only, or all content types (posts, reviews, jobs, photos)?
+  - Does it include comments, or only top-level content items?
+
+3) Privacy level semantics
+- Friends of Friends requires defining the friendship graph semantics:
+  - confirmed mutual friends only (recommended)
+
+4) Notification delivery
+- Are these toggles email only, in-app only, or both?
+- How does this relate to the email footer "adjust notification settings" link?
+
+5) Blocked contacts behavior
+- What is blocked:
+  - friend requests
+  - messaging
+  - profile visibility
+  - ability to comment/react
+- Does blocking also remove an existing friendship?
