@@ -512,3 +512,83 @@ Permission gating:
 - only show upload/new/rename/move/edit actions when viewer has edit permission:
   - user owner viewing own profile
   - group members/admins as configured
+
+## Friends (list + friend requests)
+
+Source:
+- `mockups-original/my-friends.html`
+
+### Friends page layout
+The Friends page is a tabbed card with:
+- Tab A: Friends (list)
+- Tab B: Friend Requests (inbound requests list)
+- Search input: "Search Friends"
+
+### Friend row component (Friends tab)
+Reusable include:
+- `templates/partials/friends/friend_row.html`
+
+UI elements:
+- user avatar + name link
+- kebab dropdown with actions: Mute, Block User
+- right-side relationship button that varies by state:
+  - "Friends" (primary button)
+  - "Add to Friends" (outline button)
+
+Implementation note:
+- The Friends tab mock includes mixed states in the same list, which implies the row must be driven by `friendship_state`.
+
+### Friend request row component (Friend Requests tab)
+Reusable include:
+- `templates/partials/friends/friend_request_row.html`
+
+UI elements:
+- timestamp label (e.g., Today 10:55AM, Yesterday Apr 11, 4:23PM)
+- user avatar + name link
+- text "sent you a friend request"
+- accept and decline buttons (check / times icons)
+
+Implementation note:
+- This tab likely represents inbound requests only. Outbound/pending requests are not depicted here.
+
+## Groups (My Groups + Group Administration + Create Group modal)
+
+Source:
+- `mockups-original/my-groups.html`
+
+### My Groups page layout
+Tabbed card with:
+- Tab A: My Groups
+- Tab B: Group Administration
+- Create Group button opens a modal (`#groupModal`)
+
+### Group tile/list item (used in both tabs)
+Reusable include:
+- `templates/partials/groups/group_tile_row.html`
+
+UI elements:
+- square image thumbnail
+- group name
+- member count
+- category label
+- link to `group-page.html`
+
+Implementation note:
+- The same group-tile layout is used in both My Groups and Group Administration.
+
+### Create Group modal
+Reusable include:
+- `templates/partials/modals/create_group_modal.html`
+
+Fields:
+- Group Name (text)
+- Category (select)
+- Group Type (select: Public / Semi-Public / Private)
+- A descriptive hint below Group Type (content depends on selected type)
+
+Footer actions:
+- Cancel
+- Create
+
+Implementation note:
+- Group Type implies a permissions model (viewability + joinability) tied to group visibility.
