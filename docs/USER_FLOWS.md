@@ -60,3 +60,27 @@
 3. Review appears:
    - on business page Reviews section
    - on user profile Reviews section
+
+## Moderation flow: propose deletion → vote → results expansion
+
+Source behavior is depicted in feed/profile mockups. :contentReference[oaicite:14]{index=14} :contentReference[oaicite:15]{index=15}
+
+### A) Propose deletion
+1. Viewer opens post kebab menu.
+2. Selects "Propose Deletion".
+3. A deletion proposal is created and the moderation panel becomes visible/expanded for the post.
+
+### B) Vote yes/no
+4. Eligible viewers see "Deletion Proposed" + "Agree?" and voting controls.
+5. Viewer clicks Yes or No.
+
+### C) Results + rep bypass expansion
+6. After voting, the panel expands to show:
+   - vote totals and progress (counts/percent)
+   - threshold rule (supermajority)
+   - representative bypass requirement and remaining rep votes (if applicable)
+
+### D) Proposal closes
+7. When voting window ends:
+   - if threshold met (and/or bypass rule satisfied): content is removed/hidden
+   - else: proposal fails and content remains
