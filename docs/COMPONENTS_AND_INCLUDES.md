@@ -105,6 +105,35 @@ State sequence:
 2) Panel expands to show proposal details + Yes/No voting controls.
 3) After a vote, panel expands to show vote totals + threshold + representative bypass requirement.
 
+### States (confirmed in feed.html)
+
+The deletion panel renders in three key states:
+
+**1) PROPOSED (not yet voted)**
+- Marker text: `Deletion Proposed` + `Agree?`
+- Yes/No buttons enabled
+- Vote results panel is already visible (progress bar + representative bypass)
+
+**2) VOTE IN PROGRESS (viewer has voted)**
+- Marker text: `Deletion Proposed` + `Voted.`
+- Yes/No buttons disabled
+- Vote results panel visible (progress bar + representative bypass)
+
+**Proposer auto-vote rule**
+- When a user proposes deletion, the system assumes the proposer has voted **Yes**.
+- Therefore, immediately after proposing, the proposer sees the **VOTE IN PROGRESS** state (`Voted.`), not the `Agree?` state.
+
+**3) RESOLVED: content removed (tombstone)**
+- Post card renders a minimal placeholder message:
+  - `Content removed by vote.`
+- This is a post-card variant and should not render reactions/comments/vote controls (unless we later add an audit/admin view).
+
+Implementation pitfall (avoid future bug):
+- Do NOT hide vote totals until the viewer votes. The `Agree?` state still displays vote results.
+
+Trigger:
+- Kebab menu includes “Propose Deletion”, which opens the shared `#reportModal`.
+
 Context:
 - `proposal` (nullable)
 - `user_vote` (nullable)
