@@ -126,6 +126,17 @@ Reviews add a star rating control (composer) and star rating display (card).
 
 ---
 
+## Mockup artifacts & corrections
+
+Some HTML mockups intentionally include labeling/wiring artifacts that should NOT be reproduced in Django:
+
+- **Business page modals**
+  - The business details modal currently labeled `bioModal` is intended to be **"Edit Business"** (not "Edit Bio").
+  - The "Other Social Profiles" pencil on the Business About card must open the shared **Edit Social Profiles** modal (`socialModal`) used on the User profile.
+  - `editBusinessModal` footer button label "Create" is a mock artifact and should be "Save".
+
+---
+
 ## Reviews implementation note
 
 Reviews are implemented as a specialized post-like content type.
