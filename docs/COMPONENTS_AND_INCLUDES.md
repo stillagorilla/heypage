@@ -1191,3 +1191,109 @@ Owner header includes an upload input with `id="file"` inside `#photoModal`.
 Rule:
 - Any modal partial must accept a `modal_id` and input IDs as parameters (e.g., `file_input_id`),
   so multiple instances never collide when reused across entity pages.
+
+## Entity header system: extend to Group + Business variants
+
+Sources:
+- User header (owner): `includes_my-profile-head.html`
+- User header (public): `includes_profile-head.html`
+- Group page header: `group-page.html`
+- Business page header: `business-page.html`
+
+### Shared header skeleton (applies to user, group, business)
+All entity headers can be standardized to one base layout:
+
+1) Cover image region (optional)
+2) Title row:
+   - entity name (required)
+   - optional subtitle (category/type)
+   - optional badges/awards strip
+   - kebab dropdown (menu items vary)
+3) Tab row:
+   - nav pills with optional counts/badges
+4) Right-side actions cluster:
+   - one or two primary buttons (Invite, Join, Add Friend, Change Photo, etc.)
+
+### Recommended template layout
+
+Base:
+- `templates/partials/entity/entity_header_base.html`
+
+Entity wrappers:
+- `templates/partials/entity/user_header.html`
+- `templates/partials/entity/group_header.html`
+- `templates/partials/entity/business_header.html`
+
+Viewer-context variants:
+- `templates/partials/entity/user_header_owner.html`
+- `templates/partials/entity/user_header_public.html`
+
+Group and business currently appear as public-facing headers (owner tools can be added later).
+
+### Group header variant
+
+Source: `group-page.html`
+
+Header fields:
+- cover image (food bg)
+- group name: "Healthy Foodies"
+- kebab items: Report Page, Leave Group
+- tabs:
+  - About
+  - Photos (count)
+  - Members (count)
+- actions cluster:
+  - Invite button opens `#inviteModal`
+  - Join Group button currently uses `id="liveToastBtn"` (demo) and should be a class selector in production
+
+Template recommendation:
+- `templates/partials/entity/group_header_public.html`
+Inputs:
+- `group.name`, `group.cover_url`
+- `group.photo_count`, `group.member_count`
+- `viewer_membership_state` (joined/pending/not_joined)
+- actions:
+  - Invite (only if member? TBD)
+  - Join/Leave (based on membership state)
+
+### Business header variant
+
+Source: `business-page.html`
+
+Header fields:
+- cover image (construction bg)
+- awards strip (award-2020, award-2021 icons)
+- business name: "Aliquot Inc"
+- subtitle/category: "Civil Engineering"
+- website link: "aliquot.com"
+- kebab items: Report Profile, Leave Group (artifact), Post a Job, Edit (opens `#editBusinessModal`)
+- tabs:
+  - About
+  - Team
+  - Jobs (badge count)
+  - Reviews
+- actions cluster:
+  - Invite
+  - Join Company button currently uses `id="liveToastBtn"` (demo) and should be a class selector in production
+
+Template recommendation:
+- `templates/partials/entity/business_header_public.html`
+Inputs:
+- `business.name`, `business.cover_url`, `business.category_label`, `business.website_url`
+- `business.awards` (list of icon URLs, optional)
+- `business.job_count` (for badge)
+- `viewer_membership_state` (joined/pending/not_joined)
+- actions:
+  - Invite (only if member/admin? TBD)
+  - Join/Leave (based on membership state)
+  - Post a Job (only if admin/owner)
+  - Edit (only if admin/owner)
+
+### Labeling artifact (business kebab)
+Business header dropdown contains "Leave Group". This is a mock labeling artifact.
+Implementation:
+- Replace with "Leave Business" or "Leave Company" (preferred, since the primary action says "Join Company").
+
+### DOM ID safety rules reinforced
+- Group header and business header both use `id="liveToastBtn"` on join buttons. This must become a class selector to avoid duplicate IDs when lists/cards repeat.
+- Owner user header photo modal uses `id="photoModal"` and file input `id="file"`. Modal and inputs must accept parameterized IDs when componentized.
