@@ -23,6 +23,13 @@ This is the evolving feature inventory. It’s OK for this list to be broader th
 - [ ] Comments + replies
 - [ ] Reactions (like + counts)
 
+## Differentiator: democratic content moderation
+Heypage is Facebook-like, but is primarily distinguished by user-driven content moderation mechanics that decentralize moderation decisions. This feature is a primary purpose of the site. :contentReference[oaicite:3]{index=3}
+
+Notes:
+- Mockups mark moderation UI as "voting stuff".
+- The moderation UI is NOT assumed to be simple upvote/downvote/report.
+
 ## Messaging / Notifications
 - [ ] Chat (DMs)
 - [ ] Notifications (mentions, comments, moderation events)
@@ -55,3 +62,4 @@ This is the evolving feature inventory. It’s OK for this list to be broader th
 
 ## External Integrations (Future)
 - [ ] OAuth-based integrations to import/export content with other platforms (scoped later)
+
