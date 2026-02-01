@@ -516,3 +516,27 @@ Questions:
    - Block User, Report User (confirm whether "Mute" belongs here too)
 5) Toast behavior:
    - Replace `id="liveToastBtn"` with `.js-live-toast-btn` + data attributes everywhere.
+
+## Entity header decisions for Group and Business
+
+Sources:
+- `group-page.html`
+- `business-page.html`
+
+Questions:
+1) Invite button visibility:
+   - Group: can anyone invite, only members, or only admins?
+   - Business: can anyone invite, only members, or only admins?
+
+2) Join behavior:
+   - Is Join immediate (auto-membership), or does it create a join request pending approval?
+
+3) Leave behavior:
+   - Group: confirm modal before leaving?
+   - Business: should label be "Leave Company" (recommended) or "Leave Business"?
+
+4) Kebab menu permissions:
+   - "Post a Job" and "Edit" should be restricted to business admins/owners. Confirm exact rule.
+
+5) Header awards:
+   - Are awards purely decorative images, or derived from structured data (award name, year, icon)?
