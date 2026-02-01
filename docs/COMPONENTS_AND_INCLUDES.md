@@ -2230,3 +2230,60 @@ The create page uses upload input `id="file"`. This MUST be parameterized in the
 
 ### Include replacement
 `create-business.html` uses DEV-only `w3-include-html` for topnav/sidenav injection. Replace with Django includes.
+
+## Business: Team tab (business-team.html) → reuse of friends/members list component
+
+Source:
+- `business-team.html`
+
+### Summary
+The Business Team tab is effectively a "people list" identical to the Friends/Members list pattern:
+- `<ul class="friends-list">` rows show:
+  - left: user avatar + name link
+  - right: friend action button ("Add to Friends" / "Friends")
+
+### Component reuse decision
+Reuse the existing canonical list partials (from Friends/Members work):
+- `templates/partials/lists/user_relation_list.html`
+- `templates/partials/lists/user_relation_row.html`
+
+Context for Business Team:
+- `context = "business_team"`
+Row action:
+- right-side button is FRIEND relationship state (not business membership).
+- In production: replace repeated `id="liveToastBtn"` with a class hook (e.g., `.js-friend-action`) + event delegation.
+
+### Business header reuse
+Business Team page uses the standard Business entity header (cover + awards + title/subtitle + kebab + tabs + Invite/Join actions).
+
+## Business: Jobs tab (business-jobs.html) → job post cards (post-like content)
+
+Source:
+- `business-jobs.html`
+
+### Summary
+The Jobs tab renders one or more "Job Post" cards that are structurally similar to a feed post card:
+- header media: business logo + business link + timestamp
+- kebab actions: Edit / Delete / Propose Deletion
+- job content: title (h3), location (text-muted), Apply button with external-link icon
+- long description with "Show more" toggle using `.showHidden` + `.hidden-content`
+- reaction + share buttons (same UI class names as other post-like content: `addReaction`, `shareLink`)
+- comment composer at bottom (textarea + image + emoji + Post)
+
+### Recommended components
+- `templates/partials/posts/job_post_card.html`
+  - Implement as a specialization of the generic `post_card` (job-specific fields + apply link).
+- `templates/partials/posts/post_kebab_menu.html`
+  - Must support "Propose Deletion" as a menu option.
+- `templates/partials/modals/propose_deletion_modal.html`
+  - Jobs page includes `#reportModal` with reasons + clarification textarea.
+- `templates/partials/comments/comment_composer.html` (shared)
+
+### ID + modal safety rules (critical)
+- Jobs page uses a single modal with id `#reportModal`. Keep this as ONE modal per page if possible.
+- If we ever render multiple propose-deletion modals (not recommended), all checkbox IDs (`reason1`, `reason2`, etc.) must be parameterized to avoid collisions.
+
+### Permission gating (template-level)
+- Show kebab items based on permissions:
+  - Edit/Delete: business admins/owners only
+  - Propose Deletion: anyone who can see the job post (or at least members)
