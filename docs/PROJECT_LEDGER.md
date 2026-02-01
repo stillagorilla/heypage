@@ -57,6 +57,8 @@ Record decisions with date, decision, and rationale.
 - Group Members page will follow the same context rules as Friends pages: admin context may include per-row kebabs; public/non-admin does not.
 - Group listing uses a single reusable "group tile" grid include across public and owner contexts.
 - Owner context adds: Create Group modal + Group Administration tab (admin/owner groups).
+- Businesses owner page uses standard owner-context page_actions row above tabs with "Create Business" action.
+- Business create flow requires repeatable locations ("Add another location") and an image upload at creation time.
 
 ## Milestones
 ### M0 — Mockup ingestion complete
@@ -100,6 +102,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
