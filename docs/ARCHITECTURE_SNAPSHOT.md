@@ -12,6 +12,35 @@ A Facebook-like social platform with a core differentiator:
 - Real-time: not required for MVP, upgrade path via Django Channels.
 - DB: Postgres preferred (search), MySQL acceptable if required by hosting.
 
+## Deployment target (Phase 1–MVP): DreamCompute VM (OpenStack)
+
+Hosting decision:
+- Deploy to a self-managed DreamHost DreamCompute VM with full root access.
+
+MVP architecture:
+- Single VM:
+  - Nginx (TLS) → Gunicorn → Django
+  - Postgres on same host initially
+  - Optional Redis (cache/sessions; later task queue broker)
+- Storage:
+  - Prefer volume-backed disk for Postgres/media so snapshots and migrations are straightforward.
+
+Operational baseline:
+- Backups are the operator’s responsibility:
+  - scheduled DB backups + volume snapshots
+  - offsite copies
+- Security:
+  - SSH key-only
+  - restrict SSH ingress to known IP(s)
+  - open only 80/443 publicly
+- Monitoring:
+  - uptime + resource/disk alerts
+
+Scale-out plan:
+1) Upgrade VM flavor (vertical)
+2) Split DB to dedicated VM on private network
+3) Add additional web VMs behind load balancer
+
 ## Public URL scheme (locked)
 - Users: `/<username>/`
 - Groups: `/g/<slug>/`
