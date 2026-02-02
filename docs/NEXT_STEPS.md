@@ -4,6 +4,35 @@ This file is an execution checklist for the transition from mockup mapping to a 
 
 ## Phase 1 (next chat): Environment + Django scaffold
 
+### 0) Hosting decision (DreamCompute VM)
+
+Decision:
+- Use DreamHost DreamCompute (OpenStack) VM instead of dedicated server for Phase 1–MVP.
+
+MVP deployment architecture (single VM):
+- Nginx (TLS termination) → Gunicorn → Django
+- Postgres on the same VM (split later when needed)
+- Optional Redis (cache/sessions; later Celery broker)
+- Prefer volume-backed storage for Postgres/media (easier snapshots/migration than ephemeral)
+
+Operational requirements (must-do):
+- Backups:
+  - volume snapshots (and/or scheduled logical DB dumps)
+  - offsite copy of DB backups and critical media
+- Security:
+  - SSH key-only
+  - limit SSH ingress to known IP(s)
+  - expose only 80/443 publicly
+- Monitoring (minimum):
+  - uptime checks
+  - disk/CPU/RAM alerts
+  - Postgres disk growth monitoring
+
+Scaling path (only when needed):
+1) Vertical scale by upgrading VM flavor
+2) Move Postgres to separate VM on private network
+3) Add additional web VMs behind load balancer
+
 ### 1) Local dev environment
 - [ ] Choose Python version (pin it).
 - [ ] Create `requirements.txt` or `pyproject.toml` and pin dependencies.
