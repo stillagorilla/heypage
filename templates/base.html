@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Heypage{% endblock %}</title>
+</head>
+<body>
+  {% include 'partials/top_nav.html' %}
+  <div style="display:flex; gap:16px;">
+    <aside style="width:240px;">{% include 'partials/side_nav.html' %}</aside>
+    <main style="flex:1; padding:16px;">{% block content %}{% endblock %}</main>
+  </div>
+  {% block modals %}{% endblock %}
+</body>
+</html>
