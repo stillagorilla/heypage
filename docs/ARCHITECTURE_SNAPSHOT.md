@@ -167,3 +167,37 @@ If that section still exists in Data Model Notes, mark it deprecated or update i
 ## Current phase and next phase naming
 - Current chat: Phase 0, Mockup Review + Architecture Blueprint
 - Next chat: Phase 1, Environment + Django Scaffold
+
+---
+
+## Phase 1 Implementation Notes (As Deployed)
+
+### Production VM (single-host MVP)
+- Host: `hp-prd-web01`
+- OS: Ubuntu 22.04 LTS
+- Public IP: `208.113.165.79`
+- Domains: `heypage.com`, `www.heypage.com` (DNS A records pointed to `208.113.165.79`)
+- Note: Floating IP association in DreamCompute UI failed with errors; using instance-assigned public IP.
+
+### Service topology (Phase 1)
+- Nginx (80/443) → Gunicorn (unix socket) → Django
+- Postgres on same host (local)
+- Optional Redis not enabled yet
+
+### Systemd units
+- `heypage.socket` (unix socket: `/run/heypage/gunicorn.sock`)
+- `heypage.service` (gunicorn serving `config.wsgi:application`)
+- `heypage-backup-db.timer` / `heypage-backup-db.service` (daily pg_dump)
+- `certbot.timer` enabled for automatic TLS renewal
+
+### Standard filesystem layout
+- `/srv/heypage/app` (git checkout)
+- `/srv/heypage/venv` (python venv)
+- `/srv/heypage/.env` (env vars; owned by `heypage`)
+- `/srv/heypage/staticfiles` (collectstatic target)
+- `/srv/heypage/media` (uploads)
+- `/srv/heypage/logs` (gunicorn logs)
+- `/srv/heypage/backups/db` (compressed SQL dumps)
+
+### Health check
+- `/healthz/` returns JSON `{ "status": "ok" }` and is verified over HTTPS externally.
