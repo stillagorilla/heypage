@@ -193,7 +193,7 @@ If that section still exists in Data Model Notes, mark it deprecated or update i
 ### Standard filesystem layout
 - `/srv/heypage/app` (git checkout)
 - `/srv/heypage/venv` (python venv)
-- `/srv/heypage/.env` (env vars; owned by `heypage`)
+- `/srv/heypage/.env` (env vars; owned/readable by `heypage`)
 - `/srv/heypage/staticfiles` (collectstatic target)
 - `/srv/heypage/media` (uploads)
 - `/srv/heypage/logs` (gunicorn logs)
