@@ -45,6 +45,47 @@ These appear across feed + profile contexts and will be implemented as Django in
 - Real-time later: WebSockets (Django Channels) for chat/notifications if/when required.
 - Database: TBD (MySQL acceptable; Postgres preferred for long-term features like search + complex moderation analytics).
 
+## Phase 1 Execution Log (Environment + Scaffold)
+
+**Date:** 2026-02-15 to 2026-02-16  
+**Outcome:** Phase 1 environment prep + deploy-ready Django scaffold completed on DreamCompute.
+
+### Deployed Infrastructure (Production Baseline)
+- **Cloud:** DreamHost DreamCompute (OpenStack)
+- **Instance:** `hp-prd-web01`
+- **OS:** Ubuntu 22.04 LTS
+- **Public IPv4:** `208.113.165.79`  
+  - Note: Floating IP allocation/association in UI failed with errors; instance uses a directly routable public IP on `ens3` instead.
+- **Flavor:** 4 vCPU / 8GB RAM
+
+### Services Installed + Running (single VM MVP)
+- Nginx (reverse proxy)
+- Gunicorn (systemd socket + service)
+- Django (Heypage scaffold)
+- Postgres (local to VM, same host)
+- Certbot + Let’s Encrypt (TLS for production domains)
+- Daily Postgres DB dump via systemd timer
+
+### Domains + TLS
+- **Domains:** `heypage.com`, `www.heypage.com`
+- **TLS:** Let’s Encrypt via `certbot --nginx`
+- **HTTP → HTTPS:** enabled
+- **Renewal:** `certbot.timer` enabled; dry-run renewal succeeded
+
+### Health Check
+- `GET /healthz/` returns JSON `{ "status": "ok" }`
+- Confirmed working from VM and external browser over HTTPS.
+
+### Backup Baseline
+- **DB backups:** `/srv/heypage/backups/db/heypage_YYYYMMDDTHHMMSSZ.sql.gz`
+- **Schedule:** `heypage-backup-db.timer` (daily)
+- **Retention:** 14 days (local)
+- NOTE: Backup script dumps as `postgres` but writes output as root, then `chown` to `heypage` to avoid directory traversal/permission issues.
+
+### Repo Milestone Notes
+- **M1 (Django skeleton runnable):** achieved on production VM (Nginx + Gunicorn + Django + Postgres + HTTPS).
+- App-layer work (templates, real pages, feature implementation) continues within Phase 1 scope before Phase 2.
+
 ## Decisions Log
 Record decisions with date, decision, and rationale.
 
@@ -162,6 +203,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
