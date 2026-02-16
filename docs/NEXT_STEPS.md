@@ -102,6 +102,31 @@ Create apps (names can be adjusted, but keep responsibilities clean):
 - [ ] Chat page renders with stub data.
 - [ ] `collectstatic` works.
 
+## Phase 1 Completed (Environment + Deploy Baseline)
+
+- [x] DreamCompute VM provisioned: `hp-prd-web01` (Ubuntu 22.04), public IPv4 `208.113.165.79`
+- [x] DNS pointed to VM: `heypage.com`, `www.heypage.com`
+- [x] Stack running on single VM: Nginx → Gunicorn (systemd) → Django + Postgres (local)
+- [x] TLS enabled: Let’s Encrypt via Certbot; HTTP → HTTPS redirect active
+- [x] Cert renewal verified: `certbot.timer` enabled + `certbot renew --dry-run` succeeded
+- [x] Django scaffold committed + pushed to GitHub (SSH deploy key)
+- [x] Database initialized on Postgres; migrations applied; superuser created (`hpadmin`)
+- [x] Static pipeline working: `collectstatic` to `/srv/heypage/staticfiles`
+- [x] Health endpoint added: `/healthz/` verified locally + externally over HTTPS
+- [x] Ops basics added:
+  - [x] Gunicorn logs directory (`/srv/heypage/logs`)
+  - [x] DB backups: daily `pg_dump` via `heypage-backup-db.timer` + retention
+  - [x] Nginx security headers added (edge-level)
+
+### Phase 1 Remaining (Build Work Targets)
+- [ ] Implement base templates + include system (per `COMPONENTS_AND_INCLUDES.md`)
+- [ ] Replace stub responses with template-rendered pages for core routes
+- [ ] Enforce reserved usernames (routes like `login`, `register`, `admin`, `g`, `b`, `healthz`, etc.)
+- [ ] Build initial page stubs per `PAGES_AND_CONTEXTS.md` and `USER_FLOWS.md`
+- [ ] Confirm URL routing order remains correct (prefix routes before `/<username>/` catch-all)
+- [ ] Add minimal “home” behavior for `/` (redirect or landing)
+- [ ] Validate admin + auth flows end-to-end in prod (login/register/logout)
+
 ## Phase 1 Runbook (Production VM Baseline)
 
 ### Key paths
