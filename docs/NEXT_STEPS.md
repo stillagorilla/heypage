@@ -4,6 +4,18 @@ This file is an execution checklist for the transition from mockup mapping to a 
 
 ## Phase 1 (next chat): Environment + Django scaffold
 
+## Phase 1 Status Update (Completed Infrastructure + Scaffold)
+
+Phase 1 environment preparation and deploy-ready Django scaffolding is complete on DreamCompute.
+
+### Completed in this chat
+- Provisioned DreamCompute VM: `hp-prd-web01` (Ubuntu 22.04), public IPv4 `208.113.165.79`.
+- Installed and configured: Postgres, Nginx, Gunicorn (systemd), Django scaffold.
+- Added `/healthz/` endpoint and validated externally.
+- Enabled HTTPS for `heypage.com` + `www.heypage.com` using Certbot (HTTP→HTTPS redirect).
+- Set up DB backups via `heypage-backup-db.timer` (daily) and created baseline backup script.
+- Pushed scaffold commits to GitHub using an SSH deploy key.
+
 ### 0) Hosting decision (DreamCompute VM)
 
 Decision:
@@ -89,6 +101,31 @@ Create apps (names can be adjusted, but keep responsibilities clean):
 - [ ] Search page renders with stub data.
 - [ ] Chat page renders with stub data.
 - [ ] `collectstatic` works.
+
+## Phase 1 Runbook (Production VM Baseline)
+
+### Key paths
+- App repo: `/srv/heypage/app`
+- Virtualenv: `/srv/heypage/venv`
+- Env file: `/srv/heypage/.env` (owned/readable by `heypage`)
+- Static root: `/srv/heypage/staticfiles`
+- Media root: `/srv/heypage/media`
+- Logs: `/srv/heypage/logs`
+- DB backups: `/srv/heypage/backups/db`
+
+### Services
+- Nginx: `nginx`
+- Gunicorn (socket-activated): `heypage.socket`, `heypage.service`
+- Postgres: `postgresql`
+- TLS renewals: `certbot.timer`
+- DB backups: `heypage-backup-db.timer`, `heypage-backup-db.service`
+
+### Common operations (copy/paste)
+**Check status**
+```bash
+sudo systemctl status nginx --no-pager -l
+sudo systemctl status heypage.socket heypage.service --no-pager -l
+sudo systemctl status postgresql --no-pager -l
 
 ## Phase 2: Core models + migrations
 
