@@ -80,7 +80,7 @@ These appear across feed + profile contexts and will be implemented as Django in
 - **DB backups:** `/srv/heypage/backups/db/heypage_YYYYMMDDTHHMMSSZ.sql.gz`
 - **Schedule:** `heypage-backup-db.timer` (daily)
 - **Retention:** 14 days (local)
-- NOTE: Backup script dumps as `postgres` but writes output as root, then `chown` to `heypage` to avoid directory traversal/permission issues.
+- **Gotcha (permissions):** writing dumps directly as `postgres` into `/srv/heypage/backups/db` can fail due to directory traversal/ownership. Current approach: run `pg_dump` as `postgres` but write output via a root-owned command and then `chown` to `heypage`, so the final artifacts are readable/owned for ops without weakening directory perms.
 
 ### Repo Milestone Notes
 - **M1 (Django skeleton runnable):** achieved on production VM (Nginx + Gunicorn + Django + Postgres + HTTPS).
@@ -203,6 +203,7 @@ After each milestone or design decision, update the appropriate file(s) in `/doc
 ## Open Risks
 - Slug namespace collisions across user/business/group (single shared URL space).
 - Moderation mechanics require precise rules to prevent gaming / sybil attacks.
+
 
 
 
