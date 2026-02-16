@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Mockups | Heypage{% endblock %}
+{% block content %}
+  {% include 'includes/entity_header.html' with title='Mockups' subtitle='Design masters (restricted)' %}
+  <ul>
+    {% for f in files %}
+      <li><a href="/mockups/{{ f }}">{{ f }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

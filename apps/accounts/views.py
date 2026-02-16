@@ -1,15 +1,7 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def login_view(request):
-    return HttpResponse('Login (stub)')
+    return render(request, "accounts/login.html")
 
 def register_view(request):
-    return HttpResponse('Register (stub)')
-
-@login_required
-def settings_view(request):
-    return HttpResponse('Settings (stub)')
-
-def profile_view(request, username):
-    return HttpResponse(f'Profile for {username} (stub)')
+    return render(request, "accounts/register.html")
