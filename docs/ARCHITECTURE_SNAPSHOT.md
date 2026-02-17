@@ -10,7 +10,7 @@ A Facebook-like social platform with a core differentiator:
 - Backend: Django, server-rendered templates first.
 - API: optional DRF for endpoints like search suggest and voting.
 - Real-time: not required for MVP, upgrade path via Django Channels.
-- DB: Postgres preferred (search), MySQL acceptable if required by hosting.
+- DB: Postgres (production). SQLite acceptable for local dev.
 
 ## Deployment target (Phase 1–MVP): DreamCompute VM (OpenStack)
 
@@ -26,15 +26,7 @@ MVP architecture:
   - Prefer volume-backed disk for Postgres/media so snapshots and migrations are straightforward.
 
 Operational baseline:
-- Backups are the operator’s responsibility:
-  - scheduled DB backups + volume snapshots
-  - offsite copies
-- Security:
-  - SSH key-only
-  - restrict SSH ingress to known IP(s)
-  - open only 80/443 publicly
-- Monitoring:
-  - uptime + resource/disk alerts
+- Backups + ops procedures are documented in `OPERATIONS.md`.
 
 Scale-out plan:
 1) Upgrade VM flavor (vertical)
@@ -42,6 +34,7 @@ Scale-out plan:
 3) Add additional web VMs behind load balancer
 
 ## Public URL scheme (locked)
+
 - Users: `/<username>/`
 - Groups: `/g/<slug>/`
 - Businesses: `/b/<slug>/`
@@ -59,6 +52,7 @@ Reserved words (minimum set):
 - `help`, `about`, `terms`, `privacy`
 
 ## App boundaries (recommended)
+
 - `accounts`: custom User, profile, auth, password reset wiring
 - `social`: friendships, blocks, memberships
 - `entities`: groups, businesses, awards, locations
@@ -71,18 +65,20 @@ Reserved words (minimum set):
 - `notifications`: notification events, preferences, email digests
 
 ## Template architecture (server-rendered)
-Base layouts:
-- `base.html` for app pages
-- `auth_base.html` for auth pages (optional)
 
-Global includes:
-- `includes_topnav.html` (search dropdown, notifications dropdown, profile)
-- `includes_sidenav.html`
-- Entity header wrappers:
-  - user_header_public
-  - user_header_owner
-  - group_header_public
-  - business_header_public
+Base layouts:
+- `templates/base.html` for app pages
+- Optional: `templates/auth_base.html` for auth pages (if introduced later)
+
+Global includes (canonical paths are defined in `CANONICAL_PATHS.md`):
+- `templates/includes/top_nav.html`
+- `templates/includes/side_nav.html`
+
+Entity header wrappers (recommended future components):
+- `templates/components/entity_headers/user_public.html`
+- `templates/components/entity_headers/user_owner.html`
+- `templates/components/entity_headers/group_public.html`
+- `templates/components/entity_headers/business_public.html`
 
 Owner pages follow a consistent pattern:
 - `page_actions` row above tabs for owner-context actions (Create Group, Create Business, etc.)
@@ -94,24 +90,35 @@ One shared backbone across:
 - Business jobs
 - Photo-like content (when shown in a feed format)
 
-Core partials:
+Core components (recommended future templates/components):
 - composer (make post / make review / make job)
 - post-like card
 - reactions bar
 - comment thread
 - moderation panel
 
-Moderation states (locked):
-- PROPOSED (viewer not voted): shows `Deletion Proposed Agree?`, buttons enabled, results visible.
-- VOTE IN PROGRESS (viewer voted): shows `Deletion Proposed Voted.`, buttons disabled, results visible.
-- Proposer auto-votes: proposing deletion immediately records YES for proposer, so proposer sees Voted. state.
-- RESOLVED removal: content is suppressed (not hard-deleted) and renders tombstone `Content removed by vote.`
+## Moderation states (locked)
+
+- **PROPOSED (viewer not voted):**
+  - shows `Deletion Proposed Agree?`
+  - buttons enabled
+  - results visible
+
+- **VOTE IN PROGRESS (viewer voted):**
+  - shows `Deletion Proposed Voted.`
+  - buttons disabled
+  - results visible
+
+Rules:
+- Proposer auto-votes YES when proposing deletion (so proposer sees the “Voted” state).
+- Resolved removal: content is suppressed (not hard-deleted) and renders tombstone `Content removed by vote.`
 
 ## Entity-specific notes
 
 ### Business edit modals (important distinction)
 Two different edit entry points both titled “Edit Business”, but different scopes:
-1) Header kebab Edit
+
+1) Header kebab “Edit”
 - Identity edit: name, logo/image, category
 - Must be a distinct modal id and partial
 
@@ -125,8 +132,10 @@ Social profiles pencil:
 ### Photos and albums
 Shared tabs pattern:
 - Photos grid and Albums grid
+
 Owner actions:
 - Add Photos modal, New Album modal, Edit Photos bulk page
+
 Bulk edit implies:
 - photo taken_on editable
 - move or add selected photos to albums
@@ -135,10 +144,10 @@ Bulk edit implies:
 Two surfaces:
 1) Live dropdown in topnav (suggest)
 - Users, Groups, Businesses sections
-- View All routes to hard results
+- “View All” routes to hard results
 
 2) Hard results page
-- Tabbed: Users, Groups, Business
+- Tabbed: Users, Groups, Businesses
 - Business tab includes Add Business CTA
 
 Implementation approach:
@@ -157,48 +166,33 @@ Settings page implies:
 ## Messaging (chat)
 MVP recommended approach:
 - Standard HTTP endpoints with polling.
+
 Upgrade path:
 - Channels/WebSockets later.
 
-## Known cleanup item in docs
-The older “shared slug namespace” handle registry concept is not required under the locked URL scheme (users at root, groups and businesses prefixed).
-If that section still exists in Data Model Notes, mark it deprecated or update it to match the locked scheme.
-
-## Current phase and next phase naming
-- Current chat: Phase 0, Mockup Review + Architecture Blueprint
-- Next chat: Phase 1, Environment + Django Scaffold
+## Notes about past doc cleanup
+The older “shared slug namespace” registry concept is **not required** under the locked URL scheme
+(users at root, groups and businesses prefixed). If any older notes still mention it, treat them as deprecated.
 
 ---
 
-## Phase 1 Implementation Notes (As Deployed)
-
-### Operations reference
-See `docs/OPERATIONS.md` for canonical production command patterns, env vars, users/permissions,
-staticfiles + nginx contracts, and troubleshooting.
+## Phase 1 (Deployed) Snapshot
 
 ### Production VM (single-host MVP)
 - Host: `hp-prd-web01`
 - OS: Ubuntu 22.04 LTS
 - Public IP: `208.113.165.79`
-- Domains: `heypage.com`, `www.heypage.com` (DNS A records pointed to `208.113.165.79`)
-- Note: Floating IP association in DreamCompute UI failed with errors; using instance-assigned public IP.
+- Domains: `heypage.com`, `www.heypage.com` (A records pointed to `208.113.165.79`)
 
-### Service topology (Phase 1)
+### Service topology
 - Nginx (80/443) → Gunicorn (unix socket) → Django
 - Postgres on same host (local)
-- Optional Redis not enabled yet
-
-### Systemd units
-- `heypage.socket` (unix socket: `/run/heypage/gunicorn.sock`)
-- `heypage.service` (gunicorn serving `config.wsgi:application`)
-- `heypage-backup-db.timer` / `heypage-backup-db.service` (daily pg_dump)
-- `certbot.timer` enabled for automatic TLS renewal
 
 ### Standard filesystem layout
 - `/srv/heypage/app` (git checkout)
 - `/srv/heypage/venv` (python venv)
 - `/srv/heypage/.env` (env vars; owned/readable by `heypage`)
-- `/srv/heypage/staticfiles` (collectstatic target)
+- `/srv/heypage/staticfiles` (collectstatic target; nginx alias)
 - `/srv/heypage/media` (uploads)
 - `/srv/heypage/logs` (gunicorn logs)
 - `/srv/heypage/backups/db` (compressed SQL dumps)
