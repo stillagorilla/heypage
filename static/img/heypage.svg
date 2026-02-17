@@ -1,0 +1,23 @@
+<svg version="1.1" id="Heypage" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 700 200" style="enable-background:new 0 0 700 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#DE6752;}
+	.st1{fill:#293C4C;}
+</style>
+<g id="Heypage_1_">
+	<g id="icon">
+		<path class="st0" d="M80.4,28.4H32.1v125.5h98.5V74.4L80.4,28.4z M91.4,143.7v-36.4H72.1v36.4h-28V38.5h28v41h46.5v64.2H91.4z"/>
+	</g>
+	<g id="Title">
+		<polygon class="st1" points="208.9,66.1 208.9,38.2 187.7,38.2 187.7,143.7 208.9,143.7 208.9,84.7 229.4,84.7 229.4,143.7 
+			250.6,143.7 250.6,66.1 		"/>
+		<polygon class="st1" points="367.8,125.1 350.8,125.1 350.8,66.1 329.6,66.1 329.6,143.7 367.8,143.7 367.8,153.1 329.6,153.1 
+			329.6,171.6 389,171.6 389,66.1 367.8,66.1 		"/>
+		<path class="st1" d="M400.8,66.1v105.5H422v-28h38.2V66.1H400.8z M422,125.1V84.7h17v40.4H422z"/>
+		<path class="st1" d="M539.6,66.1v77.5h38.2v9.4h-38v18.6h38H589h9.9V66.1H539.6z M560.8,125.1V84.7h17v40.4H560.8z"/>
+		<path class="st1" d="M261.6,66.1v77.5h57.7v-18.6h-36.5v-10.3h36.5V66.1H261.6z M298.2,98.9h-15.3V82h15.3V98.9z"/>
+		<path class="st1" d="M610.2,66.1v77.5h57.7v-18.6h-36.5v-10.3h36.5V66.1H610.2z M646.7,98.9h-15.3V82h15.3V98.9z"/>
+		<path class="st1" d="M471.1,66.1v18.6h36.5v11.6h-36.5v47.4h57.7V66.1H471.1z M492.3,127.8v-15.6h15.3v15.6H492.3z"/>
+	</g>
+</g>
+</svg>

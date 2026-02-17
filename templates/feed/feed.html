@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Feed | Heypage{% endblock %}
+
+{% block content %}
+<main role="main" class="container-fluid mt-sm-5 pt-sm-4">
+  <div class="row justify-content-xl-between">
+
+    <!-- spacer (matches mockup layout) -->
+    <div class="order-3 d-none d-md-block col sidenav-wrap"></div>
+    <!-- END spacer -->
+
+    <!-- sidenav wrapper lives in base.html now; do NOT include it here -->
+
+    <div class="col-12 col-lg-9 col-xl-7" id="mainWrap">
+
+      <!-- make post -->
+      <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col">
+              <div class="media">
+                <img src="{% static 'img/users/user5.jpg' %}" class="user-img" alt="" />
+
+                <div class="media-body">
+                  <form id="makePost" action="#" method="post">
+                    {% csrf_token %}
+                    <div class="form-row pr-1">
+                      <textarea class="form-control mb-2 border-0 my-comment"
+                        placeholder="What's on your mind?"></textarea>
+                    </div>
+                    <div class="form-row align-items-center">
+                      <div class="col">
+                        <a role="button" class="ml-2 mr-3" data-toggle="modal" data-target="#uploadImgModal">
+                          <i class="fa fa-image text-secondary"></i>
+                        </a>
+                        <a role="button" class="mr-3">
+                          <i class="fa fa-smile text-secondary"></i>
+                        </a>
+                      </div>
+                      <div class="col-auto">
+                        <select class="form-control">
+                          <option selected="selected">Everyone</option>
+                          <option>Friends</option>
+                          <option>Private</option>
+                        </select>
+                      </div>
+                      <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Post</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END make post card -->
+
+      <!-- Post (text only) -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <div class="form-row mb-3">
+            <div class="col">
+              <div class="media">
+                <a href="#"><img src="{% static 'img/profile-img.png' %}" class="user-img" alt="" /></a>
+                <div class="media-body">
+                  <a href="#" class="user-link">Daisy Mendoza</a><br />
+                  <p class="mb-0 text-muted small">Apr 5, 2021 at 1:13PM</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-1 text-right">
+              <div class="dropdown">
+                <button class="btn btn-ghost px-2 dropdown-toggle no-caret" type="button"
+                  id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="dropdownMenuButton1">
+                  <a class="dropdown-item" role="button">Edit</a>
+                  <a class="dropdown-item" role="button">Delete</a>
+                  <a class="dropdown-item" role="button" data-toggle="modal" data-target="#reportModal">
+                    Propose Deletion
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 postContent">
+              I was loaded in a car and driven to the home that was just over the crest of the hill on which Lagos is
+              built. From the home, it was about a mile down to the beaches and water. Ah, good old exercise. Being from
+              San Diego, I immediately put on my trunks, flip flops and headed for a swim.
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <a class="btn btn-emoji-response" data-toggle="tooltip" data-placement="top"
+                title="Jeremy & Mark reacted">
+                <img src="{% static 'img/emojis/emoji1.png' %}" alt=""><span>2</span>
+              </a>
+              <a class="btn btn-emoji-response" data-toggle="tooltip" data-placement="top"
+                title="Joanna, Kim, Nicky and 25 others reacted">
+                <img src="{% static 'img/emojis/emoji3.png' %}" alt=""><span>28</span>
+              </a>
+              <a tabindex="0" class="btn btn-ghost px-2 position-md-relative addReaction" role="button">
+                <i class="fa fa-smile-plus fa-fw"></i>
+              </a>
+              <a tabindex="0" class="btn btn-ghost px-2 position-md-relative shareLink" role="button">
+                <i class="fa fa-share fa-fw"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="media">
+            <img src="{% static 'img/users/user5.jpg' %}" class="user-img" alt="" />
+            <div class="media-body">
+              <form action="#" method="post">
+                {% csrf_token %}
+                <div class="input-group response-group position-relative">
+                  <textarea class="form-control" placeholder="Leave a comment" aria-label="Leave a comment"></textarea>
+                  <div class="d-flex flex-column">
+                    <span>
+                      <button class="btn px-1" type="button"><i class="fa fa-image"></i></button>
+                      <button class="btn px-2 addEmoji" type="button"><i class="fa fa-smile"></i></button>
+                    </span>
+                    <span class="p-2">
+                      <button type="submit" class="btn btn-sm btn-secondary btn-block">Post</button>
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- END post -->
+
+      <!-- Post with Image -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <div class="form-row mb-3">
+            <div class="col">
+              <div class="media">
+                <a href="#"><img src="{% static 'img/users/user3.jpg' %}" class="user-img" alt="" /></a>
+                <div class="media-body">
+                  <a href="#" class="user-link">Daisy Mendoza</a><br />
+                  <p class="mb-0 text-muted small">Apr 5, 2021 at 1:13PM</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-1 text-right">
+              <div class="dropdown">
+                <button class="btn btn-ghost px-2 dropdown-toggle no-caret" type="button"
+                  id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="dropdownMenuButton2">
+                  <a class="dropdown-item" role="button">Edit</a>
+                  <a class="dropdown-item" role="button">Delete</a>
+                  <a class="dropdown-item" role="button" data-toggle="modal" data-target="#reportModal">
+                    Propose Deletion
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <div class="gallery-img">
+                <img src="{% static 'img/sunset.jpg' %}" alt="" class="img-fluid rounded">
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <a class="btn btn-emoji-response" data-toggle="tooltip" data-placement="top"
+                title="Sophie, John, Sarah and other 9 reacted">
+                <img src="{% static 'img/emojis/emoji3.png' %}" alt=""><span>22</span>
+              </a>
+              <a class="btn btn-emoji-response" data-toggle="tooltip" data-placement="top"
+                title="Sophie, John, Sarah and other 9 reacted">
+                <img src="{% static 'img/emojis/emoji2.png' %}" alt=""><span>13</span>
+              </a>
+              <a class="btn btn-emoji-response" data-toggle="tooltip" data-placement="top"
+                title="Joshua, Tony, Sandra and other 10 reacted">
+                <img src="{% static 'img/emojis/emoji5.png' %}" alt=""><span>11</span>
+              </a>
+              <a tabindex="0" class="btn btn-ghost px-2 position-md-relative addReaction" role="button">
+                <i class="fa fa-smile-plus fa-fw"></i>
+              </a>
+              <a tabindex="0" class="btn btn-ghost px-2 position-md-relative shareLink" role="button">
+                <i class="fa fa-share fa-fw"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="media add-comment">
+            <img src="{% static 'img/users/user5.jpg' %}" class="user-img" alt="" />
+            <div class="media-body">
+              <form action="#" method="post">
+                {% csrf_token %}
+                <div class="input-group response-group position-relative">
+                  <textarea class="form-control" placeholder="Leave a comment" aria-label="Leave a comment"></textarea>
+                  <div class="d-flex flex-column">
+                    <span>
+                      <button class="btn px-1" type="button"><i class="fa fa-image"></i></button>
+                      <button class="btn px-2 addEmoji" type="button"><i class="fa fa-smile"></i></button>
+                    </span>
+                    <span class="p-2">
+                      <button type="submit" class="btn btn-sm btn-secondary btn-block">Post</button>
+                    </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- END post with image -->
+
+      {# Next: break posts/modals into includes (composer, post card, comment thread, etc.) #}
+
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,3 +1,9 @@
 from django.urls import path
 from . import views
-urlpatterns = [path('', views.search_view, name='search')]
+
+app_name = "search"
+
+urlpatterns = [
+    # Hard results page (tabbed Users/Groups/Businesses)
+    path("", views.search, name="results"),
+]

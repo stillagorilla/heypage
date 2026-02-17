@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd /srv/heypage/app
+
+# Always run with the venv python
+source /srv/heypage/venv/bin/activate
+
+# Load /srv/heypage/.env safely:
+# - supports quoted values
+# - prevents $ expansion
+# - ignores blank lines and comments
+if [[ -f /srv/heypage/.env ]]; then
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    # trim leading/trailing whitespace
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
+
+    # skip blanks and comments
+    [[ -z "$line" || "${line:0:1}" == "#" ]] && continue
+
+    # only accept KEY=VALUE
+    if [[ "$line" =~ ^[A-Za-z_][A-Za-z0-9_]*= ]]; then
+      key="${line%%=*}"
+      val="${line#*=}"
+
+      # strip surrounding quotes if present
+      if [[ ( "${val:0:1}" == "\"" && "${val: -1}" == "\"" ) || ( "${val:0:1}" == "'" && "${val: -1}" == "'" ) ]]; then
+        val="${val:1:-1}"
+      fi
+
+      export "${key}=${val}"
+    fi
+  done < /srv/heypage/.env
+fi
+
+# Default to prod settings if not already set
+export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE:-config.settings.prod}"
+
+exec python manage.py "$@"

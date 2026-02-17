@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/favicon/apple-touch-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/favicon/apple-touch-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/favicon/apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/favicon/apple-touch-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/favicon/apple-touch-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/favicon/apple-touch-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/favicon/apple-touch-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/favicon/apple-touch-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon-32x32.png' %}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon/android-chrome-192x192.png' %}" sizes="192x192">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon-96x96.png' %}" sizes="96x96">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon-16x16.png' %}" sizes="16x16">
+    <link rel="manifest" href="{% static 'img/favicon/manifest.json' %}">
+    <link rel="mask-icon" href="{% static 'img/favicon/safari-pinned-tab.svg' %}" color="#f0ad4e">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="{% static 'img/favicon/mstile-144x144.png' %}">
+    <meta name="theme-color" content="#f0ad4e">
+
+    <title>Heypage Login &amp; Register</title>
+
+    <link href="{% static 'css/starter.css' %}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <main role="main" class="container-fluid mt-0">
+      <div class="row">
+        <!-- LEFT: Register -->
+        <div class="col-12 col-sm-6 col-md-7 bg-secondary text-white p-3 p-md-5 mvh-100 login-img d-flex flex-column justify-content-around">
+          <div style="flex:auto">
+            <div class="row">
+              <div class="col-6">
+                <img
+                  src="{% static 'img/heypage_white.svg' %}"
+                  alt="HeyPage"
+                  style="width: 10.5rem; z-index: 20;"
+                  class="mb-5 position-relative"
+                />
+              </div>
+
+              <div class="d-sm-none position-relative col-6 text-right" style="z-index: 20;">
+                <a href="#login" class="btn btn-outline-primary">Login</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center position-relative" style="z-index: 20; flex: auto">
+            <div class="col-12 col-md-8 col-xl-6 mb-5">
+              <h2 class="text-white mb-4 pb-2" id="register">Create an Account</h2>
+
+              {% if register_errors %}
+                <div class="alert alert-light text-dark">
+                  {{ register_errors }}
+                </div>
+              {% endif %}
+
+              <form class="form-light" method="post" action="{% url 'accounts:register' %}">
+                {% csrf_token %}
+
+                <!-- Social (placeholders) -->
+                <a class="btn btn-light btn-block mb-3 text-uppercase text-secondary" href="{% url 'accounts:social_login_google' %}">
+                  <i class="fab fa-google mr-2"></i>Google
+                </a>
+                <a class="btn btn-light btn-block mb-3 text-uppercase text-secondary" href="{% url 'accounts:social_login_facebook' %}">
+                  <i class="fab fa-facebook-f mr-2"></i>Facebook
+                </a>
+
+                <div class="text-center my-4 d-flex justify-content-between align-items-center">
+                  <span class="border-bottom w-50 my-2 hr"></span>
+                  <span class="mx-2 small">OR</span>
+                  <span class="border-bottom w-50 my-2"></span>
+                </div>
+
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" name="display_name" class="form-control" value="{{ register_data.display_name|default:'' }}">
+                </div>
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" name="username" class="form-control" value="{{ register_data.username|default:'' }}">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" name="email" class="form-control" value="{{ register_data.email|default:'' }}">
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" name="password1" class="form-control">
+                </div>
+
+                <div class="form-group form-check">
+                  <input type="checkbox" name="accept_terms" class="form-check-input" id="acceptTerms" {% if register_data.accept_terms %}checked{% endif %}>
+                  <label class="form-check-label" for="acceptTerms">
+                    Accept <a href="{% url 'core:terms' %}" class="text-white">Terms &amp; Privacy</a>
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block text-uppercase">Create an Account</button>
+              </form>
+            </div>
+
+            <div class="col-12 text-center small mt-md-3">© 2021 Heypage, LLC</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Login -->
+        <div class="col-12 col-sm-6 col-md p-3 p-mb-5 bg-white d-flex flex-column justify-content-center vh-100" style="position: sticky; top: 0px;">
+          <div class="row justify-content-center py-3">
+            <div class="col-12 col-md-8">
+              <h2 class="mb-4 pb-2" id="login">Login</h2>
+
+              {% if login_errors %}
+                <div class="alert alert-danger">
+                  {{ login_errors }}
+                </div>
+              {% endif %}
+
+              <form method="post" action="{% url 'accounts:login' %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" name="email" class="form-control" value="{{ login_data.email|default:'' }}">
+                </div>
+
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" name="password" class="form-control">
+                  <p class="text-right">
+                    <a href="{% url 'accounts:password_reset' %}" class="small text-secondary">Forgot Password?</a>
+                  </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block text-uppercase">Login</button>
+
+                <div class="text-center my-4 d-flex justify-content-between align-items-center">
+                  <span class="border-bottom w-50 my-2 hr"></span>
+                  <span class="mx-2 small">OR</span>
+                  <span class="border-bottom w-50 my-2"></span>
+                </div>
+
+                <a class="btn btn-outline-secondary btn-block mb-3 text-uppercase" href="{% url 'accounts:social_login_google' %}">
+                  <i class="fab fa-google mr-2"></i>Google
+                </a>
+                <a class="btn btn-outline-secondary btn-block mb-3 text-uppercase" href="{% url 'accounts:social_login_facebook' %}">
+                  <i class="fab fa-facebook-f mr-2"></i>Facebook
+                </a>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <script src="{% static 'js/vendor/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+  </body>
+</html>

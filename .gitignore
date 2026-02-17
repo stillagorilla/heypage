@@ -1,0 +1,17 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django / local
+*.log
+local_settings.py
+.env
+.env.*
+*.sqlite3
+
+# Static/media (only ignore if you don't intend to version them)
+# staticfiles/
+# media/
+

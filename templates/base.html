@@ -1,26 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Heypage{% endblock %}</title>
-</head>
-<body>
-  <header>
-    {% include 'includes/top_nav.html' %}
-  </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <div class="layout">
-    {% block side_nav %}
-      {% include 'includes/side_nav.html' %}
-    {% endblock %}
+    <title>{% block title %}Heypage{% endblock %}</title>
 
-    <main>
+    <link href="{% static 'css/starter.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/app.css' %}" rel="stylesheet" />
+
+    {% block extra_head %}{% endblock %}
+  </head>
+
+  <body>
+    {% if user.is_authenticated %}
+      {% include "includes/top_nav.html" %}
+
+      {# Match mockup structure: wrapper that JS/CSS can target #}
+      <div class="col-10 col-lg-3 pl-lg-0 sidenav-wrap" id="sideNav">
+        {% include "includes/side_nav.html" %}
+      </div>
+    {% endif %}
+
+    <main role="main" class="{% block main_class %}container-fluid{% endblock %}">
       {% block content %}{% endblock %}
     </main>
-  </div>
 
-  <footer>
-    {% include 'includes/site_footer.html' %}
-  </footer>
-</body>
+    {# Use full jQuery (not slim) to match mockups/plugins #}
+    <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>
