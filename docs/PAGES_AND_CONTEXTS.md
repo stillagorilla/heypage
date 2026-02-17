@@ -5,7 +5,7 @@ This document maps static mockups to the fewest Django templates needed, by cons
 
 The mockup set lives in `mockups-original/`.
 
-## Pages with NO context depictions (single canonical page)
+## Pages with no context depictions (single canonical page)
 
 These pages exist as a single mockup each (no owner/public variants):
 
@@ -18,7 +18,9 @@ These pages exist as a single mockup each (no owner/public variants):
 - `emails/index.html` — base template for site-generated emails
 - `coming-soon.html` — placeholder for production while under development
 
-These mockups depict the same underlying page with different permissions/UI and should become ONE Django template per feature area:
+## Pages with context depictions (owner vs public)
+
+These mockups depict the same underlying page with different permissions/UI and should become **one** Django template per surface:
 
 - `user-profile.html` + `my-profile.html`
 - `user-profile-groups.html` + `my-groups.html`
@@ -54,72 +56,51 @@ Photos:
 System / index:
 - `index.html` (mockup index/navigation; not a production page)
 
-### Proposed Django template consolidation pattern
+## Proposed Django template consolidation pattern
 
-**Profile shell (users)**
+### User profile shell (tab-driven)
 - Template: `templates/profiles/profile_detail.html`
 - Context:
   - `profile_user` (User)
   - `is_owner` (bool)
-  - `active_tab` in {posts, about, friends, photos, groups, reviews, business}
-- Notes:
-  - Owner-only UI is controlled by `is_owner` (edit buttons, privacy controls, etc.)
-  - Public UI hides owner-only controls and shows follow/friend actions as applicable
-
-## Confirmed include usage
-
-The mockups implement the following as reusable includes, and these map directly to Django `{% include %}` partials:
-
-- `includes_topnav.html` → `partials/nav/top_nav.html`
-- `includes_sidenav.html` → `partials/nav/side_nav.html`
-- Profile header:
-  - `includes_profile-head.html` + `includes_my-profile-head.html`
-  → `partials/profile/profile_header.html` driven by `is_owner`
-
-## Canonical route patterns (high level)
-
-### User profiles: one template, tab-driven
-- Template: `templates/profiles/profile_detail.html`
-- Context:
-  - `profile_user`
-  - `is_owner`
   - `active_tab` in `{posts, about, friends, photos, groups, reviews, business}`
 
-Owner/public differences are controlled by `is_owner` and permissions, NOT separate templates.
+Owner/public differences are controlled by `is_owner` and permissions (not separate templates).
 
-> NOTE: This same “tab-driven” pattern can apply to business/group pages if the UI uses tabbed sections.
-
-### Business profiles
-- `/<business-slug>/` → business profile
-- Includes “Reviews” section that aggregates reviews posted by users.
-
-### Group profiles
-- `/<group-slug>/` → group profile
-
-> Important: slugs must be unique across user, business, and group namespaces OR we must reserve distinct prefixes (e.g., /u/, /b/, /g/). Decide in OPEN_QUESTIONS.md.
-
-## Entity pages share a common layout skeleton (user/business/group)
-
+### Entity pages share a common layout skeleton (user / business / group)
 Observation: business and group pages use the same structural layout as user profiles:
-- global header includes (topnav + sidenav)
-- an entity header card (business/group equivalent of profile header)
+- global chrome (topnav + sidenav)
+- entity header card (business/group equivalent of profile header)
 - left sidebar cards
-- center feed-like column when About tab is active (including make-post + post cards)
+- center feed-like column when About tab is active
 
-Confirmed in:
-- `business-page.html` (About tab active with sidebar cards + center posts)
-- `group-page.html` (About tab active with sidebar cards + make-post + posts)
+Recommended consolidation:
+- `templates/entities/entity_detail.html` (generic entity shell)
+- wrappers that set context:
+  - `templates/profiles/profile_detail.html` extends entity shell
+  - `templates/business/business_detail.html` extends entity shell
+  - `templates/groups/group_detail.html` extends entity shell
 
-### Proposed Django template consolidation
-Create a generic “entity page shell” pattern:
+Tabs are context-driven (`active_tab`), not separate templates.
 
-- `templates/entities/entity_detail.html`
-  - used for: User, Business, Group
-  - includes: top nav, side nav, entity header, left sidebar cards, center column feed
+## Confirmed include usage (canonical)
 
-Then provide entity-specific wrappers (optional) that set context:
-- `profiles/profile_detail.html` -> extends entity shell
-- `business/business_detail.html` -> extends entity shell
-- `groups/group_detail.html` -> extends entity shell
+Global includes must use canonical include paths from `CANONICAL_PATHS.md`:
 
-Tabs are context-driven (active_tab), not separate templates.
+- `templates/includes/top_nav.html`
+- `templates/includes/side_nav.html`
+
+Any mockup “includes_*.html” files are considered source material only.
+
+## Canonical route patterns (locked)
+
+The public URL scheme is locked (see `ARCHITECTURE_SNAPSHOT.md`):
+
+- User profiles: `/<username>/`
+- Group pages: `/g/<slug>/`
+- Business pages: `/b/<slug>/`
+
+Important:
+- Register fixed routes and prefixed routes before the user catch-all.
+- Place `/<username>/` last.
+
