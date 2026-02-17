@@ -14,6 +14,7 @@ This repository is the source of truth for scope, page inventory, reusable UI bl
 - `docs/`
   The continuity documentation. This folder is the authoritative "memory" for the project and must be updated whenever decisions are made or progress is completed.
   - `PROJECT_LEDGER.md` — progress, decisions, milestone tracking
+  - 'CANONICAL_PATHS.md'
   - `FEATURES.md` — feature inventory (MVP → later phases)
   - `USER_FLOWS.md` — user journeys (register → post → comment → moderation → etc.)
   - `PAGES_AND_CONTEXTS.md` — which mockups consolidate into which Django templates
