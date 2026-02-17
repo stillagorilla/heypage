@@ -40,7 +40,7 @@ Recommended baseline (idempotent):
 
 ### Required in production
 - `DJANGO_SETTINGS_MODULE="config.settings.prod"`
-- `DATABASE_URL="postgresql://heypage:***@127.0.0.1:5432/heypage"`
+- `DATABASE_URL="postgres://heypage:***@127.0.0.1:5432/heypage"`
 - `DJANGO_SECRET_KEY="***"`
 - `DJANGO_ALLOWED_HOSTS="heypage.com,www.heypage.com,208.113.165.79,127.0.0.1,localhost,hp-prd-web01"`
 
@@ -56,38 +56,43 @@ Recommended baseline (idempotent):
 - `HP_MOCKUPS_ENABLED="1"`
 - `HP_MOCKUPS_ALLOWED_IPS="24.5.206.70,127.0.0.1,208.113.165.79"`
 
-### Production settings module
-Production runs with:
-- `DJANGO_SETTINGS_MODULE=config.settings.prod`
-
-### Required
-- `DATABASE_URL` is required in production (`config/settings/prod.py` enforces this).
-
 Store canonical values in:
-- `/srv/heypage/.env` (read by `bin/dj`)
+- `/srv/heypage/.env` (loaded by `bin/dj`)
 
 ## Canonical command runner: `bin/dj`
 
 ### Purpose
 `bin/dj` standardizes:
-- the python interpreter (`/srv/heypage/venv/bin/python`)
-- loading `/srv/heypage/.env`
+- the working directory (`/srv/heypage/app`)
+- the python interpreter (via `/srv/heypage/venv`)
+- loading `/srv/heypage/.env` in a safe way
 - defaulting `DJANGO_SETTINGS_MODULE` to `config.settings.prod`
-- optionally running as the canonical OS user (`heypage`)
+
+### Running as the correct OS user
+`bin/dj` itself does **not** change OS user. In production, run management commands as `heypage`:
+
+Examples:
+- `sudo -u heypage -H /srv/heypage/app/bin/dj check`
+- `sudo -u heypage -H /srv/heypage/app/bin/dj migrate`
+- `sudo -u heypage -H /srv/heypage/app/bin/dj collectstatic --noinput -v 1`
+- `sudo -u heypage -H /srv/heypage/app/bin/dj diffsettings`
+
+> Optional future improvement: teach `bin/dj` to honor an env var like `DJANGO_RUN_AS_USER`,
+> but the canonical approach above works everywhere and is explicit.
 
 ### Usage patterns (canonical)
 
 Validate config:
-- `bin/dj check`
+- `sudo -u heypage -H bin/dj check`
 
 DB migrations:
-- `DJANGO_RUN_AS_USER=heypage bin/dj migrate`
+- `sudo -u heypage -H bin/dj migrate`
 
 Static collection (canonical):
-- `DJANGO_RUN_AS_USER=heypage bin/dj collectstatic --noinput -v 1`
+- `sudo -u heypage -H bin/dj collectstatic --noinput -v 1`
 
 Show effective settings deltas:
-- `DJANGO_RUN_AS_USER=heypage bin/dj diffsettings`
+- `sudo -u heypage -H bin/dj diffsettings | egrep 'SETTINGS_MODULE|STATIC_ROOT|STATIC_URL|DATABASES'`
 
 ## Nginx static mapping contract
 
@@ -118,13 +123,13 @@ Symptoms:
 Fix:
 1) ensure `/srv/heypage/staticfiles` is owned by `heypage`
 2) run:
-   - `DJANGO_RUN_AS_USER=heypage bin/dj collectstatic --noinput`
+   - `sudo -u heypage -H bin/dj collectstatic --noinput`
 
 ### Wrong settings loaded (sqlite, missing apps)
 Symptoms:
-- `diffsettings` shows sqlite, minimal INSTALLED_APPS, or missing `collectstatic` command.
+- `diffsettings` shows sqlite, minimal `INSTALLED_APPS`, or missing `collectstatic` command.
 
 Fix:
-- ensure `DJANGO_SETTINGS_MODULE=config.settings.prod`
-- ensure `DATABASE_URL` is set (via `/srv/heypage/.env` or exported)
-- use `bin/dj` to standardize invocation
+- ensure `/srv/heypage/.env` contains `DJANGO_SETTINGS_MODULE=config.settings.prod`
+- ensure `/srv/heypage/.env` contains `DATABASE_URL=...`
+- run via `bin/dj` (it loads `/srv/heypage/.env`) and prefer `sudo -u heypage -H`
