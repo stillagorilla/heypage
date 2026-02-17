@@ -1,16 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /srv/heypage/app
+APP_ROOT="/srv/heypage/app"
+VENV_PY="/srv/heypage/venv/bin/python"
+ENV_FILE="/srv/heypage/.env"
+RUN_AS_USER="${DJANGO_RUN_AS_USER:-}"   # optional: set to "heypage" to self-sudo
 
-# Always run with the venv python
-source /srv/heypage/venv/bin/activate
+cd "$APP_ROOT"
+
+# Optional self-switch to the canonical runtime user to avoid permission issues (e.g., collectstatic).
+# Usage:
+#   DJANGO_RUN_AS_USER=heypage bin/dj collectstatic --noinput
+if [[ -n "$RUN_AS_USER" && "$(id -un)" != "$RUN_AS_USER" ]]; then
+  exec sudo -u "$RUN_AS_USER" -H env RUN_AS_USER= "$0" "$@"
+fi
+
+# Sanity check venv python exists
+if [[ ! -x "$VENV_PY" ]]; then
+  echo "ERROR: venv python not found at: $VENV_PY" >&2
+  exit 1
+fi
 
 # Load /srv/heypage/.env safely:
 # - supports quoted values
 # - prevents $ expansion
 # - ignores blank lines and comments
-if [[ -f /srv/heypage/.env ]]; then
+if [[ -f "$ENV_FILE" ]]; then
   while IFS= read -r line || [[ -n "$line" ]]; do
     # trim leading/trailing whitespace
     line="${line#"${line%%[![:space:]]*}"}"
@@ -31,10 +46,17 @@ if [[ -f /srv/heypage/.env ]]; then
 
       export "${key}=${val}"
     fi
-  done < /srv/heypage/.env
+  done < "$ENV_FILE"
 fi
 
 # Default to prod settings if not already set
 export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE:-config.settings.prod}"
 
-exec python manage.py "$@"
+# Helpful error if prod settings require DATABASE_URL and it's missing
+if [[ "$DJANGO_SETTINGS_MODULE" == "config.settings.prod" && -z "${DATABASE_URL:-}" ]]; then
+  echo "ERROR: DATABASE_URL is required for config.settings.prod." >&2
+  echo "Fix: set it in /srv/heypage/.env or export it before running bin/dj." >&2
+  exit 1
+fi
+
+exec "$VENV_PY" manage.py "$@"
