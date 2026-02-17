@@ -172,6 +172,10 @@ If that section still exists in Data Model Notes, mark it deprecated or update i
 
 ## Phase 1 Implementation Notes (As Deployed)
 
+### Operations reference
+See `docs/OPERATIONS.md` for canonical production command patterns, env vars, users/permissions,
+staticfiles + nginx contracts, and troubleshooting.
+
 ### Production VM (single-host MVP)
 - Host: `hp-prd-web01`
 - OS: Ubuntu 22.04 LTS
