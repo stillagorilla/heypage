@@ -36,7 +36,25 @@ Recommended baseline (idempotent):
 - `sudo chmod -R g+rwX /srv/heypage/staticfiles`
 - `sudo find /srv/heypage/staticfiles -type d -exec chmod g+s {} \;`
 
-## Environment variables
+## Environment variables (canonical: /srv/heypage/.env)
+
+### Required in production
+- `DJANGO_SETTINGS_MODULE="config.settings.prod"`
+- `DATABASE_URL="postgresql://heypage:***@127.0.0.1:5432/heypage"`
+- `DJANGO_SECRET_KEY="***"`
+- `DJANGO_ALLOWED_HOSTS="heypage.com,www.heypage.com,208.113.165.79,127.0.0.1,localhost,hp-prd-web01"`
+
+### Security + HTTPS
+- `DJANGO_CSRF_TRUSTED_ORIGINS="https://heypage.com,https://www.heypage.com"`
+- `DJANGO_SECURE_SSL_REDIRECT="1"`
+
+### Paths
+- `DJANGO_STATIC_ROOT="/srv/heypage/staticfiles"`
+- `DJANGO_MEDIA_ROOT="/srv/heypage/media"`
+
+### Mockups access control
+- `HP_MOCKUPS_ENABLED="1"`
+- `HP_MOCKUPS_ALLOWED_IPS="24.5.206.70,127.0.0.1,208.113.165.79"`
 
 ### Production settings module
 Production runs with:
