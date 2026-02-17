@@ -15,3 +15,6 @@ local_settings.py
 # staticfiles/
 # media/
 
+
+# Generated context packs
+/context_packs/
