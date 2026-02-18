@@ -24,6 +24,58 @@ If a path or convention conflicts with other documentation, **this file wins**. 
 
 ## Templates
 
+
+## Django folder structure (canonical)
+
+The goal is to prevent drift by defining *one* expected layout for Django apps, templates, and reusable UI.
+
+### Apps (Python packages)
+- All Django apps live under: `apps/`
+- Each app is a normal Django app package: `apps/<app_name>/`
+  - `apps/<app_name>/views.py`, `urls.py`, `models.py`, `admin.py`, `apps.py`, `migrations/`, etc.
+
+Current/expected app namespaces (Phase 1–2):
+- `apps/accounts` (auth, profile, settings)
+- `apps/core` (root routing helpers, healthz, simple static pages)
+- `apps/feed` (feed views)
+- `apps/entities` (groups + businesses)
+- `apps/search`, `apps/chat`, `apps/mockups` (dev-only mockup browser)
+
+### Templates (HTML)
+Canonical template roots:
+- Global templates root: `templates/`
+- Per-app templates: `templates/<app_name>/...`
+  - Example: `templates/accounts/login_register.html`
+  - Example: `templates/feed/feed.html`
+  - Example: `templates/entities/business_page.html`, `templates/entities/group_page.html` (or similar)
+
+Shared UI layers (these are the key “no drift” contracts):
+- **Global includes (chrome):** `templates/includes/`
+  - top nav, side nav, site header/footer
+- **Reusable components (content blocks):** `templates/components/`
+  - small, composable building blocks used by multiple pages
+  - components MAY include subfolders when it improves clarity
+
+Recommended components taxonomy (create folders as they become real):
+- `templates/components/entity_headers/`
+  - `entity_header.html` (single canonical entity header card)
+  - optional thin wrappers later: `user_header.html`, `group_header.html`, `business_header.html` (only if truly needed)
+- `templates/components/feed/`
+  - `composer.html` (make post / make review variants later)
+  - `post_card.html` (the “post-like” card shell)
+  - `reactions_bar.html`, `comment_thread.html` (placeholders allowed)
+- `templates/components/cards/`
+  - left-column cards like about/bio/contact, stats, mini lists
+- `templates/components/modals/` (future)
+- `templates/components/forms/` (future)
+
+**Policy:**
+- Pages live in `templates/<app_name>/`.
+- Anything reused across *two+* pages belongs in `templates/components/`.
+- Anything that is site-wide chrome belongs in `templates/includes/`.
+- Do not create new `templates/partials/` (deprecated; see below).
+
+
 - Templates root: `BASE_DIR / "templates"` → `/srv/heypage/app/templates`
 
 ### Canonical shared fragments
