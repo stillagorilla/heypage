@@ -57,7 +57,7 @@ They must be distinct modals/partials to avoid wiring confusion.
 - [x] Django project created
 - [x] Base template + includes wired
 - [x] Static assets pipeline defined (`WhiteNoise`, `collectstatic`), nginx alias contract in place
-- [x] Auth surface stubbed (login/register template renders)
+- [ ] Auth surface stubbed (login/register template renders)
 
 ### M2 — Core social objects (next)
 - [ ] Profiles (user, business, group) + slug routing
@@ -69,4 +69,5 @@ They must be distinct modals/partials to avoid wiring confusion.
 - [ ] Voting window + thresholds
 - [ ] Outcome transitions (active → removed / kept)
 - [ ] Audit trail
+
 
