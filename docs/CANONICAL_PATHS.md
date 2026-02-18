@@ -22,14 +22,12 @@ If a path or convention conflicts with other documentation, **this file wins**. 
 - `DJANGO_SETTINGS_MODULE=config.settings.prod`
 - `DATABASE_URL=...` (required by `config/settings/prod.py`; see `OPERATIONS.md`)
 
-## Templates
-
-
 ## Django folder structure (canonical)
 
 The goal is to prevent drift by defining *one* expected layout for Django apps, templates, and reusable UI.
 
 ### Apps (Python packages)
+
 - All Django apps live under: `apps/`
 - Each app is a normal Django app package: `apps/<app_name>/`
   - `apps/<app_name>/views.py`, `urls.py`, `models.py`, `admin.py`, `apps.py`, `migrations/`, etc.
@@ -42,73 +40,135 @@ Current/expected app namespaces (Phase 1–2):
 - `apps/search`, `apps/chat`, `apps/mockups` (dev-only mockup browser)
 
 ### Templates (HTML)
+
 Canonical template roots:
 - Global templates root: `templates/`
-- Per-app templates: `templates/<app_name>/...`
-  - Example: `templates/accounts/login_register.html`
-  - Example: `templates/feed/feed.html`
-  - Example: `templates/entities/business_page.html`, `templates/entities/group_page.html` (or similar)
+- Per-app / per-feature templates: `templates/<area>/...`
+  - Examples:
+    - `templates/accounts/login_register.html`
+    - `templates/feed/feed.html`
+    - `templates/search/results.html`
+    - `templates/chat/inbox.html`
+    - `templates/mockups/index.html`
 
-Shared UI layers (these are the key “no drift” contracts):
-- **Global includes (chrome):** `templates/includes/`
-  - top nav, side nav, site header/footer
-- **Reusable components (content blocks):** `templates/components/`
-  - small, composable building blocks used by multiple pages
-  - components MAY include subfolders when it improves clarity
+Shared UI layers (the “no drift” contracts):
+- **Global includes (site-wide chrome + page-level plumbing):** `templates/includes/`
+- **Reusable components (content building blocks):** `templates/components/`
 
-Recommended components taxonomy (create folders as they become real):
-- `templates/components/entity_headers/`
-  - `entity_header.html` (single canonical entity header card)
-  - optional thin wrappers later: `user_header.html`, `group_header.html`, `business_header.html` (only if truly needed)
-- `templates/components/feed/`
-  - `composer.html` (make post / make review variants later)
-  - `post_card.html` (the “post-like” card shell)
-  - `reactions_bar.html`, `comment_thread.html` (placeholders allowed)
-- `templates/components/cards/`
-  - left-column cards like about/bio/contact, stats, mini lists
-- `templates/components/modals/` (future)
-- `templates/components/forms/` (future)
+#### Decision: entities vs route-level pages
 
-**Policy:**
-- Pages live in `templates/<app_name>/`.
-- Anything reused across *two+* pages belongs in `templates/components/`.
-- Anything that is site-wide chrome belongs in `templates/includes/`.
-- Do not create new `templates/partials/` (deprecated; see below).
+We have two kinds of pages:
 
+1) **Entity pages** (same core 3-column layout pattern):
+- User: `/<username>/`
+- Group: `/g/<slug>/`
+- Business: `/b/<slug>/`
 
-- Templates root: `BASE_DIR / "templates"` → `/srv/heypage/app/templates`
+2) **Route-level pages** (fixed routes; may reuse components but do not follow entity layout):
+- `/feed/`, `/search/`, `/chat/`, `/settings/`, auth routes, etc.
 
-### Canonical shared fragments
-All shared fragments (navigation, headers, reusable UI blocks) live in:
+**Rule:** if a page follows the entity layout contract, it must live under `templates/entities/` and extend the canonical entity base template.
 
-- `templates/includes/`
+## Templates taxonomy (locked)
+
+### 1) Site-wide includes (`templates/includes/`)
+
+These are the *site chrome* + boilerplate blocks that should be used across most pages.
 
 Canonical filenames (current contract):
 - `templates/includes/top_nav.html`
 - `templates/includes/side_nav.html`
+- `templates/includes/head.html` (shared `<head>` block: CSS links, meta, title blocks)
+- `templates/includes/scripts.html` (shared JS includes at end of `<body>`)
 
-> If additional shared fragments are introduced (e.g., `site_footer.html`), they must be added here.
+We intentionally do **not** use `site_header.html` / `site_footer.html`. If a real header/footer UI becomes necessary later, it should still be implemented via `includes/` and explicitly added here.
+
+### 2) Reusable components (`templates/components/`)
+
+These are composable building blocks used by multiple pages.
+
+Policy:
+- If a block is reused across *two or more* pages, it belongs in `templates/components/`.
+- Components may have subfolders when it improves clarity.
+
+Locked (Phase 0-derived) component families:
+- `templates/components/entity_header.html`
+  - Single canonical “entity header card” structure (User/Business/Group share the same markup pattern).
+  - Do not create separate variants unless we can prove meaningful divergence.
+
+- `templates/components/cards/`
+  - Reusable left-column cards (about/bio/contact, stats, mini lists, etc.)
+
+- `templates/components/feed/`
+  - `composer.html` (make post / later: make review variants)
+  - `post_card.html` (the “post-like” card shell)
+  - Optional later: `reactions_bar.html`, `comment_thread.html`, `moderation_panel.html`
+
+- `templates/components/modals/`
+  - All modal markup lives here (not scattered inside page templates).
+  - Organize into subfolders only when it becomes necessary:
+    - `templates/components/modals/accounts/`
+    - `templates/components/modals/entities/`
+    - `templates/components/modals/content/`
+  - Naming rule: one modal per file; filenames match modal purpose (e.g., `edit_profile_modal.html`).
+
+### 3) Entity page templates (`templates/entities/`)
+
+Canonical entity base template:
+- `templates/entities/_entity_base.html`
+  - Extends `templates/base.html`
+  - Includes `components/entity_header.html`
+  - Provides the standard entity layout zones:
+    - left column (cards)
+    - center column (composer + feed cards)
+    - optional right column (future)
+
+Entity profile pages (canonical names):
+- `templates/entities/user/profile.html`
+- `templates/entities/group/profile.html`
+- `templates/entities/business/profile.html`
+
+Naming rule:
+- Use `profile.html` for the main “profile” page of each entity type (user/group/business).
+
+### 4) Route-level page templates (fixed routes)
+
+These do not use the entity base template, but they may reuse many of the same components.
+
+Canonical examples:
+- `templates/feed/feed.html`
+- `templates/search/results.html`
+- `templates/chat/inbox.html`
+- `templates/accounts/login_register.html`
+
+Rationale for `templates/feed/` etc.:
+- Feed/search/chat have different layout shells (even if they reuse entity-like components).
+- Keeping them separate reduces confusion and prevents the entity base contract from being stretched.
 
 ### Deprecated template directories
+
 The following directories are deprecated and must not be referenced by `{% include %}` / `{% extends %}`:
 
 - `templates/partials/` (deprecated; legacy only)
 - `templates/_deprecated_partials/` (deprecated quarantine; legacy only)
 
 Policy:
-- New work must be done in `templates/includes/`.
-- Any legacy fragments must be migrated into `templates/includes/` and the deprecated version removed or quarantined.
+- New work must be done in `templates/includes/` and `templates/components/`.
+- Any legacy fragments must be migrated into the canonical locations and the deprecated version removed or quarantined.
 
 ### Base layout contract
+
 `templates/base.html` must include shared fragments via canonical paths:
+- `{% include "includes/head.html" %}`
 - `{% include "includes/top_nav.html" %}`
 - `{% include "includes/side_nav.html" %}`
+- `{% include "includes/scripts.html" %}`
 
 ## Static files
 
 ### Canonical static source root (in repo)
-All source static assets live under:
 
+All source static assets live under:
 - `BASE_DIR / "static"` → `/srv/heypage/app/static`
 
 Examples:
@@ -117,8 +177,8 @@ Examples:
 - `static/img/...`
 
 ### Canonical production static collection root (deploy artifact)
-**Production `STATIC_ROOT` must be:**
 
+**Production `STATIC_ROOT` must be:**
 - `/srv/heypage/staticfiles`
 
 This is implemented by:
@@ -129,6 +189,7 @@ This is implemented by:
 - `/srv/heypage/app/staticfiles` (only used if `DJANGO_STATIC_ROOT` is not set)
 
 ### Nginx static mapping contract
+
 Nginx must serve static via:
 - `location /static/ { alias /srv/heypage/staticfiles/; }`
 
@@ -136,9 +197,9 @@ Contract:
 - Django `STATIC_ROOT` and nginx `alias` must always agree.
 
 ### FontAwesome webfonts (path compatibility)
+
 Some FontAwesome CSS (example: `static/css/font-awesome/light.css`) references `../webfonts/...`
 relative to the CSS directory (e.g., `static/css/font-awesome/`), which implies webfonts are at:
-
 - `static/css/webfonts/`
 
 Canonical resolution (kept in repo):
@@ -151,6 +212,7 @@ Rationale:
 - Avoid brittle CSS rewrites and prevent `collectstatic` failures due to missing referenced assets.
 
 ### CSS asset reference policy
+
 To keep `collectstatic` with `ManifestStaticFilesStorage` (WhiteNoise) reliable:
 - Prefer referencing assets via paths that exist in `static/` exactly as written.
 - Remove unused or legacy CSS that references non-existent assets.
@@ -159,14 +221,16 @@ To keep `collectstatic` with `ManifestStaticFilesStorage` (WhiteNoise) reliable:
 ## Canonical operational helpers
 
 ### Management wrapper
+
 - `bin/dj` is the canonical wrapper for Django management commands on the production VM.
 
 Operational behavior (how to run commands, which user to run as, env loading) is documented in:
-- `OPERATIONS.md`
+- `docs/OPERATIONS.md`
 
 ## Documentation
 
-Canonical documentation location (current):
-- Project docs live at the repo root: `/srv/heypage/app/*.md`
+Canonical documentation location:
+- `docs/` contains all project docs (this file included).
+- Repo root contains only: `README.md` and `context_pack.sh` (plus repo/ops files as needed).
 
-> Future option: move docs into `/srv/heypage/app/docs/`, but do not do so until we update all references.
+This file must be kept current as decisions are made.
