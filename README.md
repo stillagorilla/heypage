@@ -1,6 +1,6 @@
-# HeyPage
+# Heypage
 
-HeyPage is a Django-first, server-rendered web app targeting an MVP of a Facebook-like social platform with a differentiator:
+Heypage is a Django-first, server-rendered web app targeting an MVP of a Facebook-like social platform with a differentiator:
 **distributed, user-driven moderation via deletion proposals + voting**.
 
 This repo is deliberately structured to prevent “rediscovery loops” by making the documentation authoritative.
