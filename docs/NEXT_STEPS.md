@@ -1,18 +1,20 @@
 # Next Steps
 
-This file is **forward-looking only**. Completed work should move to `PROJECT_LEDGER.md`.
+This file is forward-looking only. Completed work should move to `PROJECT_LEDGER.md`.
 
-Current date: 2026-02-16
+Current date: 2026-02-20
 
 ## Current status (1 paragraph)
 
-Phase 1 (production environment + Django scaffold) is deployed on `hp-prd-web01` with nginx→gunicorn→Django, Postgres, TLS, and `bin/dj` operational. Static assets are committed and `collectstatic` is stable when run as OS user `heypage` (see `OPERATIONS.md`).
+Phase 1 (environment + Django scaffold) is deployed on `hp-prd-web01` with nginx→gunicorn→Django, Postgres, TLS, and `bin/dj` operational. Static serving is stable (nginx alias + directory perms fixed), and the template system is now locked as: `base.html` skeleton only, layout shells under `templates/layouts/`, chrome in includes, reusable blocks in components. Feed is rendering with converted templates, with minor UI deltas reserved for later refinement.
 
 ## Phase 2 goal (next milestone)
 
-Deliver the first end-to-end vertical slice:
+Deliver the first end-to-end vertical slice of real app data and routing:
 
-**Auth → feed page loads → create a basic post → render it in feed (server-rendered) → propose deletion UI stub (no voting logic yet).**
+**Auth → feed page loads → create a basic post → render it in feed (server-rendered) → stub moderation UI states (no voting logic yet) → add entity routing stubs for `/@username`-style root users and prefixed groups/businesses.**
+
+(We can name Phase 2 “Core Models + Routing”. Template parity work continues opportunistically but is not the gating path.)
 
 ## Do next (in order)
 
@@ -21,35 +23,40 @@ Deliver the first end-to-end vertical slice:
 - `sudo -u heypage -H bin/dj check`
 - `sudo nginx -t`
 
-### 2) Clean repo hygiene before new feature work
-- Ensure `.pyc` and `__pycache__/` are ignored (confirm `.gitignore` covers this).
-- Confirm docs references are consistent with `CANONICAL_PATHS.md` and `OPERATIONS.md`.
+### 2) Lock routing surfaces (no business logic yet)
+- Confirm reserved-words policy file (where it lives and how it’s enforced).
+- Add URL stubs:
+  - `/feed/` (already)
+  - `/search/` (route-level)
+  - `/settings/` (route-level)
+  - `/chat/` (route-level, different layout)
+  - `/<username>/` (catch-all, registered last)
+  - `/g/<slug>/`
+  - `/b/<slug>/`
 
-### 3) Implement minimal Feed surface
-- Create `apps/feed/` routes + views if not already present.
-- Add `/` behavior:
-  - anon: render login/register (`templates/accounts/login_register.html`)
-  - authed: render feed (`templates/feed/feed.html`)
+### 3) Implement minimal core models (MVP-first)
+- `Post(author, body, created_at, updated_at)` plus migration.
+- Optional (if needed immediately for routing stubs): lightweight “entity” models or placeholders:
+  - Group (slug, name)
+  - Business (slug, name)
+- Keep “post-like” extensibility in mind, but do not over-generalize in Phase 2.
 
-### 4) Create a minimal Post model + migration
-- Decide “post-like target” modeling option A vs B (record in `PROJECT_LEDGER.md`).
-- Implement MVP:
-  - `Post(author, body, created_at, updated_at)`
-- Add basic create form on feed (POST to create).
+### 4) Feed write path (server-rendered)
+- Feed view:
+  - GET: render composer + recent posts list
+  - POST: create post, redirect back to feed
+- Render posts using a component include (post card).
 
-### 5) Render posts in feed
-- Query recent posts
-- Render using a reusable template component (see `COMPONENTS_AND_INCLUDES.md` for recommended layout)
-
-### 6) Stub moderation UI (no logic yet)
-- Add “Propose deletion” affordance on a post card
-- Render the locked UI states as static stubs (PROPOSED / VOTED) behind temporary conditions
-- Keep the copy consistent with `ARCHITECTURE_SNAPSHOT.md`
+### 5) Stub moderation UI states (no logic yet)
+- Add “Propose deletion” affordance on post card
+- Render locked UI states as static stubs behind temporary conditions:
+  - PROPOSED
+  - VOTE IN PROGRESS (viewer voted)
 
 ## Definition of done (Phase 2 milestone)
 
-- Visiting `/` as anon shows login/register.
-- Visiting `/` as authed shows feed with composer and post list.
+- Visiting `/feed/` as authed shows feed with composer and post list.
 - Creating a post works and displays immediately.
-- Post cards render a “Propose deletion” stub panel.
+- Post cards render “Propose deletion” panel stubs (copy consistent with docs).
+- Entity routes exist as stubs (return 200 with placeholder template).
 - Changes are committed and pushed to `origin/main`.
