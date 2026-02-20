@@ -1,143 +1,40 @@
-# Architecture Snapshot
+# Architecture Snapshot (locked decisions + system map)
 
-This is the condensed system map for starting implementation without re-reading all mockups and mapping docs.
+Last updated: 2026-02-20
 
-## North Star
-A Facebook-like social platform with a core differentiator:
-- Distributed, user-driven content moderation via deletion proposals and voting.
+This file is the “what is true” snapshot. If a decision is locked, it belongs here.
 
-## Stack assumptions (current)
-- Backend: Django, server-rendered templates first.
-- API: optional DRF for endpoints like search suggest and voting.
-- Real-time: not required for MVP, upgrade path via Django Channels.
-- DB: Postgres preferred (search), MySQL acceptable if required by hosting.
+## Template architecture rules (locked)
 
-## Deployment target (Phase 1–MVP): DreamCompute VM (OpenStack)
+- `templates/base.html` is skeleton only.
+- Layout families are shells under `templates/layouts/`.
+- Page templates extend a shell and never rebuild the grid.
+- Shells include their own chrome:
+  - `includes/top_nav.html` (must include search UX markup)
+  - `includes/side_nav.html`
+- Reusable content blocks live under `templates/components/`.
 
-Hosting decision:
-- Deploy to a self-managed DreamHost DreamCompute VM with full root access.
+Canonical shells:
+- `_entity_shell.html` (entity pages: user/group/business)
+- `_two_col_shell.html` (feed/search/settings family)
+- `_chat_shell.html` (chat family; later)
 
-MVP architecture:
-- Single VM:
-  - Nginx (TLS) → Gunicorn → Django
-  - Postgres on same host initially
-  - Optional Redis (cache/sessions; later task queue broker)
-- Storage:
-  - Prefer volume-backed disk for Postgres/media so snapshots and migrations are straightforward.
+## URL scheme locked (public entity URLs)
 
-Operational baseline:
-- Backups are the operator’s responsibility:
-  - scheduled DB backups + volume snapshots
-  - offsite copies
-- Security:
-  - SSH key-only
-  - restrict SSH ingress to known IP(s)
-  - open only 80/443 publicly
-- Monitoring:
-  - uptime + resource/disk alerts
-
-Scale-out plan:
-1) Upgrade VM flavor (vertical)
-2) Split DB to dedicated VM on private network
-3) Add additional web VMs behind load balancer
-
-## Public URL scheme (locked)
 - Users: `/<username>/`
 - Groups: `/g/<slug>/`
 - Businesses: `/b/<slug>/`
 
-Routing rule:
-- Prefix routes and all fixed routes must be registered before the user catch-all.
-- `/<username>/` is last.
-- Enforce reserved words for usernames.
+Notes:
+- Root-level user route is a catch-all and must be registered last.
+- Reserved-words list prevents collisions with fixed routes/prefixes.
 
-Reserved words (minimum set):
-- `g`, `b`, `grp`, `biz`
-- `search`, `login`, `logout`, `register`, `settings`, `reset-password`
-- `chat`, `messages`, `notifications`
-- `api`, `admin`, `static`, `media`
-- `help`, `about`, `terms`, `privacy`
+## Moderation states locked (UI + behavior)
 
-## App boundaries (recommended)
-- `accounts`: custom User, profile, auth, password reset wiring
-- `social`: friendships, blocks, memberships
-- `entities`: groups, businesses, awards, locations
-- `content`: post-like content items and attachments
-- `comments`: threaded comments
-- `reactions`: reactions on content and optionally comments
-- `moderation`: deletion proposals, votes, outcomes, suppression
-- `search`: SearchDocument index, suggest API, hard results
-- `chat`: conversations, messages, mute and block actions
-- `notifications`: notification events, preferences, email digests
-
-## Template architecture (server-rendered)
-
-## UI composition strategy (Phase 0 decisions)
-
-Several major pages share the same structural backbone. The intent is to build a **single, reusable shell**
-and assemble pages by composing small components.
-
-Shared pattern across:
-- User profile (owner + public)
-- Business page
-- Group page
-
-Common layout zones:
-1) **Entity header card** (user/business/group)
-   - same layout pattern; data differs
-   - implemented as a single canonical component (see `templates/components/entity_headers/`)
-2) **Left column** (small “cards”)
-   - About/Bio card
-   - compact cards (contact, badges/awards, stats, etc.)
-3) **Center column** (feed stream)
-   - Composer (“make post”; for businesses later: “write review” variants)
-   - Post-like cards (static placeholders first; real models later)
-
-Feed page (`/feed/`) is the first scaffold target:
-- It must use the canonical base layout and includes (top nav, side nav).
-- It must be styled (static assets load) and render stable without intermittent 500s.
-- It must structurally resemble the mockup feed shell (pixel-perfect is *not* required for Phase 1).
-
-Component-first rule:
-- Build/lock the shell and component slots first.
-- Page templates should be thin wrappers that arrange components.
-
-
-Base layouts:
-- `base.html` for app pages
-- `auth_base.html` for auth pages (optional)
-
-Global includes:
-- `includes_topnav.html` (search dropdown, notifications dropdown, profile)
-- `includes_sidenav.html`
-- Entity header wrappers:
-  - user_header_public
-  - user_header_owner
-  - group_header_public
-  - business_header_public
-
-Owner pages follow a consistent pattern:
-- `page_actions` row above tabs for owner-context actions (Create Group, Create Business, etc.)
-
-## Canonical “post-like” component system
-One shared backbone across:
-- Posts
-- Business reviews
-- Business jobs
-- Photo-like content (when shown in a feed format)
-
-Core partials:
-- composer (make post / make review / make job)
-- post-like card
-- reactions bar
-- comment thread
-- moderation panel
-
-Moderation states (locked):
-- PROPOSED (viewer not voted): shows `Deletion Proposed Agree?`, buttons enabled, results visible.
-- VOTE IN PROGRESS (viewer voted): shows `Deletion Proposed Voted.`, buttons disabled, results visible.
-- Proposer auto-votes: proposing deletion immediately records YES for proposer, so proposer sees Voted. state.
-- RESOLVED removal: content is suppressed (not hard-deleted) and renders tombstone `Content removed by vote.`
+- PROPOSED (viewer not voted): shows “Deletion Proposed Agree?”, buttons enabled, results visible.
+- VOTE IN PROGRESS (viewer voted): shows “Deletion Proposed Voted.”, buttons disabled, results visible.
+- Proposer auto-votes YES when proposing deletion.
+- Resolved removal suppresses content (tombstone), not hard-delete.
 
 ## Entity-specific notes
 
@@ -157,13 +54,16 @@ Social profiles pencil:
 ### Photos and albums
 Shared tabs pattern:
 - Photos grid and Albums grid
+
 Owner actions:
 - Add Photos modal, New Album modal, Edit Photos bulk page
+
 Bulk edit implies:
 - photo taken_on editable
 - move or add selected photos to albums
 
 ## Search
+
 Two surfaces:
 1) Live dropdown in topnav (suggest)
 - Users, Groups, Businesses sections
@@ -178,6 +78,7 @@ Implementation approach:
 - Suggest endpoint returns grouped top-N per type.
 
 ## Settings and preferences
+
 Settings page implies:
 - account edits: username, name, email
 - privacy settings: audiences for posts, friend requests, timeline posts, friends visibility
@@ -187,15 +88,9 @@ Settings page implies:
 - security: password reset link, MFA placeholder
 
 ## Messaging (chat)
+
 MVP recommended approach:
 - Standard HTTP endpoints with polling.
+
 Upgrade path:
 - Channels/WebSockets later.
-
-## Known cleanup item in docs
-The older “shared slug namespace” handle registry concept is not required under the locked URL scheme (users at root, groups and businesses prefixed).
-If that section still exists in Data Model Notes, mark it deprecated or update it to match the locked scheme.
-
-## Current phase and next phase naming
-- Current chat: Phase 0, Mockup Review + Architecture Blueprint
-- Next chat: Phase 1, Environment + Django Scaffold
