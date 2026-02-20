@@ -2,7 +2,53 @@
 
 This file is the historical “why” log. If something was discovered the hard way, it belongs here so we don’t repeat it.
 
-Last updated: 2026-02-16
+Last updated: 2026-02-20
+
+## 2026-02-20 — Phase 1 scaffold (templates + static pipeline) stabilized
+
+### Template architecture locked (base + shells + includes + components)
+- Confirmed canonical rule set:
+  - `templates/base.html` is **skeleton only** (document chrome, blocks, scripts). It does **not** own grid layouts.
+  - Each layout family gets a shell template under `templates/layouts/` (page templates never rebuild the grid).
+  - Shells include their own chrome (top nav, side nav) and define the page grid.
+  - Components are reusable content blocks under `templates/components/`.
+- Naming convention:
+  - Entity layout shell: `templates/layouts/entity_shell.html`
+  - Route-level 2-column shell (used by feed/search/settings): `templates/layouts/2col_shell.html`
+  - Chat shell: `templates/layouts/chat_shell.html` (reserved for later)
+- “Canonical template taxonomy” is treated as locked.
+
+### Feed route wired to Django view + template conversion started
+- `/feed/` resolves to `apps.feed.views.feed_view`.
+- `feed/feed.html` converted to extend the appropriate layout shell pattern (and does not re-declare base skeleton).
+
+### Static pipeline failure mode discovered and fixed (manifest storage + favicon)
+- Root cause of 500 during feed render:
+  - Django `ManifestStaticFilesStorage` raised:
+    - `Missing staticfiles manifest entry for 'img/favicon.ico'`
+  - Fix:
+    - Updated head favicon reference to the actual committed asset location:
+      - `static/img/favicon/favicon.ico`
+- Additional “gotcha” fixed:
+  - Missing `{% load static %}` in several included templates caused runtime template errors.
+  - Added `{% load static %}` at top of affected includes/components.
+
+### Nginx 403 on /static/ discovered and fixed (directory traversal perms)
+- Symptom:
+  - `/static/...` returned `403 Forbidden` from nginx even though alias was correct.
+- Root cause:
+  - nginx worker user (`www-data`) could not traverse `/srv/heypage` (directory permissions too restrictive).
+- Fix:
+  - Ensured directory execute (traverse) permissions for nginx:
+    - `/srv` and `/srv/heypage` set to `0755`
+    - staticfiles tree set to directories `0755`, files `0644`
+- Result:
+  - `/static/css/...` and `/static/img/...` served 200 OK.
+
+### Known UI deltas accepted for now (Phase 1 scope)
+- Top nav icon ordering differs slightly from mockup (chat icon placement).
+- Side nav footer spacing and centering differs slightly from mockup.
+- Decision: treat these as refinement items to adjust later in shells/includes/components once core routing/models are in place.
 
 ## 2026-02-16/17 — Phase 1 stabilized on production VM
 
@@ -60,14 +106,6 @@ They must be distinct modals/partials to avoid wiring confusion.
 - [ ] Auth surface stubbed (login/register template renders)
 
 ### M2 — Core social objects (next)
-- [ ] Profiles (user, business, group) + slug routing
-- [ ] Feed (list view + filtering)
-- [ ] Posts + media + comments + reactions (baseline)
-
-### M3 — Moderation MVP
-- [ ] Propose deletion (persisted)
-- [ ] Voting window + thresholds
-- [ ] Outcome transitions (active → removed / kept)
-- [ ] Audit trail
-
-
+- [ ] Profiles (user, business, group) + routing stubs
+- [ ] Minimal Post model + feed query + render loop
+- [ ] Moderation UI stub (no vote logic yet)
