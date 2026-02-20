@@ -46,9 +46,9 @@ Every layout family gets one shell template that:
 - includes chrome (top nav, side nav) appropriate to that family
 
 Canonical shells:
-- `templates/layouts/_entity_shell.html` (3-column entity pages)
-- `templates/layouts/_two_col_shell.html` (feed/search/settings family)
-- `templates/layouts/_chat_shell.html` (chat layout family, later)
+- `templates/layouts/entity_shell.html` (3-column entity pages)
+- `templates/layouts/2col_shell.html` (feed/search/settings family)
+- `templates/layouts/chat_shell.html` (chat layout family, later)
 - Optional later: `templates/layouts/_auth_shell.html` (auth pages)
 
 ### Rule 3 — Page templates never rebuild the grid
