@@ -99,7 +99,7 @@ Locked (Phase 0-derived) component families:
 - `templates/components/cards/`
   - Reusable left-column cards (about/bio/contact, stats, mini lists, etc.)
 
-- `templates/components/feed/`
+- `templates/components/`
   - `composer.html` (make post / later: make review variants)
   - `post_card.html` (the “post-like” card shell)
   - Optional later: `reactions_bar.html`, `comment_thread.html`, `moderation_panel.html`
