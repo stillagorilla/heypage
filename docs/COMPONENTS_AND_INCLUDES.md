@@ -47,6 +47,36 @@ Behavior (from mockups, locked):
   - “Agree?” (not voted): buttons enabled, extras hidden
   - “Voted.” (voted): buttons disabled, extras visible (progress + representative vote status)
 
+## Moderation: propose deletion modal + vote panel (confirmed behavior)
+
+### Shared modal
+- Location: `templates/components/modals/propose_deletion_modal.html`
+- Trigger: kebab menu “Propose Deletion”
+- Behavior:
+  - opens modal
+  - “Propose Deletion” confirms proposal (stub now; real POST later)
+
+### Vote panel states (from feed.html mockup)
+Inline indicator (same row as reactions/share):
+- Always shows: `Deletion Proposed`
+- `voteName` text:
+  - `Agree?` when viewer has not voted
+  - `Voted.` when viewer has voted (or proposer auto-yes)
+
+Panel body (“voting stuff”) behavior:
+- Not voted (`Agree?`):
+  - Yes/No enabled
+  - extras hidden (no progress/rep-votes section)
+- Voted (`Voted.`):
+  - Yes/No disabled
+  - extras visible:
+    - progress bar text (example stub)
+    - representative vote status list + “remaining” line
+
+Proposer auto-vote rule:
+- When a user proposes deletion, they are treated as having voted **Yes** immediately.
+- Therefore proposer sees `Voted.` + extras right after proposing.
+
 ### Planned
 - Tombstone: `templates/components/moderation_tombstone.html`
 - Entity header variants under `templates/components/entity_headers/`
