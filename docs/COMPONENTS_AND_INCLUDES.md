@@ -81,23 +81,20 @@ Proposer auto-vote rule:
 - Tombstone: `templates/components/moderation_tombstone.html`
 - Entity header variants under `templates/components/entity_headers/`
 
-## Entity header system (LOCKED design)
+### Planned
+- Tombstone: `templates/components/moderation_tombstone.html`
 
-Decision: **base + wrappers** (not a single mega-template).
+### Entity header system (current reality — DO NOT DRIFT)
+- `templates/components/entity/entity_header.html`
+  - Single template handles owner vs public branching.
+  - Inputs:
+    - `entity` (user object)
+    - `is_owner` (bool)
+    - `active_tab` (string)
+    - `header_uid` (unique suffix for IDs)
 
-Why:
-- User/group/business share the same stable header skeleton (cover, avatar, title, badges, tabs row).
-- Owner/public differences stay isolated in wrappers (actions area, kebab, modals).
-- Avoid duplicate-ID hazards by requiring a `header_uid` suffix for any IDs.
-
-Templates (canonical):
-- `templates/components/entity/entity_header_base.html` (skeleton; no hardcoded IDs)
-- `templates/components/entity/user_header.html` (router include: owner vs public)
-- `templates/components/entity/user_header_owner.html` (extends base; owner actions + photo modal)
-- `templates/components/entity/user_header_public.html` (extends base; relationship action + kebab)
-
-Inputs:
-- `entity` (user object)
-- `is_owner` (bool)
-- `active_tab` (string key, default "about")
-- `header_uid` (unique suffix; recommended: username/slug)
+### Left column profile cards (current reality)
+- Profile left-column cards (Bio, Social, Friends preview, Recent Photos preview) are still inline in:
+  - `templates/entities/user/profile.html`
+- Extraction into reusable card components under `templates/components/entity/` is planned,
+  but only after mockup parity + finalizing a stable card API.
