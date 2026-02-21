@@ -4,6 +4,35 @@ This file is the historical “why” log. If something was discovered the hard 
 
 Last updated: 2026-02-21
 
+## 2026-02-21 — Phase 2: moderation vertical slice + entity shell regression found
+
+### Moderation app + models added (site-wide, not feed-specific)
+- Added `apps.moderation` as a site-wide app because moderation applies to post-like content across the site (not just feed posts).
+- Implemented `ModerationProposal` + `ModerationVote` models and migrated successfully.
+- Confirmed proposer auto-votes YES and non-proposer can vote YES/NO; UI reflects mockups (Agree? vs Voted + “extras”).
+
+### Moderation UI implemented from mockups (modal + panel)
+- “Propose Deletion” is launched from post kebab → opens a modal (from mockups) → confirming creates proposal + shows the moderation panel.
+- Panel behavior matches mockups:
+  - Agree? state: buttons active, extras hidden
+  - Voted state: buttons disabled, extras shown (progress bar + rep vote status)
+  - NO vote state added (disabled styling + voted label + extras visible)
+
+### Ops gotchas discovered (recorded so we don’t repeat)
+- Migration write permissions:
+  - `makemigrations` can fail with PermissionError if migrations dirs or files are owned by root.
+  - Standardize: create and chown `apps/*/migrations/` to `heypage:heypage` before running migrations on the VM.
+- Installed apps duplication:
+  - Prepending `LOCAL_APPS` in prod settings can create duplicate app labels if the base settings already include the app.
+  - Fix is to only add missing local apps (set-style merge), not blindly prepend.
+- Template pitfalls:
+  - `{% static %}` cannot take variables beginning with underscore (e.g. `_avatar_url`) — Django raises `TemplateSyntaxError`.
+  - Keep template comments as `{% comment %}...{% endcomment %}` when they must never render; `{# ... #}` should not render but is still risky in partial-copy scenarios.
+
+### Entity layout shell regression identified
+- A modified `templates/layouts/entity_shell.html` removed the shared chrome/grid pattern (top nav + side nav + spacer + mainWrap), causing user profile pages to look wrong.
+- Action: restore entity_shell to the Phase 1 locked shell contract so entity pages match mockup structure.
+
 ## 2026-02-21 — Phase 2 (Core Models + Routing) vertical slice landed
 
 ### Routing surfaces locked (and username catch-all order preserved)
@@ -90,3 +119,4 @@ Last updated: 2026-02-21
 - VOTE IN PROGRESS (viewer voted): “Deletion Proposed Voted.”, buttons disabled, extra info visible.
 - Proposer auto-votes YES.
 - Removal is a tombstone, not a hard delete.
+
