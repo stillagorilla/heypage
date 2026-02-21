@@ -2,61 +2,48 @@
 
 This file is forward-looking only. Completed work should move to `PROJECT_LEDGER.md`.
 
-Current date: 2026-02-20
+Current date: 2026-02-21
 
 ## Current status (1 paragraph)
 
-Phase 1 (environment + Django scaffold) is deployed on `hp-prd-web01` with nginx→gunicorn→Django, Postgres, TLS, and `bin/dj` operational. Static serving is stable (nginx alias + directory perms fixed), and the template system is now locked as: `base.html` skeleton only, layout shells under `templates/layouts/`, chrome in includes, reusable blocks in components. Feed is rendering with converted templates, with minor UI deltas reserved for later refinement.
-
-## Phase 2 goal (next milestone)
-
-Deliver the first end-to-end vertical slice of real app data and routing:
-
-**Auth → feed page loads → create a basic post → render it in feed (server-rendered) → stub moderation UI states (no voting logic yet) → add entity routing stubs for `/@username`-style root users and prefixed groups/businesses.**
-
-(We can name Phase 2 “Core Models + Routing”. Template parity work continues opportunistically but is not the gating path.)
+Phase 2 (Core Models + Routing) is delivering a working vertical slice on hp-prd-web01: `/feed/` is server-rendered, posts can be created and displayed, and Propose Deletion is wired via a modal and a session-backed stub that renders the correct “Voted + extras” state for the proposer. Routing surfaces are locked, including `/g/<slug>/`, `/b/<slug>/`, and root username catch-all last with reserved-words enforcement. Template architecture remains locked: base skeleton only, shells under `templates/layouts/`, chrome in `templates/includes/`, and reusable blocks in `templates/components/`.
 
 ## Do next (in order)
 
-### 1) Confirm baseline health (5 minutes)
-- `curl -s https://heypage.com/healthz/`
+### 1) Moderation models (real persistence, still minimal)
+- Add models (MVP):
+  - ModerationProposal: target_post FK, proposed_by, reason(s)/clarification, created_at, closes_at, status
+  - ModerationVote: proposal FK, voter FK, yes/no, created_at
+- Rules:
+  - proposer auto-votes YES at proposal creation
+  - viewer state:
+    - not voted -> PROPOSED (Agree?)
+    - voted -> VOTE IN PROGRESS (Voted + extras)
+
+### 2) Replace session stub with DB-backed behavior
+- `/feed/propose-deletion/`:
+  - Create proposal row
+  - Auto-create vote YES for proposer
+  - Redirect back to feed
+- Feed render:
+  - annotate each post with open proposal info
+  - compute viewer state from vote existence
+
+### 3) Tombstone UI state (suppressed content)
+- Add `components/moderation_tombstone.html` and swap post body for tombstone copy when suppression applies.
+- No hard delete.
+
+### 4) Add a harness for “other user” PROPOSED state
+- Use a second account, or add a dev-only querystring override (DEBUG-only).
+
+### 5) Profile routing stubs (next horizontal slice)
+- Implement minimal `/<username>/` profile template with correct layout shell (entity shell).
+- Keep routing order and reserved words constraints intact.
+
+## Verification checklist (hp-prd-web01)
 - `sudo -u heypage -H bin/dj check`
-- `sudo nginx -t`
-
-### 2) Lock routing surfaces (no business logic yet)
-- Confirm reserved-words policy file (where it lives and how it’s enforced).
-- Add URL stubs:
-  - `/feed/` (already)
-  - `/search/` (route-level)
-  - `/settings/` (route-level)
-  - `/chat/` (route-level, different layout)
-  - `/<username>/` (catch-all, registered last)
-  - `/g/<slug>/`
-  - `/b/<slug>/`
-
-### 3) Implement minimal core models (MVP-first)
-- `Post(author, body, created_at, updated_at)` plus migration.
-- Optional (if needed immediately for routing stubs): lightweight “entity” models or placeholders:
-  - Group (slug, name)
-  - Business (slug, name)
-- Keep “post-like” extensibility in mind, but do not over-generalize in Phase 2.
-
-### 4) Feed write path (server-rendered)
-- Feed view:
-  - GET: render composer + recent posts list
-  - POST: create post, redirect back to feed
-- Render posts using a component include (post card).
-
-### 5) Stub moderation UI states (no logic yet)
-- Add “Propose deletion” affordance on post card
-- Render locked UI states as static stubs behind temporary conditions:
-  - PROPOSED
-  - VOTE IN PROGRESS (viewer voted)
-
-## Definition of done (Phase 2 milestone)
-
-- Visiting `/feed/` as authed shows feed with composer and post list.
-- Creating a post works and displays immediately.
-- Post cards render “Propose deletion” panel stubs (copy consistent with docs).
-- Entity routes exist as stubs (return 200 with placeholder template).
-- Changes are committed and pushed to `origin/main`.
+- `sudo -u heypage -H bin/dj migrate`
+- smoke:
+  - login → create post → verify it appears
+  - propose deletion → verify “Voted + extras”
+  - clear moderation stub → verify moderation disappears
