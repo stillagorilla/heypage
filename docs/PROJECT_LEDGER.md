@@ -4,6 +4,45 @@ This file is the historical “why” log. If something was discovered the hard 
 
 Last updated: 2026-02-21
 
+## 2026-02-21 — Phase 2 progress: routing + feed write path + moderation stub + auth + user profile groundwork
+
+### Completed
+- Locked routing surfaces in `config/urls.py`:
+  - `/feed/`, `/search/`, `/settings/`, `/chat/`, `/g/<slug>/`, `/b/<slug>/`, and `/<username>/` catch-all LAST.
+- Reserved username enforcement:
+  - Added/confirmed `apps/accounts/reserved_words.py` and guarded profile routing against reserved routes.
+- Feed MVP:
+  - `apps/feed.models.Post` created and migrated (`feed_post` table exists).
+  - Server-rendered feed supports GET list + composer + POST create.
+- Entity stubs:
+  - `apps/entities.models.Group` + `Business` created and migrated.
+- Moderation MVP (global, post-like targets):
+  - Added `apps/moderation` with `ModerationProposal` + `ModerationVote` using generic target (ContentType + object_id).
+  - Implemented “Propose Deletion” flow aligned to `mockups-original/feed.html`:
+    - kebab → modal → propose → proposer sees “Voted.” + extras
+    - other viewer sees “Agree?” (not voted) panel
+    - vote Yes/No transitions to Voted + extras
+- Auth MVP:
+  - Implemented working `/login/` and `/register/` flow using `accounts/login_register.html` mockup.
+  - Confirmed login redirects honor `?next=...`.
+
+### Key fixes / incidents (to avoid regressions)
+- `INSTALLED_APPS` duplication caused “Application labels aren’t unique, duplicates: feed”.
+  - Fix: ensure prod settings do not prepend local apps if they’re already present.
+- Migrations failed due to permissions in `apps/*/migrations/`.
+  - Fix: ensure migrations directories are owned by `heypage:heypage` and writable before running `makemigrations`.
+- Template comment text rendered unexpectedly once; resolved by correcting template comment usage.
+- Entity layout regression: `entity_shell.html` was unintentionally changed to a different grid, causing missing side nav / wrong columns.
+  - Decision: `entity_shell.html` is a locked shell and must retain the spacer + side_nav + mainWrap parity pattern from Phase 1.
+
+### Open / next
+- Restore and re-lock `templates/layouts/entity_shell.html` to the Phase 1 contract (chrome + fixed grid).
+- Implement user profile page parity with `mockups-original/my-profile.html` and `mockups-original/user-profile.html`:
+  - header + left cards + center feed column using the standard post composer + post card.
+- Decide final `entity_header.html` architecture:
+  - single base + “owner/public” variant logic, or wrappers per type/context (user/group/business + owner/public).
+  - Document the decision in `COMPONENTS_AND_INCLUDES.md` to prevent drift.
+
 ## 2026-02-21 — Phase 2: moderation vertical slice + entity shell regression found
 
 ### Moderation app + models added (site-wide, not feed-specific)
@@ -119,4 +158,5 @@ Last updated: 2026-02-21
 - VOTE IN PROGRESS (viewer voted): “Deletion Proposed Voted.”, buttons disabled, extra info visible.
 - Proposer auto-votes YES.
 - Removal is a tombstone, not a hard delete.
+
 
