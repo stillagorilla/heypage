@@ -23,9 +23,10 @@ Phase 2 (Core Models + Routing) is delivering a working vertical slice on hp-prd
   - entity header card (center column, first)
   - left column: Bio card + Friends preview + Recent Photos preview
   - center column: composer + post cards (feed-like)
-- Extract the user header into `templates/components/entity/entity_header.html` and render it via context:
+- User header is rendered via `templates/components/entity/entity_header.html` using:
   - `is_owner` (viewer == profile user)
-  - `subject_user` (the profile being viewed)
+  - `profile_user` (the profile being viewed)
+  - `header_uid` (username recommended)
 
 ### 3) Wire profile routing + view contract
 - Update `apps/accounts.views.profile_view` to:
