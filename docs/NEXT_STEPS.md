@@ -28,11 +28,12 @@ Phase 2 (Core Models + Routing) is delivering a working vertical slice on hp-prd
   - `profile_user` (the profile being viewed)
   - `header_uid` (username recommended)
 
-### 3) Wire profile routing + view contract
-- Update `apps/accounts.views.profile_view` to:
-  - load `subject_user` by username (404 if missing)
-  - compute `is_owner`
-  - render `templates/entities/user/profile.html` with the expected context
+### 3) Wire profile routing + view contract (DONE, keep locked)
+- `apps/accounts.views.profile_view`:
+  - enforces reserved usernames
+  - loads `profile_user`
+  - computes `is_owner`, passes `active_tab="about"`
+  - renders `templates/entities/user/profile.html`
 
 ### 4) Keep mockups as the source of truth
 - When in doubt, copy the structure/classes/ordering from mockups first, then extract components.
@@ -60,12 +61,13 @@ Goal: `/@username/` catch-all renders user profile page (owner vs public context
 Goal: Match `mockups-original/my-profile.html` and `mockups-original/user-profile.html`.
 
 - Decide + document the final `entity_header` structure:
-  Option A (preferred guardrail): base + thin wrappers:
-  - `templates/components/entity/entity_header_base.html`
-  - wrappers:
-    - `user_header_owner.html`
-    - `user_header_public.html`
-    - later: `group_header_*`, `business_header_*`
+  ### 3) Build user entity header from mockups
+...
+### 3) Keep entity header stable (DO NOT DRIFT)
+- Current implementation is a single template:
+  - `templates/components/entity/entity_header.html`
+- Any refactor to base/wrappers must be a deliberate migration step with docs + shims,
+  not an ad-hoc change, to prevent drift.
 
 ### 4) Left-column cards + center composer + post cards
 - Bring left column cards into parity with mockups (Intro, Photos, Friends, etc.)
