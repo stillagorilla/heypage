@@ -7,8 +7,16 @@ This doc defines the reusable UI building blocks (templates-first) and where the
 ### Global includes
 - `templates/includes/`
 
-### Reusable UI components
+### Reusable UI components (canonical)
+
+Reusable components that are not “global chrome” (cards, panels, headers, modals):
+
 - `templates/components/`
+
+Common subfolders:
+- `templates/components/entity/` (entity header + entity cards)
+- `templates/components/modals/` (Bootstrap modals extracted from mockups)
+- `templates/components/` (top-level for shared blocks used broadly, e.g., post_card.html, composer.html)
 
 ### Modals (canonical)
 All modals live under:
@@ -26,12 +34,18 @@ Do not include modals once per post card; include once per page.
 - `templates/components/composer.html`
 - `templates/components/post_card.html`
 
-### Moderation mechanism (Phase 2 current)
-- `templates/components/moderation_panel.html`
-  - owns the combined row (reactions/share + “Deletion Proposed … Agree?/Voted.”)
-  - owns the voting panel
-  - uses server-rendered state (`moderation_state`) for deterministic display
-- `templates/components/modals/propose_deletion_modal.html`
+### 4) Moderation UI (locked behavior)
+
+Templates:
+- `templates/components/moderation_panel.html` (panel shown after a proposal is created)
+- `templates/components/modals/propose_deletion_modal.html` (from mockups; launched from kebab)
+
+Behavior (from mockups, locked):
+- Propose Deletion is initiated from post kebab → modal → confirm
+- Proposer auto-votes YES
+- Viewer states:
+  - “Agree?” (not voted): buttons enabled, extras hidden
+  - “Voted.” (voted): buttons disabled, extras visible (progress + representative vote status)
 
 ### Planned
 - Tombstone: `templates/components/moderation_tombstone.html`
