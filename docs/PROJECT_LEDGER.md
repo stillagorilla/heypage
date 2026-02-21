@@ -4,6 +4,18 @@ This file is the historical “why” log. If something was discovered the hard 
 
 Last updated: 2026-02-21
 
+## 2026-02-21 — Re-locked entity shell + finalized entity_header design (prevent regressions)
+
+- Restored `templates/layouts/entity_shell.html` to the Phase 1 contract:
+  - includes `includes/top_nav.html` + `includes/side_nav.html`
+  - preserves spacer + `#sideNav` + `#mainWrap` parity
+  - internal 4/8 columns for left cards + center feed-like
+
+- Finalized entity_header system design:
+  - base skeleton + owner/public wrappers (per Phase 0 guidance)
+  - user header implemented first under `templates/components/entity/`
+  - wrappers must pass `header_uid` to avoid duplicate IDs for modals/inputs
+
 ## 2026-02-21 — Phase 2 progress: routing + feed write path + moderation stub + auth + user profile groundwork
 
 ### Completed
@@ -158,5 +170,6 @@ Last updated: 2026-02-21
 - VOTE IN PROGRESS (viewer voted): “Deletion Proposed Voted.”, buttons disabled, extra info visible.
 - Proposer auto-votes YES.
 - Removal is a tombstone, not a hard delete.
+
 
 
