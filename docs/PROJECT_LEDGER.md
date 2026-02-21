@@ -4,6 +4,16 @@ This file is the historical “why” log. If something was discovered the hard 
 
 Last updated: 2026-02-21
 
+## 2026-02-21 — Drift correction: user profile + entity header contracts re-locked
+
+- Re-aligned `templates/entities/user/profile.html` to the existing `profile_view` contract:
+  - uses `profile_user` (not `subject_user`)
+  - continues to include `templates/components/entity/entity_header.html`
+- Confirmed current entity header strategy is a single template with owner/public branching:
+  - No `entity_header_base.html` / wrapper split has been adopted yet.
+- Left-column profile cards (Bio/Social/Friends/Recent Photos) remain inline in profile.html for now:
+  - Planned extraction into reusable card components only after mockup parity and a stable card API are finalized.
+
 ## 2026-02-21 — Re-locked entity shell + finalized entity_header design (prevent regressions)
 
 - Restored `templates/layouts/entity_shell.html` to the Phase 1 contract:
@@ -170,6 +180,7 @@ Last updated: 2026-02-21
 - VOTE IN PROGRESS (viewer voted): “Deletion Proposed Voted.”, buttons disabled, extra info visible.
 - Proposer auto-votes YES.
 - Removal is a tombstone, not a hard delete.
+
 
 
 
