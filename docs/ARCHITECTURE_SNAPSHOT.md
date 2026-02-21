@@ -14,10 +14,10 @@ This file is the “what is true” snapshot. If a decision is locked, it belong
   - `includes/side_nav.html`
 - Reusable content blocks live under `templates/components/`.
 
-Canonical shells:
-- `_entity_shell.html` (entity pages: user/group/business)
-- `_two_col_shell.html` (feed/search/settings family)
-- `_chat_shell.html` (chat family; later)
+Canonical shells (actual filenames):
+- `templates/layouts/entity_shell.html` (entity pages: user/group/business)
+- `templates/layouts/2col_shell.html` (feed/search/settings family)
+- `templates/layouts/chat_shell.html` (chat family; later)
 
 ## URL scheme locked (public entity URLs)
 
