@@ -1,4 +1,3 @@
-# PROJECT_LEDGER.md
 # Project Ledger (decisions + notable changes)
 
 This file is the historical “why” log. If something was discovered the hard way,
@@ -113,6 +112,22 @@ Caveat:
 
 ---
 
+## 2026-02-22 — Friend header UI contract + actions parity completed (NEXT_STEPS #2)
+
+What changed:
+- Public profile header renders stateful friend controls with real CSRF-safe POST forms:
+  - Add to Friends (send request)
+  - Requested (cancel outgoing pending)
+  - Friends (remove/unfriend)
+- Server computes header state (`friend_state`, `friend_request_id`) and passes it into the header include.
+- Redirect behavior is caller-controlled via hidden `next=` and enforced as safe local redirect server-side.
+
+Why:
+- Friend actions are invoked from multiple surfaces and must return the user to the origin surface.
+- Keeping header actions server-rendered (no JS dependency) reduces drift and avoids inconsistent UI state.
+
+---
+
 ## 2026-02-22 — Timeline posting policy enforced at write-time (NEXT_STEPS #4)
 
 What changed:
@@ -166,21 +181,15 @@ Future note:
 
 ---
 
-## 2026-02-22 — Post card identity + navigation polish (NEXT_STEPS #7)
+## 2026-02-22 — Post card identity + navigation polish completed (NEXT_STEPS #7)
 
 What changed:
-- The post card now links the author identity to the author’s profile route (`/<username>/`)
-  instead of `href="#"`:
-  - Author name link
-  - Author avatar link (if present)
+- For real posts, author avatar + display name now link to the author profile catch-all: `/<username>/`.
+- Kept cross-surface behavior (no assumptions about /feed/ routes or page context).
 
 Why:
-- Keeps post_card cross-surface and avoids feed-only assumptions.
-- Improves navigation with minimal template-only change (safe, low churn).
-
-Continuity note:
-- Preserve the “single-line include-with tags inside loops” rule when touching surfaces
-  that render post cards.
+- Post cards are shared across feed and entity pages, so identity navigation must be stable everywhere.
+- Direct linking to the canonical profile catch-all improves UX and reduces route coupling.
 
 ---
 
