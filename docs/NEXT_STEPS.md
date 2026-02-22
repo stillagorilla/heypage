@@ -1,3 +1,4 @@
+# NEXT_STEPS.md
 # Next Steps (Phase 2)
 
 This file is the forward-looking work queue.
@@ -29,7 +30,8 @@ Notes:
 Likely files:
 - templates/components/entity/entity_header.html
 - apps/accounts/urls.py
-- apps/accounts/views.py (friend endpoints)
+- apps/accounts/views.py (profile_view wiring + friend state computation)
+- apps/accounts/views_friends.py (friend endpoints)
 - templates/entities/user/profile.html (header include wiring)
 
 ---
