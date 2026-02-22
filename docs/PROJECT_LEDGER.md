@@ -56,7 +56,7 @@ Why:
 ## 2026-02-21 — Timeline targeting and visibility foundations added to Post
 
 Added:
-- `timeline_owner`: whose timeline the post appears on (supports future wall posts).
+- `timeline_owner`: whose timeline the post appears on (supports wall posts).
 - `visibility`: PUBLIC / FRIENDS / PRIVATE.
 
 Locked rules captured:
@@ -112,35 +112,53 @@ Caveat:
 
 ---
 
-## 2026-02-22 — NEXT_STEPS #4 completed: enforce timeline posting policy at write-time
+## 2026-02-22 — Timeline posting policy enforced at write-time (NEXT_STEPS #4)
 
-What was implemented:
-- `posts:create` enforces `UserSettings.timeline_post_policy` for wall posts:
+What changed:
+- `posts:create` now enforces `UserSettings.timeline_post_policy` for wall posts:
   - EVERYONE: allow
   - FRIENDS: allow only when currently friends
   - NO_ONE: deny
-- Blocking is enforced at write-time: if either user blocked the other, deny wall posts.
-- Denied wall posts do not silently re-route to author timeline.
-- Redirect contract remains stable via safe `next` handling.
+- Also denies wall posts when blocked either direction.
+- Denials do not silently re-route to self; they error + redirect back to the origin surface.
 
 Why:
-- Wall posts are permissioned by the timeline owner, not by the viewing surface.
-- Write-time enforcement prevents “surprising” cross-user content writes and reduces moderation burden.
+- This is the minimum “wall posting” safety gate to prevent surprise content placement.
+- Policy is enforced at write-time; friendship remains dynamic at read-time.
 
 ---
 
-## 2026-02-22 — NEXT_STEPS #5 completed: post management actions (edit + delete)
+## 2026-02-22 — Post management actions added (NEXT_STEPS #5)
 
-What was implemented:
-- Post management actions exist and are enforced server-side:
-  - Edit: author-only.
-  - Delete: author or staff/superuser override (temporary moderation seam).
-- Inline edit UI exists on post cards (Edit toggles an in-card form with Save/Cancel).
-- Delete is exposed in the kebab menu for authorized users (author and staff/superuser).
+What changed:
+- Post cards now expose management actions via the kebab:
+  - Author: Edit (inline), Delete
+  - Staff/Superuser: Delete (temporary moderation override)
+- Inline edit posts to `posts:edit` and maintains the shared next= redirect contract.
+- Post permissions logic is centralized via `apps/posts/permissions.py` (via `can_manage_post`).
 
-Continuity note:
-- Hard delete is currently used to unblock moderation UX iteration.
-- Later decision: replace with tombstones / soft-delete rules once moderation resolution UI is stable.
+Why:
+- Enables iteration on UX without introducing global JS or new page flows.
+- Keeps server-side authorization the source of truth.
+
+---
+
+## 2026-02-22 — Propose Deletion cross-surface redirect contract locked (NEXT_STEPS #6)
+
+What changed:
+- Propose Deletion modal submits `next={{ request.get_full_path }}` so it returns to the current surface.
+- Shells include shared modals once per page:
+  - `layouts/2col_shell.html`
+  - `layouts/entity_shell.html`
+- Moderation views now enforce safe local redirects for `next=` (prevents open redirects).
+
+Why:
+- post_card is cross-surface; it cannot assume /feed/.
+- Modal ownership at the shell prevents duplication and missing-modal bugs as new surfaces are added.
+- Safe redirect contract is required for security and continuity.
+
+Future note:
+- Eligibility gating for proposing deletion (account age, reputation, etc.) should be enforced server-side in `moderation:propose_deletion`.
 
 ---
 
