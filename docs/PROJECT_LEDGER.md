@@ -198,3 +198,36 @@ Why:
 - Sporadic 500s were explained by mixed gunicorn workers running inconsistent code.
 - Fix pattern: confirm expected callable exists, then restart gunicorn so all workers reload consistently.
 - Migration file ownership can break makemigrations if created as root; keep app ownership consistent.
+
+---
+
+## 2026-02-22 — Prod migration workflow + permissions gotcha (makemigrations vs migrate)
+
+Observed:
+- Running `makemigrations <app>` on prod can fail with `PermissionError` writing into `apps/<app>/migrations/` when `bin/dj` runs as OS user `heypage` but the migrations directory/files are not writable/readable by that user. This was seen when attempting to generate migrations on prod.{index=2}
+- “Sporadic 500” behavior can occur when gunicorn workers are running mixed code (some old, some new). Fix pattern is to restart the service after code/migration changes so all workers reload consistently.
+
+Locked guidance (prod-safe default):
+- Prefer **NOT** generating migrations on prod. If migration files are already in the repo, on prod run **migrate only**, then restart the service:
+  - `sudo -u heypage -H bin/dj migrate`
+  - `sudo systemctl restart heypage.service`
+
+If prod must generate migrations (discouraged):
+- Ensure migrations packages exist and are owned/permissioned for `heypage`:
+  - Ensure directories exist:
+    - `sudo install -d -m 0755 -o heypage -g heypage apps/feed/migrations`
+    - `sudo install -d -m 0755 -o heypage -g heypage apps/entities/migrations`
+  - Ensure `__init__.py` exists:
+    - `sudo -u heypage -H bash -lc 'test -f apps/feed/migrations/__init__.py || : > apps/feed/migrations/__init__.py'`
+    - `sudo -u heypage -H bash -lc 'test -f apps/entities/migrations/__init__.py || : > apps/entities/migrations/__init__.py'`
+  - Fix ownership/permissions:
+    - `sudo chown -R heypage:heypage apps/feed/migrations apps/entities/migrations`
+    - `sudo chmod -R u=rwX,g=rX,o=rX apps/feed/migrations apps/entities/migrations`
+  - Verify/apply:
+    - `sudo -u heypage -H bin/dj showmigrations feed entities`
+    - `sudo -u heypage -H bin/dj migrate`
+    - `sudo systemctl restart heypage.service`
+
+Why:
+- Prevents permission-driven migration failures on prod and avoids drift from server-generated migrations.
+- Restarting the app service after migrations/code changes prevents mixed-worker “sporadic 500” incidents.
