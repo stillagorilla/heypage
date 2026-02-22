@@ -166,6 +166,24 @@ Future note:
 
 ---
 
+## 2026-02-22 — Post card identity + navigation polish (NEXT_STEPS #7)
+
+What changed:
+- The post card now links the author identity to the author’s profile route (`/<username>/`)
+  instead of `href="#"`:
+  - Author name link
+  - Author avatar link (if present)
+
+Why:
+- Keeps post_card cross-surface and avoids feed-only assumptions.
+- Improves navigation with minimal template-only change (safe, low churn).
+
+Continuity note:
+- Preserve the “single-line include-with tags inside loops” rule when touching surfaces
+  that render post cards.
+
+---
+
 ## Ops / deployment gotchas recorded
 
 - Sporadic 500s were explained by mixed gunicorn workers running inconsistent code.
