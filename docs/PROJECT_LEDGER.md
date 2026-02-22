@@ -1,3 +1,4 @@
+# PROJECT_LEDGER.md
 # Project Ledger (decisions + notable changes)
 
 This file is the historical “why” log. If something was discovered the hard way,
@@ -150,7 +151,10 @@ What changed:
 - Shells include shared modals once per page:
   - `layouts/2col_shell.html`
   - `layouts/entity_shell.html`
-- Moderation views now enforce safe local redirects for `next=` (prevents open redirects).
+- Moderation views now enforce safe local redirects for `next=` (prevents open redirects):
+  - safe local `next` allowed
+  - safe local referer fallback allowed
+  - final fallback `/feed/`
 
 Why:
 - post_card is cross-surface; it cannot assume /feed/.
