@@ -1,76 +1,80 @@
-# Next Steps
+# Next Steps (forward-looking only)
 
-This file is forward-looking only. Completed work should move to PROJECT_LEDGER.md.
+This file lists only what we believe is still ahead.
+Completed work should be moved into PROJECT_LEDGER.md so history stays stable.
 
-Current date: 2026-02-21
+Last updated: 2026-02-22
 
 ---
 
-## Current status (1 paragraph)
+## Completed
 
-Phase 2 has a working vertical slice on hp-prd-web01. Routing surfaces are locked (including username catch-all last with reserved-words enforcement). Template architecture remains locked (base skeleton only; shells under templates/layouts; chrome in templates/includes; reusable blocks in templates/components). Post architecture is now cross-surface: Post is owned by apps/posts, the composer posts to posts:create with a next= redirect contract, and timelines/visibility are in place. Moderation UI matches mockup state behavior. Settings mockup is implemented and persists User + UserSettings controls. Friend graph foundations and CSRF-safe friend endpoints exist; UI wiring is staged.
+### 4) Enforce timeline posting policy (wall posts) at write-time
+Status: Completed (see PROJECT_LEDGER.md 2026-02-22 entry)
+
+Scope that was delivered:
+- Enforce `UserSettings.timeline_post_policy` for wall posts.
+- Deny wall posts when blocked either direction.
+- Do not silently re-route denied wall posts.
+- Keep redirect behavior stable via safe `next` contract.
+
+### 5) Post management actions (edit + delete)
+Status: Completed (see PROJECT_LEDGER.md 2026-02-22 entry)
+
+Scope that was delivered:
+- Author-only edit.
+- Author delete + staff/superuser delete override.
+- Inline edit UI on post cards.
+- Kebab menu actions show only when authorized.
 
 ---
 
 ## Do next (in order)
 
-### 1) Keep documentation current (always)
-- If any decision is “locked,” it must be recorded in:
-  - ARCHITECTURE_SNAPSHOT.md
-  - COMPONENTS_AND_INCLUDES.md
-- If something changed because we learned the hard way, add it to:
-  - PROJECT_LEDGER.md
+### 6) Fix “Propose Deletion” redirect contract across surfaces (do not assume /feed/)
+Problem:
+- `post_card.html` is included on multiple surfaces (feed, profile, and future entity pages).
+- The Propose Deletion modal currently hardcodes `next` to `/feed/` in the modal form.
+- This breaks the “stay on the page you acted from” contract and will create drift as more surfaces adopt post cards.
 
-### 2) Friends UI parity and policy wiring (next increment)
-Goal:
-- Make entity header friend controls match mockups for:
-  - button styles per state (Add / Requested / Friends / Accept / Decline)
-  - state transitions from actual Friendship rows
+Target behavior (LOCKED intent):
+- Propose Deletion should redirect back to the surface where the user clicked it.
+- The server should continue to enforce a safe local redirect.
 
-Work items:
-- Ensure profile_view computes:
-  - `friend_state` and `friend_request_id` for header template
-- Ensure header uses mockup-correct classes per state.
+Implementation approach (v1):
+- Set the modal form’s `next` value dynamically at click time to the current page:
+  - Prefer `request.get_full_path` if available in context, or
+  - Populate via JS using `window.location.pathname + window.location.search`.
+- Keep the modal reusable and avoid embedding feed-specific assumptions.
 
-### 3) Visibility filtering with friendships (read-time rules)
-Goal:
-- Make read-time visibility reflect current friendship state.
+Continuity notes:
+- Later gating may be required (account age, reputation, etc.).
+- For now, we only ensure correct redirect behavior across surfaces.
 
-Work items:
-- Profile timeline query:
-  - owner sees all
-  - non-owner sees PUBLIC
-  - non-owner sees FRIENDS only if viewer and profile_user are currently friends
-- Feed query:
-  - include viewer’s own posts (all visibility)
-  - include PUBLIC posts by anyone
-  - include FRIENDS posts by accepted friends (once friend graph is used in query)
+### 7) Reduce duplication of “friend relationship” helpers (optional, once stable)
+Observation:
+- `_are_friends` / friend visibility checks exist in multiple view modules.
+- This is acceptable during iteration, but becomes drift-prone once more surfaces are added.
 
-### 4) Timeline posting policy (write-time enforcement for wall posts)
-Goal:
-- Enforce “Who can post to your Timeline?” once policy + friends are stable.
+Candidate next step:
+- Introduce a shared helper (or service) in one place and import it,
+  once the friend graph rules stop changing weekly.
 
-Work items:
-- In posts:create:
-  - allow wall posts only if policy allows (EVERYONE / FRIENDS / PRIVATE)
-  - deny when blocked either direction
-- UI for posting to others’ timelines is staged; do not ship silent wall posts that are later hidden.
+### 8) Comment placeholder “Leave a comment” UI (future work)
+Scope:
+- The post card shows a comment box placeholder that does not post anywhere yet.
+- Add a clear comment marker that it is scaffold only (no endpoint yet),
+  so we do not confuse it with a wired feature.
 
-### 5) Post management actions (edit/delete/visibility update)
-Goal:
-- Wire post kebab actions to real endpoints.
+---
 
-Work items:
-- Author-only edit endpoint + UI
-- Author-only delete endpoint (soft-delete vs tombstone decision later)
-- Author-only visibility update endpoint is already present; wire UI when ready.
+## Notes / constraints (keep stable)
 
-### 6) Resume mockup parity improvements (profile)
-- Continue matching mockups for:
-  - left stack cards and spacing
-  - header actions
-  - tabs behavior as those routes/components are implemented
-
-### 7) Phase B: rename legacy DB table (deliberate migration)
-- Rename `feed_post` to a posts-owned name in a deliberate migration.
-- Update docs and confirm no code assumes the old table name.
+- Preserve the anti-drift workflow:
+  - Heavily comment files.
+  - Always request the latest version of any file before editing.
+  - Provide complete pasteable replacements only.
+- Do not allow layout shells to drift:
+  - `2col_shell.html` and `entity_shell.html` outer grid parity is locked.
+- Do not assume a post is “feed content”:
+  - Posts are cross-surface content owned by apps/posts.
