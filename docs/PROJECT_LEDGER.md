@@ -3,7 +3,7 @@
 This file is the historical “why” log. If something was discovered the hard way,
 it belongs here so we don’t repeat it.
 
-Last updated: 2026-02-21
+Last updated: 2026-02-22
 
 ---
 
@@ -109,6 +109,38 @@ Why:
 
 Caveat:
 - UI beyond header wiring is staged; endpoints exist for v1 iteration.
+
+---
+
+## 2026-02-22 — NEXT_STEPS #4 completed: enforce timeline posting policy at write-time
+
+What was implemented:
+- `posts:create` enforces `UserSettings.timeline_post_policy` for wall posts:
+  - EVERYONE: allow
+  - FRIENDS: allow only when currently friends
+  - NO_ONE: deny
+- Blocking is enforced at write-time: if either user blocked the other, deny wall posts.
+- Denied wall posts do not silently re-route to author timeline.
+- Redirect contract remains stable via safe `next` handling.
+
+Why:
+- Wall posts are permissioned by the timeline owner, not by the viewing surface.
+- Write-time enforcement prevents “surprising” cross-user content writes and reduces moderation burden.
+
+---
+
+## 2026-02-22 — NEXT_STEPS #5 completed: post management actions (edit + delete)
+
+What was implemented:
+- Post management actions exist and are enforced server-side:
+  - Edit: author-only.
+  - Delete: author or staff/superuser override (temporary moderation seam).
+- Inline edit UI exists on post cards (Edit toggles an in-card form with Save/Cancel).
+- Delete is exposed in the kebab menu for authorized users (author and staff/superuser).
+
+Continuity note:
+- Hard delete is currently used to unblock moderation UX iteration.
+- Later decision: replace with tombstones / soft-delete rules once moderation resolution UI is stable.
 
 ---
 
